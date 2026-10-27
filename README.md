@@ -13,7 +13,7 @@ It shows each teacher's STEPS score and the five parts behind it, per region, pe
 | Subject knowledge | 30% | Digital Coach FICO score, section F (from 8 Sep 2026, FICO v3) |
 | Teaching practices | 25% | Digital Coach FICO score, section C |
 | Student engagement | 25% | Digital Coach FICO score, section D |
-| Presence | 10% | Teacher attendance marked by the head (7%) and student attendance from class registers (3%), last 30 days |
+| Presence | 10% | Teacher attendance marked by the head (7%) and student attendance from class registers (3%), since 8 Sep (same period as the classroom parts) |
 | Supervisor remark | 10% | The head's quarterly rating on 5 indicators (1–4), averaged ÷ 4 |
 
 Performance levels: **Exemplary** 80+, **Proficient** 70–79.9, **Developing** 60–69.9, **Needs support** below 60. A teacher with no Digital Coach classroom score since 8 Sep is shown as **Incomplete** (no STEPS number).
@@ -48,9 +48,9 @@ Browser ──► server.js (Railway) ──► Taleemabad data service (MCP ove
 | File | What it returns |
 |---|---|
 | `refresh.sql` | Teachers per school (governed ICT headcount) with their supervisor remark, scores and comment |
-| `attendance.sql` | Teacher and student attendance per school, last 30 days |
-| `teacher_attendance.sql` | Each teacher's own attendance, last 30 days |
-| `class_registers.sql` | Classes with no register marked, and each teacher's register totals, last 30 days |
+| `attendance.sql` | Teacher and student attendance per school, since 8 Sep (same period as the classroom parts) |
+| `teacher_attendance.sql` | Each teacher's own attendance, since 8 Sep (same period as the classroom parts) |
+| `class_registers.sql` | Classes with no register marked, and each teacher's register totals, since 8 Sep (same period as the classroom parts) |
 | `fico_scores.sql` | FICO section scores per school and teacher, Digital Coach and coach visits kept apart |
 | `dc_lessons.sql` | Each teacher's Digital Coach lessons, all time, and the last one |
 | `trends.sql` | Weekly series per region for the Analytics tab |

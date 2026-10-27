@@ -1,4 +1,4 @@
--- Each teacher's own attendance, last 30 days (PKT), for the 86 STEPS dashboard schools, packed one row per
+-- Each teacher's own attendance, since 8 Sep 2026 (PKT), for the 86 STEPS dashboard schools, packed one row per
 -- school (the data service returns at most 100 rows). Governed definition (rules v0.39.1):
 -- teacher_attendance_marked / teacher_absence_by_teacher - the days the school head marked this teacher.
 -- Students' attendance is deliberately NOT joined here: the data service withholds teacher identifiers from any
@@ -9,7 +9,7 @@ WITH targets AS (
   '412','413','439','415','430','421','433','435','428','417','437','466','418','423','419','441','420','424','425','426','427','429','431','432','434','436','438','440','460','461','462','464','465','467','472','468','469','470','471','473','474','475','476','477','478','479']) AS emis
 ),
 win AS (
-  SELECT DATE_SUB(CURRENT_DATE('Asia/Karachi'), INTERVAL 29 DAY) AS d0, CURRENT_DATE('Asia/Karachi') AS d1
+  SELECT DATE '2026-09-08' AS d0, CURRENT_DATE('Asia/Karachi') AS d1   -- STEPS period: same start as the classroom parts (FICO v3)
 ),
 sp AS (
   SELECT school_id, LOGICAL_OR(COALESCE(is_programme_school, FALSE)) AS is_programme_school

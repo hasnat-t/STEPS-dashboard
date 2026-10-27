@@ -124,11 +124,11 @@ function expand(result) {
 // The 30-day window the attendance query uses, in PKT, for labelling the page.
 function attendanceWindow() {
   const day = (offset) => pktStamp(new Date(Date.now() - offset * 86400000)).slice(0, 10);
-  return { start: day(29), end: day(0) };
+  return { start: '2026-09-08', end: day(0) };   // STEPS period start, same as the classroom parts
 }
 
 async function refreshAttendance() {
-  const result = await executeQuery(ATTENDANCE_SQL, 'daily refresh: STEPS dashboard, teacher and student attendance per school, last 30 days');
+  const result = await executeQuery(ATTENDANCE_SQL, 'daily refresh: STEPS dashboard, teacher and student attendance per school, since 8 Sep');
   if (result.truncated) throw new Error('attendance result truncated');
   const rows = (result.rows || []).filter((r) => SCHOOLS[r.emis]).map((r) => {
     const o = { emis: r.emis };
@@ -142,7 +142,7 @@ async function refreshAttendance() {
 // Each teacher's own attendance (days the head marked them). Adds t_present/t_absent/t_leave to teacher rows;
 // left blank where the school's head marks nobody, so "not marked" stays distinct from "0 absences".
 async function addTeacherAttendance(rows, schoolAttendance) {
-  const result = await executeQuery(TEACHER_ATTENDANCE_SQL, 'daily refresh: STEPS dashboard, each teacher\'s own attendance, last 30 days');
+  const result = await executeQuery(TEACHER_ATTENDANCE_SQL, 'daily refresh: STEPS dashboard, each teacher\'s own attendance, since 8 Sep');
   if (result.truncated) throw new Error('teacher attendance result truncated');
   const byKey = new Map();
   for (const r of result.rows || []) {
@@ -172,7 +172,7 @@ function prettyClass(label) {
 
 // Unmarked class labels per school and each marking teacher's 30-day register totals (approved by the data team).
 async function addClassRegisters(rows, attendance) {
-  const result = await executeQuery(CLASS_REGISTERS_SQL, 'daily refresh: STEPS dashboard, unmarked classes and teacher register totals, last 30 days');
+  const result = await executeQuery(CLASS_REGISTERS_SQL, 'daily refresh: STEPS dashboard, unmarked classes and teacher register totals, since 8 Sep');
   if (result.truncated) throw new Error('class registers result truncated');
   const bySchool = new Map();
   const byTeacher = new Map();

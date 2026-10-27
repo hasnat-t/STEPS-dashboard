@@ -1,8 +1,8 @@
--- Class registers per school and per teacher, last 30 days (PKT), for the 86 STEPS dashboard schools.
+-- Class registers per school and per teacher, since 8 Sep 2026 (PKT), for the 86 STEPS dashboard schools.
 -- Governed definition (rules v0.39.1): student_attendance_marked / student_attendance_rate. Counts only:
 -- never a child, never a single register.
 -- Approved by the data team (Hasnat Tariq, 2026-10-27): unmarked class labels (grade + section) and each
--- marking teacher's 30-day register totals may be served. Column names follow the serving policy's own
+-- marking teacher's register totals may be served. Column names follow the serving policy's own
 -- categories so it serves them: class labels are a class dimension, teacher_* is staff-scoped
 -- (serving_policy.py _SAFE_DIMENSION_RE / _STAFF_SCOPED_RE).
 -- Packed teacher_register_totals record: teacher_id8:registers:days:classes:present:absent:on_leave:child_days
@@ -11,7 +11,7 @@ WITH targets AS (
   '412','413','439','415','430','421','433','435','428','417','437','466','418','423','419','441','420','424','425','426','427','429','431','432','434','436','438','440','460','461','462','464','465','467','472','468','469','470','471','473','474','475','476','477','478','479']) AS emis
 ),
 win AS (
-  SELECT DATE_SUB(CURRENT_DATE('Asia/Karachi'), INTERVAL 29 DAY) AS d0, CURRENT_DATE('Asia/Karachi') AS d1
+  SELECT DATE '2026-09-08' AS d0, CURRENT_DATE('Asia/Karachi') AS d1   -- STEPS period: same start as the classroom parts (FICO v3)
 ),
 sp AS (
   SELECT school_id, LOGICAL_OR(COALESCE(is_programme_school, FALSE)) AS is_programme_school
@@ -58,7 +58,7 @@ registers AS (                                                  -- student_atten
   WHERE SAFE_CAST(a.session_date AS DATE) BETWEEN win.d0 AND win.d1
     AND (rc.id IS NULL OR LOWER(TRIM(rc.grade_code)) IN ('early_years', 'grade_1', 'grade_2', 'grade_3', 'grade_4', 'grade_5'))   -- primary classes
 ),
-per_teacher AS (                                                -- 30-day totals per marking teacher
+per_teacher AS (                                                -- totals per marking teacher over the STEPS period
   SELECT school_id, teacher_id,
          COUNT(DISTINCT id) AS registers, COUNT(DISTINCT d) AS days, COUNT(DISTINCT class_id) AS classes,
          SUM(present_count) AS present, SUM(absent_count) AS absent, SUM(leave_count) AS on_leave,

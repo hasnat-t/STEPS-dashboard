@@ -346,7 +346,7 @@
       <span class="sr-note" data-steps="partial"></span>
     </div>
     </div>
-    <p class="sr-note"><b>Scope:</b> primary teachers only, meaning teachers whose Rumi level includes Primary (teachers who teach only middle or high classes are not included), and primary classes only (early years to grade 5). Classroom parts use the Digital Coach's FICO scores since 8 Sep (points earned ÷ possible). Presence is the teacher's own attendance (7%) and attendance in the classes they mark (3%), last 30 days. Supervisor remark is the average of its 5 indicators ÷ 4. Region averages use teachers with all five parts; a teacher missing some parts gets a provisional score over the parts they have (shown as x/5), but only if they have a Digital Coach classroom score — without it the teacher is marked Incomplete. Click any teacher for their scorecard.</p>
+    <p class="sr-note"><b>Scope:</b> primary teachers only, meaning teachers whose Rumi level includes Primary (teachers who teach only middle or high classes are not included), and primary classes only (early years to grade 5). Classroom parts use the Digital Coach's FICO scores since 8 Sep (points earned ÷ possible). Presence is the teacher's own attendance (7%) and attendance in the classes they mark (3%), since 8 Sep, the same period as the classroom parts. Supervisor remark is the average of its 5 indicators ÷ 4. Region averages use teachers with all five parts; a teacher missing some parts gets a provisional score over the parts they have (shown as x/5), but only if they have a Digital Coach classroom score — without it the teacher is marked Incomplete. Click any teacher for their scorecard.</p>
   </section>
 
   <section class="sr-att" id="analytics" aria-label="Analytics" data-panel="analytics">
@@ -488,7 +488,7 @@
   <section class="sr-att" id="attendance" aria-label="Attendance" data-panel="presence">
     <div class="sr-att-head">
       <h2 class="sr-att-title">Attendance</h2>
-      <p class="sr-note" id="att-window">Last 30 days, as marked in Rumi</p>
+      <p class="sr-note" id="att-window">Since 8 Sep, as marked in Rumi</p>
     </div>
     <div class="sr-regions">
     <div class="sr-card sr-attcard" data-att-region="Urban-I">
@@ -535,11 +535,11 @@
       <span><i style="background: var(--color-bad)"></i>Absent</span>
       <span><i style="background: var(--cds-border)"></i>On leave</span>
     </div>
-    <p class="sr-note">Teacher attendance is marked by the school head (present ÷ present and absent; leave is not counted as absence). Student attendance is marked by class teachers (children present ÷ all children marked). Both cover only the schools and classes that mark in Rumi. Teacher-level attendance is in the Teachers table and each school's pop-up; each school's pop-up lists its classes with no student register marked in the last 30 days. Student figures are totals only, never per child.</p>
+    <p class="sr-note">Teacher attendance is marked by the school head (present ÷ present and absent; leave is not counted as absence). Student attendance is marked by class teachers (children present ÷ all children marked). Both cover only the schools and classes that mark in Rumi. Teacher-level attendance is in the Teachers table and each school's pop-up; each school's pop-up lists its classes with no student register marked since 8 Sep. Student figures are totals only, never per child.</p>
   </section>
   <section class="sr-card sr-sectable" id="presence-schools" data-panel="presence">
     <h2>Presence by school</h2>
-    <p class="sr-note">Teacher attendance marked by the head and student attendance marked by class teachers, last 30 days. Click a school to see its teachers and which classes are not marked.</p>
+    <p class="sr-note">Teacher attendance marked by the head and student attendance marked by class teachers, since 8 Sep. Click a school to see its teachers and which classes are not marked.</p>
     <div class="sr-tools">
       <select class="sr-sel" data-sec-region aria-label="Region"><option value="">All regions</option><option>Urban-I</option><option>Barakahu</option></select>
       <span data-sec-extra></span>
@@ -696,7 +696,7 @@
 
   <section class="sr-card" id="teachers" data-panel="teachers">
     <div class="sr-snap-row"><h2>Teachers</h2><button type="button" class="sr-snap-btn" data-snap="teachers" title="Save this teachers table as a picture (PNG)" aria-label="Save this teachers table as a picture (PNG)"><svg class="sr-snap-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download image</span></button></div>
-    <p class="sr-note">Every teacher in these schools with their STEPS score (x/5 = how many of the five parts it covers) and Digital Coach lessons (since 8 Sep, which count for STEPS, and all time) — click a teacher for their scorecard. Remark scores are the head's quarterly ratings on the 5 STEPS supervisor-remark indicators (Growth = Professional Growth &amp; Feedback Uptake, Collab. = Collaboration &amp; Peer Support, Leadership = Initiative &amp; School Leadership, Student support = Student-Centered Support, Parents = Parents &amp; Community Engagement), on 4 Exemplary · 3 Proficient · 2 Developing · 1 Needs Improvement. Hover a score for its meaning. Present / Absent / Leave are the days the head marked this teacher in the last 30 days. Register days and Student attendance are the class registers this teacher marked for students in the same 30 days. Lessons observed, Subject knowledge, Teaching practices and Student engagement are the teacher's FICO observation scores since 8 Sep 2026 for the source picked under Classroom observations.</p>
+    <p class="sr-note">Every teacher in these schools with their STEPS score (x/5 = how many of the five parts it covers) and Digital Coach lessons (since 8 Sep, which count for STEPS, and all time) — click a teacher for their scorecard. Remark scores are the head's quarterly ratings on the 5 STEPS supervisor-remark indicators (Growth = Professional Growth &amp; Feedback Uptake, Collab. = Collaboration &amp; Peer Support, Leadership = Initiative &amp; School Leadership, Student support = Student-Centered Support, Parents = Parents &amp; Community Engagement), on 4 Exemplary · 3 Proficient · 2 Developing · 1 Needs Improvement. Hover a score for its meaning. Present / Absent / Leave are the days the head marked this teacher since 8 Sep. Register days and Student attendance are the class registers this teacher marked for students over the same period. Lessons observed, Subject knowledge, Teaching practices and Student engagement are the teacher's FICO observation scores since 8 Sep 2026 for the source picked under Classroom observations.</p>
     <div class="sr-tools">
       <div class="sr-seg" role="group" aria-label="Teacher region">
         <button type="button" id="tf-all" data-tf="All" aria-pressed="true">All</button>
@@ -912,7 +912,7 @@ function scoreChip(field, value) {
   b.title = `${REMARK_INDICATORS[Number(field.slice(1)) - 1]}: ${value} – ${REMARK_LEVELS[value] || ''}`;
   return b;
 }
-// Classes with no register in 30 days: the named list when the refresh has it, else the count difference.
+// Classes with no register since 8 Sep: the named list when the refresh has it, else the count difference.
 const unmarkedCount = (a) => Array.isArray(a.unmarked_classes) ? a.unmarked_classes.length : Math.max(a.active_classes - a.s_classes_marked, 0);
 // A teacher's own attendance cells: blank string means the head at this school marks nobody.
 function teacherAttCells(t, add) {
@@ -924,7 +924,7 @@ function teacherAttCells(t, add) {
   add(String(P), 'num sr-ta'); add(String(A), 'num sr-ta' + (A > 0 ? ' abs' : '')); add(String(L), 'num sr-ta');
   add(P + A > 0 ? pct1(P / (P + A)) : 'No days', 'num sr-ta' + (P + A > 0 ? '' : ' na'));
 }
-// A teacher's own class registers over the 30 days (counts only): days marked and their classes' attendance.
+// A teacher's own class registers since 8 Sep (counts only): days marked and their classes' attendance.
 function teacherFicoCells(t, add) {
   const n = Number(t[`${obsSrc}_sessions`] || 0);
   add(String(n), 'num sr-fico' + (n ? '' : ' na'));
@@ -996,7 +996,7 @@ function drawAttendance() {
   const att = dash.data('attendance'), tch = dash.data('teachers');
   const win = window.srMeta && window.srMeta.attendance_window;
   const fd = (x) => d3.utcFormat('%-d %b')(new Date(x + 'T00:00:00Z'));
-  document.getElementById('att-window').textContent = win ? `Last 30 days (${fd(win.start)} – ${fd(win.end)}), as marked in Rumi` : 'Last 30 days, as marked in Rumi';
+  document.getElementById('att-window').textContent = win ? `Since 8 Sep (${fd(win.start)} – ${fd(win.end)}), as marked in Rumi` : 'Since 8 Sep, as marked in Rumi';
   document.querySelectorAll('[data-att-region]').forEach(card => {
     const region = card.dataset.attRegion;
     const set = (k, v) => { card.querySelector(`[data-att="${k}"]`).textContent = v; };
@@ -1255,7 +1255,7 @@ ${dcLine(t)}`;
   box('Coach visits (not in STEPS)', Number(t.hitl_sessions || 0)
     ? [`${t.hitl_sessions} visit${t.hitl_sessions == 1 ? '' : 's'}`, `Subject knowledge ${pc(t.hitl_tsk)} · Practices ${pc(t.hitl_hlp)} · Engagement ${pc(t.hitl_se)}`]
     : ['No coach visits since 8 Sep']);
-  box('Presence (last 30 days)', [
+  box('Presence (since 8 Sep)', [
     t.t_present === '' || t.t_present == null ? 'Teacher attendance: not marked by the head'
       : `Teacher: ${t.t_present} present · ${t.t_absent} absent · ${t.t_leave} on leave`,
     Number(t.reg_days || 0) ? `Students: ${pc(Number(t.reg_present) / Number(t.reg_child_days) * 100)} present over ${t.reg_days} register day${t.reg_days == 1 ? '' : 's'}` : 'Students: no class registers marked',
@@ -1431,9 +1431,9 @@ function openSchoolModal(r, rows) {
   document.getElementById('sr-modal-title').textContent = `${r.emis} · ${r.school}`;
   document.getElementById('sr-modal-sub').textContent = `${r.region} · ${r.with_remarks} of ${r.teachers} teachers have a supervisor remark${r.remark_dates ? ' · ' + r.remark_dates : ''}`;
   const a = attFor(r.emis), attEl = document.getElementById('sr-modal-att');
-  attEl.textContent = !a ? '' : `Last 30 days · Teacher attendance: ${a.t_rate != null ? `${pct1(a.t_rate)} (${fmt(a.t_present)} present, ${fmt(a.t_absent)} absent, ${fmt(a.t_leave)} on leave)` : 'not marked by the head'}`
+  attEl.textContent = !a ? '' : `Since 8 Sep · Teacher attendance: ${a.t_rate != null ? `${pct1(a.t_rate)} (${fmt(a.t_present)} present, ${fmt(a.t_absent)} absent, ${fmt(a.t_leave)} on leave)` : 'not marked by the head'}`
     + ` · Student attendance: ${a.s_rate != null ? `${pct1(a.s_rate)} across ${fmt(a.s_classes_marked)} of ${fmt(a.active_classes)} classes` : 'no class registers marked'}`
-    + (a.active_classes > 0 ? ` · ${fmt(unmarkedCount(a))} class${unmarkedCount(a) === 1 ? '' : 'es'} not marked in 30 days` : '');
+    + (a.active_classes > 0 ? ` · ${fmt(unmarkedCount(a))} class${unmarkedCount(a) === 1 ? '' : 'es'} not marked since 8 Sep` : '');
   const f = ficoFor(r.emis), obsLine = (src) => {
     if (!f || !f[`${src}_sessions`]) return `${SRC_LABEL[src]}: none since 8 Sep`;
     const v = (d) => (f[`${src}_${d}`] == null ? '—' : pct1(f[`${src}_${d}`] / 100));
@@ -1448,7 +1448,7 @@ function openSchoolModal(r, rows) {
     box.className = 'sr-unmarked' + (n ? '' : ' ok');
     const ttl = document.createElement('div');
     ttl.className = 'ttl';
-    ttl.textContent = n ? `${n} of ${a.active_classes} classes have no student attendance marked in the last 30 days` : `All ${a.active_classes} classes marked student attendance in the last 30 days`;
+    ttl.textContent = n ? `${n} of ${a.active_classes} classes have no student attendance marked since 8 Sep` : `All ${a.active_classes} classes marked student attendance since 8 Sep`;
     box.appendChild(ttl);
     if (n) {
       const chips = document.createElement('div');
@@ -1733,7 +1733,7 @@ const SECTION_TABLES = {
   },
   presence: {
     key: 't_rate', dir: 1,
-    extra: '<select class="sr-sel" data-sec-filter aria-label="Presence follow-up"><option value="">All schools</option><option value="noteacher">Head not marking teacher attendance</option><option value="unmarked">Has unmarked classes</option><option value="absent">Teachers absent in last 30 days</option></select>',
+    extra: '<select class="sr-sel" data-sec-filter aria-label="Presence follow-up"><option value="">All schools</option><option value="noteacher">Head not marking teacher attendance</option><option value="unmarked">Has unmarked classes</option><option value="absent">Teachers absent since 8 Sep</option></select>',
     filter: (r, v) => { const a = attFor(r.emis); if (!v) return true; if (!a) return false;
       return v === 'noteacher' ? a.t_days_marked === 0 : v === 'unmarked' ? unmarkedCount(a) > 0 : a.t_absent > 0; },
     cols: [
