@@ -1,0 +1,2239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>STEPS Teacher Evaluation</title>
+<meta name="description" content="STEPS teacher evaluation for Urban-I and Barakahu: subject knowledge, teaching practices, student engagement, presence and supervisor remarks, per teacher and school.">
+<link rel="icon" type="image/png" href="/assets/niete-logo.png">
+<style>
+:root {
+  --color-bg: #F5F6F8; --color-panel: #FFFFFF; --color-fg: #1F2230; --color-fg-muted: #5E6475;
+  --color-border-line: #E2E5EB; --color-ok: #2E8F5C; --color-warn: #B26B00; --color-bad: #C53030;
+  --cds-chart-grid: #E8EBF0; --cds-border: #D8DCE4; --cds-surface-popover: #FFFFFF; --cds-text-secondary: #5E6475;
+  --cds-shadow-popover: 0 10px 28px rgba(31, 34, 48, .16); --cds-dur-slow: .4s;
+  --cds-font-size-caption: .8125rem; --cds-font-size-body: .9375rem; --cds-font-size-heading: 1.125rem; --cds-font-size-title: 1.75rem;
+  --cds-font-weight-medium: 500;
+  --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 12px; --cds-gap-lg: 16px; --cds-gap-xl: 28px;
+  --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 18px; --cds-radius: 10px;
+  --font-anthropic-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #13151C; --color-panel: #1C1F28; --color-fg: #ECEEF3; --color-fg-muted: #A3A8B8;
+    --color-border-line: #2C303C; --color-ok: #5CCB90; --color-warn: #E0A84A; --color-bad: #F07272;
+    --cds-chart-grid: #2A2E3A; --cds-border: #363B48; --cds-surface-popover: #232733; --cds-text-secondary: #A3A8B8;
+    --cds-shadow-popover: 0 10px 28px rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--color-bg); color: var(--color-fg); font: 14px/1.5 var(--font-anthropic-sans); -webkit-text-size-adjust: 100%; }
+#dash-root { max-width: 1280px; margin: 0 auto; padding-block: max(20px, env(safe-area-inset-top, 0px)) 32px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+.dash-skeleton { color: transparent !important; background: var(--cds-chart-grid); border-radius: 6px; }
+.sr-chart.dash-skeleton { min-height: 160px; }
+.sr-foot { margin-top: 28px; color: var(--color-fg-muted); font-size: .78rem; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.sr-foot .warn { color: var(--color-warn); }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script src="/dash-shim.js?v=77f7fb6a47"></script>
+</head>
+<body>
+<div id="dash-root">
+<style>
+@font-face { font-family: 'NT Outfit'; src: url('/assets/outfit.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'NT Jakarta'; src: url('/assets/jakarta.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: swap; }
+/* NIETE brand: green + navy from the logo; navy header band, green for every data mark */
+.sr { --nt-font-display: 'NT Outfit', var(--font-anthropic-sans), system-ui, sans-serif; --nt-font-body: 'NT Jakarta', var(--font-anthropic-sans), system-ui, sans-serif; --nt-ease: cubic-bezier(.22, 1, .36, 1);
+  --nt-green: #47BA7D; --nt-green-soft: rgba(71, 186, 125, .32); --nt-navy: #333847; --nt-on-navy: #FFFFFF; --nt-on-navy-muted: rgba(255, 255, 255, .78);
+  display: grid; gap: var(--cds-gap-xl); font-family: var(--nt-font-body); }
+.sr-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-lg); background: var(--nt-navy); color: var(--nt-on-navy); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); }
+.sr-head { position: relative; overflow: hidden; }
+.sr-dia { position: absolute; width: 22px; height: 22px; background: var(--nt-green); transform: rotate(45deg); opacity: .9; pointer-events: none; }
+.sr-dia.d1 { right: 64px; top: 18px; }
+.sr-dia.d2 { right: 30px; top: 42px; width: 14px; height: 14px; background: #FFFFFF; opacity: .18; }
+.sr-dia.d3 { right: 96px; bottom: 14px; width: 10px; height: 10px; opacity: .5; }
+.sr-headtext { position: relative; z-index: 1; padding-right: 80px; }
+@media (max-width: 40rem) { .sr-headtext { padding-right: 0; } .sr-dia { opacity: .25; } }
+.sr-logo { position: relative; z-index: 1; background: #FFFFFF; border-radius: var(--cds-radius); padding: var(--cds-pad-sm) var(--cds-pad-md); display: flex; flex: none; }
+.sr-logo img { display: block; height: 52px; width: auto; max-width: 100%; }
+.sr-headtext { display: grid; gap: var(--cds-gap-sm); flex: 1 1 18rem; min-width: 0; }
+.sr-title { font-family: var(--nt-font-display); font-weight: 600; letter-spacing: -0.01em; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; color: var(--nt-on-navy); }
+.sr-take { color: var(--nt-on-navy-muted); font-size: var(--cds-font-size-body); margin: 0; max-width: 70ch; }
+.sr .sr-take b { color: var(--nt-green); font-weight: 600; }
+.sr-regions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+.sr-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-md); min-width: 0; align-content: start; }
+.sr-card h2 { font-family: var(--nt-font-display); font-size: var(--cds-font-size-heading); font-weight: 600; letter-spacing: -0.005em; margin: 0; display: flex; align-items: center; gap: var(--cds-gap-sm); }
+.sr-card h2::before { content: ""; width: 9px; height: 9px; background: var(--nt-green); transform: rotate(45deg); flex: none; }
+.sr-note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; }
+.sr-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cds-gap-md); }
+.sr-kpi { display: grid; gap: var(--cds-gap-xs); align-content: start; }
+.sr-kpi .lbl { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.sr-kpi .big { font-family: var(--nt-font-display); font-weight: 600; letter-spacing: -0.02em; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.sr-kpi .sub { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.sr-meter { height: 8px; border-radius: 4px; background: var(--cds-chart-grid); overflow: hidden; }
+.sr-meter > span { display: block; height: 100%; border-radius: 4px; }
+.sr-chart { position: relative; min-height: 120px; }
+.sr-chart svg text { fill: var(--color-fg-muted); font-size: var(--cds-font-size-caption); font-family: var(--nt-font-body); }
+.sr-chart svg text.val { fill: var(--color-fg); font-variant-numeric: tabular-nums; }
+.sr-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 2; }
+.sr-tip .t { color: var(--cds-text-secondary); }
+.sr-tools { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+.sr-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; }
+.sr-seg button { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); background: transparent; color: var(--color-fg-muted); border: 0; cursor: pointer; }
+.sr-seg button[aria-pressed="true"] { background: var(--nt-green); color: var(--nt-navy); font-weight: var(--cds-font-weight-medium); }
+.sr-seg button:focus-visible, .sr-search:focus-visible, .sr-table th button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+.sr-search { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 0; flex: 1 1 12rem; max-width: 20rem; }
+.sr-scroll { max-height: 34rem; overflow: auto; }
+.sr-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.sr-table th { text-transform: uppercase; letter-spacing: .05em; font-size: .72rem; position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); border-bottom: 1px solid var(--color-border-line); padding: 0; z-index: 1; }
+.sr-table th button { font: inherit; background: none; border: 0; color: var(--color-fg-muted); padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; width: 100%; text-align: inherit; }
+.sr-table th.num, .sr-table td.num { text-align: right; }
+.sr-table td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: middle; }
+.sr-cov { display: flex; align-items: center; gap: var(--cds-gap-sm); justify-content: flex-end; }
+.sr-cov .bar { width: 4rem; height: 6px; border-radius: 3px; background: var(--cds-chart-grid); overflow: hidden; flex: none; }
+.sr-cov .bar span { display: block; height: 100%; border-radius: 3px; }
+.sr-pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: var(--cds-font-size-caption); border: 1px solid currentColor; white-space: nowrap; }
+.sr-pill.full { color: var(--nt-green); }
+.sr-table tbody tr.sr-click { cursor: pointer; }
+@media (hover: hover) { .sr-table tbody tr.sr-click:hover td { background: var(--nt-green-soft); } }
+.sr-table tbody tr.sr-click:focus-visible { outline: 2px solid var(--nt-green); outline-offset: -2px; }
+.sr-table td.sr-exp::before { content: ""; display: inline-block; width: 0; height: 0; margin-right: 8px; vertical-align: middle; border-left: 5px solid var(--color-fg-muted); border-top: 4px solid transparent; border-bottom: 4px solid transparent; transition: transform var(--cds-dur-slow); }
+.sr-inner-box { display: grid; gap: var(--cds-gap-sm); overflow-x: auto; }
+.sr-modal { position: fixed; inset: 0; margin: auto; height: fit-content; border: 0; padding: 0; background: transparent; max-width: min(64rem, calc(100vw - 32px)); width: 100%; max-height: calc(100vh - 48px); color: var(--color-fg); font-family: var(--nt-font-body); }
+.sr-modal::backdrop { background: rgba(20, 22, 30, .55); }
+.sr-modal-panel { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); display: flex; flex-direction: column; max-height: calc(100vh - 48px); overflow: hidden; }
+.sr-modal-head { display: flex; align-items: flex-start; gap: var(--cds-gap-md); background: var(--nt-navy); color: var(--nt-on-navy); padding: var(--cds-pad-md) var(--cds-pad-lg); }
+.sr-modal-titles { flex: 1; min-width: 0; display: grid; gap: var(--cds-gap-xs); }
+.sr-modal-head h3 { margin: 0; font-family: var(--nt-font-display); font-weight: 600; font-size: var(--cds-font-size-heading); color: var(--nt-on-navy); }
+.sr-modal-sub { margin: 0; font-size: var(--cds-font-size-caption); color: var(--nt-on-navy-muted); white-space: pre-line; }
+.sr-modal-x { font: inherit; font-size: 1.4rem; line-height: 1; width: 2rem; height: 2rem; border-radius: 50%; border: 0; background: var(--nt-green); color: var(--nt-navy); cursor: pointer; flex: none; }
+.sr-modal-x:focus-visible { outline: 2px solid var(--nt-on-navy); outline-offset: 2px; }
+.sr-modal-body { overflow: auto; padding: var(--cds-pad-md) var(--cds-pad-lg) var(--cds-pad-lg); }
+@media (min-width: 40.01rem) { .sr-modal .sr-hide-narrow { display: table-cell; } }
+
+.sr-table.sr-inner th { position: static; padding: var(--cds-pad-xs) var(--cds-pad-sm); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); }
+.sr-sel { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 0; max-width: 100%; }
+.sr-sel:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+.sr-sc { display: inline-grid; place-items: center; width: 1.5em; height: 1.5em; border-radius: 4px; font-variant-numeric: tabular-nums; }
+.sr-sc.v4 { background: var(--nt-green); color: var(--nt-navy); }
+.sr-sc.v3 { background: var(--nt-green-soft); color: var(--color-fg); }
+.sr-sc.v2 { background: var(--cds-chart-grid); color: var(--color-fg); }
+.sr-sc.v1 { border: 1px solid var(--color-bad); color: var(--color-bad); }
+.sr-comment { font-family: var(--nt-font-body), 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Segoe UI', sans-serif; line-height: 1.6; max-width: 28rem; min-width: 12rem; white-space: normal; unicode-bidi: plaintext; }
+.sr-yes { color: var(--nt-green); font-weight: var(--cds-font-weight-medium); }
+.sr-no { color: var(--color-fg-muted); }
+.sr-pill.part { color: var(--color-warn); }
+.sr-pill.none { color: var(--color-bad); }
+@media (max-width: 40rem) { .sr-hide-narrow { display: none; } }
+.sr-kpis { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr)); }
+/* tablet: tables keep their columns and scroll sideways inside their card */
+.sr-table#ttbl { min-width: 52rem; }
+.sr-table#tbl { min-width: 40rem; }
+@media (pointer: coarse) {
+  .sr-seg button { padding: 10px 14px; }
+  .sr-search, .sr-sel { padding: 10px 12px; font-size: 16px; }
+  .sr-modal-x { width: 2.5rem; height: 2.5rem; }
+}
+@media (max-width: 64rem) {
+  .sr-head { padding: var(--cds-pad-md); gap: var(--cds-gap-md); }
+  .sr-logo img { height: 44px; }
+}
+/* phone: every table row becomes a card */
+@media (max-width: 40rem) {
+  .sr-logo { width: 100%; justify-content: center; }
+  .sr-logo img { height: 40px; }
+  .sr-title { font-size: var(--cds-font-size-heading); }
+  .sr-tools { flex-direction: column; align-items: stretch; }
+  .sr-seg { display: flex; }
+  .sr-seg button { flex: 1 1 0; }
+  .sr-search { max-width: none; flex-basis: auto; }
+  .sr-sel { width: 100%; }
+  .sr-scroll { max-height: 70vh; }
+  .sr-table#ttbl, .sr-table#tbl { min-width: 0; }
+  .sr-table.sr-cards thead { display: none; }
+  .sr-table.sr-cards, .sr-table.sr-cards tbody { display: block; width: 100%; }
+  .sr-table.sr-cards tbody tr { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 12px 14px; margin-bottom: 10px; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-panel); }
+  .sr-table.sr-cards tbody td, .sr-table.sr-cards tbody td.sr-hide-narrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; padding: 0; border: 0; text-align: left; }
+  .sr-table.sr-cards tbody td::before { content: attr(data-label); color: var(--color-fg-muted); font-size: .7rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; flex: none; }
+  .sr-table.sr-cards tbody td:empty { display: none; }
+  .sr-table.sr-cards tbody td.sr-tt { order: -1; font-family: var(--nt-font-display); font-weight: 600; font-size: var(--cds-font-size-body); padding-bottom: 4px; border-bottom: 1px solid var(--color-border-line); margin-bottom: 2px; }
+  .sr-table.sr-cards tbody td.sr-tt::before { display: none; }
+  .sr-table.sr-cards tbody td.sr-sc-cell { width: auto; justify-content: flex-start; gap: 4px; }
+  .sr-table.sr-cards tbody td.sr-exp::before { content: attr(data-label); border: 0; width: auto; height: auto; margin: 0; transform: none; }
+  .sr-table.sr-cards .sr-comment { min-width: 0; max-width: none; display: block; }
+  .sr-table.sr-cards tbody td.sr-comment::before { display: block; margin-bottom: 2px; }
+  .sr-table.sr-cards .sr-cov { justify-content: flex-end; }
+  .sr-modal { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+  .sr-modal-panel { max-height: calc(100dvh - 16px); }
+  .sr-modal-head { padding: var(--cds-pad-sm) var(--cds-pad-md); }
+  .sr-modal-body { padding: var(--cds-pad-sm); }
+}
+.sr-card { transition: transform .35s var(--nt-ease), box-shadow .35s var(--nt-ease), border-color .35s var(--nt-ease); }
+.sr-seg button { transition: background-color .25s var(--nt-ease), color .25s var(--nt-ease); }
+.sr-meter > span { position: relative; transition: width 1.4s var(--nt-ease); overflow: hidden; }
+.sr-modal-x { transition: transform .25s var(--nt-ease); }
+.sr-modal-x:hover { transform: rotate(90deg); }
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes srRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes srPop { from { opacity: 0; transform: translateY(18px) scale(.96); } to { opacity: 1; transform: none; } }
+  @keyframes srFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes srChip { 0% { opacity: 0; transform: scale(.3); } 70% { transform: scale(1.12); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes srFloat { 0%, 100% { transform: translateY(0) rotate(45deg); } 50% { transform: translateY(-7px) rotate(45deg); } }
+  @keyframes srSpin { from { transform: rotate(45deg) scale(.2); opacity: 0; } to { transform: rotate(405deg) scale(1); } }
+  @keyframes srShine { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+  @keyframes srLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .sr-head { animation: srRise .7s var(--nt-ease) both; }
+  .sr-logo { animation: srPop .8s .12s var(--nt-ease) both; }
+  .sr-headtext { animation: srRise .8s .24s var(--nt-ease) both; }
+  .sr-dia.d1 { animation: srSpin .9s .3s var(--nt-ease) both, srFloat 5s 1.2s ease-in-out infinite; }
+  .sr-dia.d2 { animation: srSpin .9s .42s var(--nt-ease) both, srFloat 6s 1.3s ease-in-out infinite; }
+  .sr-dia.d3 { animation: srSpin .9s .54s var(--nt-ease) both, srFloat 4.5s 1.4s ease-in-out infinite; }
+  .sr-regions > .sr-card:nth-child(1) { animation: srRise .7s .3s var(--nt-ease) both; }
+  .sr-regions > .sr-card:nth-child(2) { animation: srRise .7s .42s var(--nt-ease) both; }
+  #started { animation: srRise .7s .54s var(--nt-ease) both; }
+  #all-schools { animation: srRise .7s .66s var(--nt-ease) both; }
+  #teachers { animation: srRise .7s .78s var(--nt-ease) both; }
+  .sr-card h2::before { animation: srSpin .7s .5s var(--nt-ease) both; }
+  @media (hover: hover) { .sr-regions > .sr-card:hover, #started:hover { transform: translateY(-3px); box-shadow: 0 12px 28px -14px rgba(51, 56, 71, .45); border-color: var(--nt-green); } }
+  .sr-meter > span::after { content: ""; position: absolute; inset: 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent); animation: srShine 1.6s 1.5s var(--nt-ease) both; }
+  .sr-table tbody tr.sr-in { animation: srRise .5s var(--nt-ease) both; animation-delay: var(--d, 0s); }
+  .sr-modal[open]::backdrop { animation: srFade .3s ease-out both; }
+  .sr-modal[open] .sr-modal-panel { animation: srPop .45s var(--nt-ease) both; }
+  .sr-modal-head { position: relative; }
+  .sr-modal[open] .sr-modal-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--nt-green); transform-origin: left; animation: srLine .7s .2s var(--nt-ease) both; }
+  .sr-table tr.sr-in .sr-sc { animation: srChip .45s var(--nt-ease) both; animation-delay: calc(var(--d, 0s) + .15s); }
+  .sr-pill { transition: transform .25s var(--nt-ease); }
+  .sr-table tbody tr.sr-click:hover .sr-pill { transform: scale(1.08); }
+}
+.sr-att { display: grid; gap: var(--cds-gap-md); }
+.sr-att-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--cds-gap-sm) var(--cds-gap-md); }
+.sr-att-title { font-family: var(--nt-font-display); font-weight: 600; font-size: var(--cds-font-size-heading); margin: 0; letter-spacing: -0.005em; }
+.sr-att-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: var(--cds-gap-lg); }
+.sr-att-block { display: grid; gap: var(--cds-gap-xs); align-content: start; min-width: 0; }
+.sr-att-block .sub b { color: var(--color-fg); font-weight: 600; }
+.sr-att-split { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--cds-chart-grid); margin-top: var(--cds-gap-xs); }
+.sr-att-split span { display: block; height: 100%; transition: width 1.2s var(--nt-ease); }
+.sr-att-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--color-fg-muted); font-size: .72rem; }
+.sr-att-legend i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.sr-att-none { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.sr-att-cell { white-space: nowrap; }
+.sr-ta { font-variant-numeric: tabular-nums; }
+.sr-ta.abs { color: var(--color-bad); font-weight: 600; }
+.sr-ta.na { color: var(--color-fg-muted); }
+.sr-obs-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--cds-gap-sm) var(--cds-gap-md); }
+.sr-obs-trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cds-gap-md); }
+@media (max-width: 40rem) { .sr-obs-trio { grid-template-columns: 1fr; } }
+.sr-obs-meter { height: 6px; border-radius: 3px; background: var(--cds-chart-grid); overflow: hidden; margin-top: 4px; }
+.sr-obs-meter span { display: block; height: 100%; background: var(--nt-green); border-radius: 3px; transition: width 1.2s var(--nt-ease); }
+.sr-fico { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sr-fico.na { color: var(--color-fg-muted); }
+.sr-src-tag { display: inline-block; font-size: .68rem; font-weight: 600; letter-spacing: .04em; padding: 1px 6px; border-radius: 4px; background: var(--nt-navy); color: var(--nt-on-navy); vertical-align: middle; margin-left: 4px; }
+@media (prefers-reduced-motion: no-preference) { #observations { animation: srRise .7s .52s var(--nt-ease) both; } }
+.sr-ind { display: grid; gap: 6px; }
+.sr-ind-row { display: grid; grid-template-columns: minmax(0, 1fr) 7rem 2.4rem; align-items: center; gap: 10px; font-size: var(--cds-font-size-caption); }
+.sr-ind-row .nm { color: var(--color-fg-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr-ind-row .bar { height: 6px; border-radius: 3px; background: var(--cds-chart-grid); overflow: hidden; }
+.sr-ind-row .bar span { display: block; height: 100%; background: var(--nt-green); border-radius: 3px; transition: width 1.2s var(--nt-ease); }
+.sr-ind-row .v { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.sr-steps-weights { display: flex; flex-wrap: wrap; gap: 6px; }
+.sr-wchip { font-size: .72rem; padding: 3px 9px; border-radius: 999px; background: var(--color-panel); border: 1px solid var(--color-border-line); white-space: nowrap; }
+.sr-wchip b { font-weight: 700; color: var(--nt-green); margin-left: 4px; }
+.sr-steps-big { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.sr-steps-big .big { font-family: var(--nt-font-display); font-weight: 600; font-size: calc(var(--cds-font-size-title) * 1.25); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.sr-parts { display: grid; gap: 8px; }
+.sr-part { display: grid; grid-template-columns: minmax(0, 1fr) minmax(5rem, 9rem) 3.4rem; align-items: center; gap: 10px; font-size: var(--cds-font-size-caption); }
+.sr-part .nm { min-width: 0; }
+.sr-part .nm small { color: var(--color-fg-muted); margin-left: 4px; }
+.sr-part .bar { height: 8px; border-radius: 4px; background: var(--cds-chart-grid); overflow: hidden; }
+.sr-part .bar span { display: block; height: 100%; background: var(--nt-green); border-radius: 4px; transition: width 1.2s var(--nt-ease); }
+.sr-part .v { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sr-part.missing .v, .sr-part.missing .nm { color: var(--color-fg-muted); }
+.sr-steps-cell { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+.sr-steps-cell small { font-weight: 400; color: var(--color-fg-muted); margin-left: 4px; }
+.sr-steps-cell.na { color: var(--color-fg-muted); font-weight: 400; }
+.sr-sc-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--cds-gap-lg); align-items: center; }
+@media (max-width: 40rem) { .sr-sc-head { grid-template-columns: 1fr; } }
+.sr-ring { width: 128px; height: 128px; }
+.sr-ring text { font-family: var(--nt-font-display); font-weight: 600; fill: var(--color-fg); }
+.sr-sc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-md); }
+.sr-sc-box { border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-sm) var(--cds-pad-md); display: grid; gap: 4px; background: var(--color-bg); }
+.sr-sc-box .t { font-weight: 600; font-size: var(--cds-font-size-caption); text-transform: uppercase; letter-spacing: .05em; color: var(--color-fg-muted); }
+.sr-sc-box .l { font-size: var(--cds-font-size-caption); }
+.sr-sc-flag { font-size: var(--cds-font-size-caption); color: var(--color-warn); }
+@media (prefers-reduced-motion: no-preference) { #steps { animation: srRise .7s .22s var(--nt-ease) both; } }
+.sr-clear { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: transparent; color: var(--color-fg-muted); cursor: pointer; }
+.sr-clear:hover { color: var(--color-fg); border-color: var(--nt-green); }
+.sr-clear:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+.sr-sel.on { border-color: var(--nt-green); box-shadow: 0 0 0 1px var(--nt-green); }
+.sr-tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; gap: 4px; overflow-x: auto; padding: 6px; background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); scrollbar-width: thin; }
+.sr-tab { font: inherit; font-family: var(--nt-font-display); font-weight: 500; font-size: var(--cds-font-size-caption); white-space: nowrap; padding: 8px 14px; border: 0; border-radius: calc(var(--cds-radius) - 2px); background: transparent; color: var(--color-fg-muted); cursor: pointer; transition: background-color .25s var(--nt-ease), color .25s var(--nt-ease); }
+.sr-tab:hover { color: var(--color-fg); }
+.sr-tab[aria-selected="true"] { background: var(--nt-navy); color: var(--nt-on-navy); }
+.sr-tab:focus-visible { outline: 2px solid var(--nt-green); outline-offset: 1px; }
+[data-panel][hidden] { display: none !important; }
+.sr { --band-strong: #237A4B; --band-ontrack: #47BA7D; --band-developing: #D99A1E; --band-support: #D64545; --band-none: #A3A8B8; }
+.sr-band { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 6px; border-radius: 999px; font-weight: 600; font-variant-numeric: tabular-nums;
+  background: color-mix(in srgb, var(--bc) 16%, transparent); color: var(--color-fg); border: 1px solid color-mix(in srgb, var(--bc) 55%, transparent); }
+.sr-band::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--bc); flex: none; }
+.sr-band.b-strong { --bc: var(--band-strong); } .sr-band.b-ontrack { --bc: var(--band-ontrack); }
+.sr-band.b-developing { --bc: var(--band-developing); } .sr-band.b-support { --bc: var(--band-support); }
+.sr-band.b-none { --bc: var(--band-none); font-weight: 400; color: var(--color-fg-muted); }
+.sr-table tbody tr[data-band] td:first-child { box-shadow: inset 4px 0 0 var(--bc); }
+.sr-table tbody tr[data-band="strong"] { --bc: var(--band-strong); } .sr-table tbody tr[data-band="ontrack"] { --bc: var(--band-ontrack); }
+.sr-table tbody tr[data-band="developing"] { --bc: var(--band-developing); } .sr-table tbody tr[data-band="support"] { --bc: var(--band-support); }
+.sr-table tbody tr[data-band="none"] { --bc: var(--band-none); }
+.sr-legend { display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: .75rem; }
+.sr-legend .sr-band { font-weight: 500; }
+.sr-dist { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: var(--cds-chart-grid); }
+.sr-dist span { display: block; height: 100%; transition: width 1.2s var(--nt-ease); }
+.sr-dist-key { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: .72rem; color: var(--color-fg-muted); }
+.sr-dist-key i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+.sr-ring-band { text-align: center; font-weight: 600; font-size: var(--cds-font-size-caption); margin-top: 4px; }
+.sr { --reg-u1: #3B82C4; --reg-bk: #47BA7D; --c-visit: #8B6FD6; }
+.sr-an-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); gap: var(--cds-gap-md); }
+.sr-an-wide { grid-column: 1 / -1; }
+.sr-an-body { position: relative; min-height: 140px; }
+.sr-an-body svg { display: block; width: 100%; overflow: visible; }
+.sr-an-body svg text { fill: var(--color-fg-muted); font-size: 11px; font-family: var(--nt-font-body); }
+.sr-an-body svg text.lbl { fill: var(--color-fg); font-size: 12px; }
+.sr-an-body svg text.val { fill: var(--color-fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.sr-an-body .grid line { stroke: var(--cds-chart-grid); }
+.sr-an-legend, .sr-an-key { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .75rem; color: var(--color-fg-muted); }
+.sr-an-legend i, .sr-an-key i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+.sr-league { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-lg); }
+.sr-league h3 { margin: 0 0 6px; font-family: var(--nt-font-display); font-size: var(--cds-font-size-body); font-weight: 600; }
+.sr-league ol { margin: 0; padding-left: 1.4em; display: grid; gap: 4px; font-size: var(--cds-font-size-caption); }
+.sr-league li { cursor: pointer; }
+.sr-league li span.n { color: var(--color-fg-muted); }
+.sr-an-stat { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin-top: 6px; }
+.sr-an-stat b { color: var(--color-fg); }
+.sr-snap-btn { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: var(--cds-font-size-caption); font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--nt-green); background: transparent; color: var(--color-fg); cursor: pointer; white-space: nowrap; transition: background-color .2s var(--nt-ease); }
+.sr-snap-btn:hover { background: var(--nt-green-soft); }
+.sr-snap-btn:focus-visible { outline: 2px solid var(--nt-green); outline-offset: 2px; }
+.sr-snap-btn[disabled] { opacity: .6; cursor: progress; }
+.sr-modal-head .sr-snap-btn { color: var(--nt-on-navy); border-color: var(--nt-green); align-self: center; }
+.sr-snap-row { display: flex; align-items: center; justify-content: space-between; gap: var(--cds-gap-md); flex-wrap: wrap; }
+.sr-att-head .sr-snap-btn { margin-left: auto; }
+.sr-capturing *, .sr-capturing *::before, .sr-capturing *::after { animation: none !important; transition: none !important; }
+.sr-capturing .sr-scroll { max-height: none !important; overflow: visible !important; }
+.sr-capturing .sr-modal-panel, .sr-capturing .sr-modal-body { max-height: none !important; overflow: visible !important; }
+.sr-capturing .sr-snap-btn, .sr-capturing .sr-modal-x, .sr-capturing .sr-tools { display: none !important; }
+.sr-snap-head { display: flex; align-items: center; gap: 16px; padding: 14px 18px; background: var(--nt-navy); color: #fff; border-radius: 10px; margin-bottom: 14px; font-family: var(--nt-font-display); }
+.sr-snap-head img { height: 34px; background: #fff; border-radius: 6px; padding: 4px 8px; }
+.sr-snap-head b { font-size: 18px; display: block; }
+.sr-snap-head span { font-size: 12px; opacity: .8; font-family: var(--nt-font-body); }
+.sr-unmarked { display: grid; gap: var(--cds-gap-xs); padding: var(--cds-pad-sm) var(--cds-pad-md); border: 1px solid var(--color-border-line); border-left: 3px solid var(--color-bad); border-radius: var(--cds-radius); background: var(--color-bg); }
+.sr-unmarked.ok { border-left-color: var(--nt-green); }
+.sr-unmarked .ttl { font-weight: 600; font-size: var(--cds-font-size-caption); }
+.sr-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sr-chip { font-size: .75rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--color-bad); color: var(--color-bad); white-space: nowrap; }
+@media (prefers-reduced-motion: no-preference) { .sr-modal[open] .sr-chip { animation: srChip .4s var(--nt-ease) both; } }
+.sr-att-cell.none { color: var(--color-fg-muted); }
+.sr-modal-att { white-space: pre-line; margin: 4px 0 0; font-size: var(--cds-font-size-caption); color: var(--nt-on-navy-muted); }
+@media (prefers-reduced-motion: no-preference) { #attendance { animation: srRise .7s .5s var(--nt-ease) both; } }
+[data-dash-source-state=empty] { color: transparent; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="sr">
+  <header class="sr-head">
+    <span class="sr-dia d1" aria-hidden="true"></span><span class="sr-dia d2" aria-hidden="true"></span><span class="sr-dia d3" aria-hidden="true"></span>
+    <div class="sr-logo"><img src="/assets/niete-logo.png" alt="NIETE, National Institute of Excellence in Teacher Education"></div>
+    <div class="sr-headtext">
+    <h1 class="sr-title" id="top">STEPS teacher evaluation</h1>
+    <p class="sr-take" id="takeaway">
+      <b id="steps-complete">—</b> of <b id="steps-teachers">—</b> teachers in Urban-I and Barakahu have all five STEPS parts; their average STEPS score is <b id="steps-avg">—</b>.
+      Supervisor remarks: <b data-source="overall" data-field="schools_with" class="dash-skeleton">—</b> of
+      <b data-source="overall" data-field="schools" class="dash-skeleton">—</b> heads, covering
+      <b data-source="overall" data-field="teachers_with" class="dash-skeleton">—</b> of
+      <b data-source="overall" data-field="teachers" class="dash-skeleton">—</b> teachers.
+      Updated <span id="asof" data-source="teachers" data-field="as_of" data-row="0">—</span>, refreshed automatically.
+    </p>
+    </div>
+  </header>
+
+  <nav class="sr-tabs" role="tablist" aria-label="Dashboard sections">
+    <button type="button" role="tab" class="sr-tab" id="tab-overview" data-tab="overview" aria-selected="true">Overview</button>
+    <button type="button" role="tab" class="sr-tab" id="tab-analytics" data-tab="analytics" aria-selected="false">Analytics</button>
+    <button type="button" role="tab" class="sr-tab" id="tab-remarks" data-tab="remarks" aria-selected="false">Supervisor remarks</button>
+    <button type="button" role="tab" class="sr-tab" id="tab-observations" data-tab="observations" aria-selected="false">Classroom observations</button>
+    <button type="button" role="tab" class="sr-tab" id="tab-presence" data-tab="presence" aria-selected="false">Presence</button>
+    <button type="button" role="tab" class="sr-tab" id="tab-schools" data-tab="schools" aria-selected="false">All schools</button>
+    <button type="button" role="tab" class="sr-tab" id="tab-teachers" data-tab="teachers" aria-selected="false">Teachers</button>
+  </nav>
+
+  <section class="sr-att" id="steps" aria-label="STEPS scores" data-panel="overview">
+    <div class="sr-att-head">
+      <h2 class="sr-att-title">STEPS scores</h2>
+      <button type="button" class="sr-snap-btn" data-snap="regional" title="Save the region cards as a picture (PNG)" aria-label="Save the region cards as a picture (PNG)"><svg class="sr-snap-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download image</span></button>
+      <div class="sr-steps-weights" aria-label="STEPS weights">
+        <span class="sr-wchip">Subject knowledge<b>30%</b></span><span class="sr-wchip">Teaching practices<b>25%</b></span>
+        <span class="sr-wchip">Student engagement<b>25%</b></span><span class="sr-wchip">Presence<b>10%</b></span>
+        <span class="sr-wchip">Supervisor remark<b>10%</b></span>
+      </div>
+    </div>
+    <div class="sr-regions">
+    <div class="sr-card" data-steps-region="Urban-I">
+      <h2>Urban-I</h2>
+      <div class="sr-steps-big"><span class="big" data-steps="avg">—</span><span class="sr-note" data-steps="cover"></span></div>
+      <div class="sr-parts" data-steps="parts"></div>
+      <span class="sr-note" data-steps="partial"></span>
+    </div>
+    <div class="sr-card" data-steps-region="Barakahu">
+      <h2>Barakahu</h2>
+      <div class="sr-steps-big"><span class="big" data-steps="avg">—</span><span class="sr-note" data-steps="cover"></span></div>
+      <div class="sr-parts" data-steps="parts"></div>
+      <span class="sr-note" data-steps="partial"></span>
+    </div>
+    </div>
+    <p class="sr-note">Classroom parts use the Digital Coach's FICO scores since 8 Sep (points earned ÷ possible). Presence is the teacher's own attendance (7%) and attendance in the classes they mark (3%), last 30 days. Supervisor remark is the average of its 5 indicators ÷ 4. Region averages use teachers with all five parts; a teacher missing some parts gets a provisional score over the parts they have (shown as x/5), but only if they have a Digital Coach classroom score — without it the teacher is marked Incomplete. Click any teacher for their scorecard.</p>
+  </section>
+
+  <section class="sr-att" id="analytics" aria-label="Analytics" data-panel="analytics">
+    <div class="sr-att-head"><h2 class="sr-att-title">Analytics</h2>
+      <p class="sr-note">What the STEPS data says across Urban-I and Barakahu. Hover a bar or dot for its number.</p></div>
+    <div class="sr-an-legend" id="an-legend"></div>
+    <div class="sr-an-grid">
+      <div class="sr-card sr-an sr-an-wide" id="an-funnel">
+        <h2>Where the data gaps are</h2>
+        <p class="sr-note">Teachers with each STEPS part available, out of all teachers on the rosters.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an" id="an-hist">
+        <h2>How STEPS scores are spread</h2>
+        <p class="sr-note">Teachers with a STEPS score, in 2-point bins, with the 60 / 70 / 80 level lines.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an" id="an-lost">
+        <h2>What pulls STEPS down</h2>
+        <p class="sr-note">Average points lost per part, out of 100 (weight × shortfall). The biggest bar is where coaching gains the most.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an sr-an-wide" id="an-league">
+        <h2>School league table</h2>
+        <p class="sr-note">Average STEPS of schools with at least 3 scored teachers (provisional scores included).</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an" id="an-scatter">
+        <h2>Do heads agree with the Digital Coach?</h2>
+        <p class="sr-note">Each dot is a teacher with both a supervisor remark and a Digital Coach classroom score.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an" id="an-dcvh">
+        <h2>Digital Coach vs coach visits</h2>
+        <p class="sr-note">Same FICO sections, scored by the AI from recordings vs by coaches in class, since 8 Sep.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an sr-an-wide" id="an-ind">
+        <h2>Supervisor remark indicators</h2>
+        <p class="sr-note">How heads rated teachers on each indicator (1 Needs Improvement – 4 Exemplary).</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+    </div>
+    <div class="sr-att-head"><h2 class="sr-att-title">Trends by week</h2>
+      <p class="sr-note">Weeks start Monday. The latest week is still in progress, so it looks low.</p></div>
+    <div class="sr-an-grid">
+      <div class="sr-card sr-an sr-an-wide" id="an-t-lessons">
+        <h2>Digital Coach lessons and coach visits per week</h2>
+        <p class="sr-note">Lessons teachers recorded and coach visits, by region.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an" id="an-t-scores">
+        <h2>Classroom scores by week (Digital Coach)</h2>
+        <p class="sr-note">Subject knowledge, teaching practices and student engagement, from 8 Sep (current FICO version).</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an" id="an-t-att">
+        <h2>Attendance by week</h2>
+        <p class="sr-note">Teacher attendance (marked by heads) and student attendance (class registers).</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an sr-an-wide" id="an-t-remarks">
+        <h2>Supervisor remarks submitted per week</h2>
+        <p class="sr-note">Remarks heads submitted each week, by region.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sr-att-head" data-panel="remarks"><h2 class="sr-att-title">Supervisor remarks</h2>
+    <p class="sr-note">10% of STEPS · the head's quarterly rating of each teacher on 5 indicators (1–4)</p></div>
+  <section class="sr-regions" id="regions" aria-label="Supervisor remarks by region" data-panel="remarks">
+    <div class="sr-card" data-region="Urban-I">
+      <h2>Urban-I</h2>
+      <div class="sr-kpis">
+        <div class="sr-kpi"><span class="lbl">Heads who gave remarks</span><span class="big"><span data-source="region_summary" data-field="schools_with" data-where="region=Urban-I" class="dash-skeleton">—</span></span><span class="sub">of <span data-source="region_summary" data-field="schools" data-where="region=Urban-I">—</span> schools</span></div>
+        <div class="sr-kpi"><span class="lbl">Teachers with remarks</span><span class="big"><span data-source="region_summary" data-field="teachers_with" data-where="region=Urban-I" class="dash-skeleton">—</span></span><span class="sub">of <span data-source="region_summary" data-field="teachers" data-where="region=Urban-I">—</span> teachers</span></div>
+        <div class="sr-kpi"><span class="lbl">Teacher coverage</span><span class="big"><span data-source="region_summary" data-field="coverage" data-where="region=Urban-I" class="dash-skeleton">—</span></span><span class="sub"><span data-source="region_summary" data-field="written" data-where="region=Urban-I">—</span> with written comment</span></div>
+      </div>
+      <div class="sr-meter" aria-hidden="true"><span class="m"></span></div>
+      <div class="sr-ind" data-ind></div>
+    </div>
+    <div class="sr-card" data-region="Barakahu">
+      <h2>Barakahu</h2>
+      <div class="sr-kpis">
+        <div class="sr-kpi"><span class="lbl">Heads who gave remarks</span><span class="big"><span data-source="region_summary" data-field="schools_with" data-where="region=Barakahu" class="dash-skeleton">—</span></span><span class="sub">of <span data-source="region_summary" data-field="schools" data-where="region=Barakahu">—</span> schools</span></div>
+        <div class="sr-kpi"><span class="lbl">Teachers with remarks</span><span class="big"><span data-source="region_summary" data-field="teachers_with" data-where="region=Barakahu" class="dash-skeleton">—</span></span><span class="sub">of <span data-source="region_summary" data-field="teachers" data-where="region=Barakahu">—</span> teachers</span></div>
+        <div class="sr-kpi"><span class="lbl">Teacher coverage</span><span class="big"><span data-source="region_summary" data-field="coverage" data-where="region=Barakahu" class="dash-skeleton">—</span></span><span class="sub"><span data-source="region_summary" data-field="written" data-where="region=Barakahu">—</span> with written comment</span></div>
+      </div>
+      <div class="sr-meter" aria-hidden="true"><span class="m"></span></div>
+      <div class="sr-ind" data-ind></div>
+    </div>
+  </section>
+
+  <section class="sr-att" id="attendance" aria-label="Attendance" data-panel="presence">
+    <div class="sr-att-head">
+      <h2 class="sr-att-title">Attendance</h2>
+      <p class="sr-note" id="att-window">Last 30 days, as marked in Rumi</p>
+    </div>
+    <div class="sr-regions">
+    <div class="sr-card sr-attcard" data-att-region="Urban-I">
+      <h2>Urban-I</h2>
+      <div class="sr-att-pair">
+        <div class="sr-att-block">
+          <span class="sr-kpi"><span class="lbl">Teacher attendance</span></span>
+          <span class="sr-kpi"><span class="big" data-att="t_rate">—</span></span>
+          <span class="sr-kpi"><span class="sub" data-att="t_detail"></span></span>
+          <div class="sr-att-split" aria-hidden="true" data-att-bar="t"></div>
+          <span class="sr-note" data-att="t_cover"></span>
+        </div>
+        <div class="sr-att-block">
+          <span class="sr-kpi"><span class="lbl">Student attendance</span></span>
+          <span class="sr-kpi"><span class="big" data-att="s_rate">—</span></span>
+          <span class="sr-kpi"><span class="sub" data-att="s_detail"></span></span>
+          <div class="sr-att-split" aria-hidden="true" data-att-bar="s"></div>
+          <span class="sr-note" data-att="s_cover"></span>
+        </div>
+      </div>
+    </div>
+    <div class="sr-card sr-attcard" data-att-region="Barakahu">
+      <h2>Barakahu</h2>
+      <div class="sr-att-pair">
+        <div class="sr-att-block">
+          <span class="sr-kpi"><span class="lbl">Teacher attendance</span></span>
+          <span class="sr-kpi"><span class="big" data-att="t_rate">—</span></span>
+          <span class="sr-kpi"><span class="sub" data-att="t_detail"></span></span>
+          <div class="sr-att-split" aria-hidden="true" data-att-bar="t"></div>
+          <span class="sr-note" data-att="t_cover"></span>
+        </div>
+        <div class="sr-att-block">
+          <span class="sr-kpi"><span class="lbl">Student attendance</span></span>
+          <span class="sr-kpi"><span class="big" data-att="s_rate">—</span></span>
+          <span class="sr-kpi"><span class="sub" data-att="s_detail"></span></span>
+          <div class="sr-att-split" aria-hidden="true" data-att-bar="s"></div>
+          <span class="sr-note" data-att="s_cover"></span>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="sr-att-legend" aria-hidden="true">
+      <span><i style="background: var(--nt-green)"></i>Present</span>
+      <span><i style="background: var(--color-bad)"></i>Absent</span>
+      <span><i style="background: var(--cds-border)"></i>On leave</span>
+    </div>
+    <p class="sr-note">Teacher attendance is marked by the school head (present ÷ present and absent; leave is not counted as absence). Student attendance is marked by class teachers (children present ÷ all children marked). Both cover only the schools and classes that mark in Rumi. Teacher-level attendance is in the Teachers table and each school's pop-up; each school's pop-up lists its classes with no student register marked in the last 30 days. Student figures are totals only, never per child.</p>
+  </section>
+  <section class="sr-card sr-sectable" id="presence-schools" data-panel="presence">
+    <h2>Presence by school</h2>
+    <p class="sr-note">Teacher attendance marked by the head and student attendance marked by class teachers, last 30 days. Click a school to see its teachers and which classes are not marked.</p>
+    <div class="sr-tools">
+      <select class="sr-sel" data-sec-region aria-label="Region"><option value="">All regions</option><option>Urban-I</option><option>Barakahu</option></select>
+      <span data-sec-extra></span>
+      <input class="sr-search" type="search" data-sec-q placeholder="Search school or EMIS" aria-label="Search schools">
+    </div>
+    <p class="sr-note" data-sec-count></p>
+    <div class="sr-scroll"><table class="sr-table sr-cards"><thead><tr></tr></thead><tbody></tbody></table></div>
+  </section>
+
+
+  <section class="sr-att" id="observations" aria-label="Classroom observations" data-panel="observations">
+    <div class="sr-obs-head">
+      <div class="sr-att-head">
+        <h2 class="sr-att-title">Classroom observations</h2>
+        <p class="sr-note" id="obs-window">FICO scores since 8 Sep 2026</p>
+      </div>
+      <div class="sr-seg" role="group" aria-label="Observation source">
+        <button type="button" id="src-dc" data-src="dc" aria-pressed="true">Digital coach</button>
+        <button type="button" id="src-hitl" data-src="hitl" aria-pressed="false">Coach visits</button>
+      </div>
+    </div>
+    <div class="sr-regions">
+    <div class="sr-card" data-obs-region="Urban-I">
+      <h2>Urban-I</h2>
+      <span class="sr-note" data-obs="cover"></span>
+      <div class="sr-obs-trio">
+        <div class="sr-att-block"><span class="sr-kpi"><span class="lbl">Subject knowledge</span></span><span class="sr-kpi"><span class="big" data-obs="tsk">—</span></span><div class="sr-obs-meter" aria-hidden="true"><span data-obs-bar="tsk"></span></div></div>
+        <div class="sr-att-block"><span class="sr-kpi"><span class="lbl">Teacher practice</span></span><span class="sr-kpi"><span class="big" data-obs="hlp">—</span></span><div class="sr-obs-meter" aria-hidden="true"><span data-obs-bar="hlp"></span></div></div>
+        <div class="sr-att-block"><span class="sr-kpi"><span class="lbl">Student engagement</span></span><span class="sr-kpi"><span class="big" data-obs="se">—</span></span><div class="sr-obs-meter" aria-hidden="true"><span data-obs-bar="se"></span></div></div>
+      </div>
+      <span class="sr-note" data-obs="lpf"></span>
+    </div>
+    <div class="sr-card" data-obs-region="Barakahu">
+      <h2>Barakahu</h2>
+      <span class="sr-note" data-obs="cover"></span>
+      <div class="sr-obs-trio">
+        <div class="sr-att-block"><span class="sr-kpi"><span class="lbl">Subject knowledge</span></span><span class="sr-kpi"><span class="big" data-obs="tsk">—</span></span><div class="sr-obs-meter" aria-hidden="true"><span data-obs-bar="tsk"></span></div></div>
+        <div class="sr-att-block"><span class="sr-kpi"><span class="lbl">Teacher practice</span></span><span class="sr-kpi"><span class="big" data-obs="hlp">—</span></span><div class="sr-obs-meter" aria-hidden="true"><span data-obs-bar="hlp"></span></div></div>
+        <div class="sr-att-block"><span class="sr-kpi"><span class="lbl">Student engagement</span></span><span class="sr-kpi"><span class="big" data-obs="se">—</span></span><div class="sr-obs-meter" aria-hidden="true"><span data-obs-bar="se"></span></div></div>
+      </div>
+      <span class="sr-note" data-obs="lpf"></span>
+    </div>
+    </div>
+    <p class="sr-note" id="obs-explain"></p>
+  </section>
+  <section class="sr-card sr-sectable" id="observations-schools" data-panel="observations">
+    <h2>Classroom observations by school</h2>
+    <p class="sr-note">Subject knowledge, teaching practices and student engagement for each school, for the source picked above. Click a school to see its teachers.</p>
+    <div class="sr-tools">
+      <select class="sr-sel" data-sec-region aria-label="Region"><option value="">All regions</option><option>Urban-I</option><option>Barakahu</option></select>
+      <span data-sec-extra></span>
+      <input class="sr-search" type="search" data-sec-q placeholder="Search school or EMIS" aria-label="Search schools">
+    </div>
+    <p class="sr-note" data-sec-count></p>
+    <div class="sr-scroll"><table class="sr-table sr-cards"><thead><tr></tr></thead><tbody></tbody></table></div>
+  </section>
+
+
+
+  <section class="sr-card sr-sectable" id="remarks-schools" data-panel="remarks">
+    <h2>Supervisor remarks by school</h2>
+    <p class="sr-note">How many teachers each head has rated, with written comments and dates. Click a school to see its teachers.</p>
+    <div class="sr-tools">
+      <select class="sr-sel" data-sec-region aria-label="Region"><option value="">All regions</option><option>Urban-I</option><option>Barakahu</option></select>
+      <span data-sec-extra></span>
+      <input class="sr-search" type="search" data-sec-q placeholder="Search school or EMIS" aria-label="Search schools">
+    </div>
+    <p class="sr-note" data-sec-count></p>
+    <div class="sr-scroll"><table class="sr-table sr-cards"><thead><tr></tr></thead><tbody></tbody></table></div>
+  </section>
+  <section class="sr-card" id="started" data-panel="remarks">
+    <h2>Schools where the head has started</h2>
+    <p class="sr-note">Teachers with remarks out of all teachers in the school. Solid part has a written comment, light part is scores only.</p>
+    <div class="sr-chart dash-skeleton" id="chart" data-source="schools"></div>
+  </section>
+
+  <section class="sr-card" id="all-schools" data-panel="schools">
+    <div class="sr-snap-row"><h2>All schools: complete STEPS picture</h2><button type="button" class="sr-snap-btn" data-snap="schools" title="Save this schools table as a picture (PNG)" aria-label="Save this schools table as a picture (PNG)"><svg class="sr-snap-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download image</span></button></div>
+    <p class="sr-note" id="scount"></p>
+    <p class="sr-note">Every school with its average STEPS score and each STEPS part. Classroom parts follow the source picked under Classroom observations; Supervisor remarks counts teachers rated by the head. Click a column to sort, click a school for its teachers.</p>
+    <div class="sr-tools">
+      <div class="sr-seg" role="group" aria-label="Region">
+        <button type="button" id="f-all" data-f="All" aria-pressed="true">All</button>
+        <button type="button" id="f-u1" data-f="Urban-I" aria-pressed="false">Urban-I</button>
+        <button type="button" id="f-bk" data-f="Barakahu" aria-pressed="false">Barakahu</button>
+      </div>
+      <select class="sr-sel" id="sf-follow" aria-label="Needs follow-up">
+        <option value="">All schools</option>
+        <option value="noremarks">No supervisor remarks yet</option>
+        <option value="unmarked">Has unmarked classes</option>
+        <option value="noteacheratt">Head not marking teacher attendance</option>
+        <option value="incomplete">Fewer than half of teachers with a STEPS score</option>
+      </select>
+      <select class="sr-sel" id="sf-band" aria-label="Average STEPS">
+        <option value="">Any average STEPS</option>
+        <option value="0-60">Below 60</option>
+        <option value="60-70">60 – 70</option>
+        <option value="70-80">70 – 80</option>
+        <option value="80-101">80 and above</option>
+        <option value="none">No complete STEPS scores</option>
+      </select>
+      <input class="sr-search" id="q" type="search" placeholder="Search school or EMIS" aria-label="Search">
+      <button type="button" class="sr-clear" id="sf-clear">Clear filters</button>
+    </div>
+    <div class="sr-scroll">
+      <table class="sr-table sr-cards" id="tbl" data-source="schools" data-row-key="emis">
+        <thead><tr>
+          <th data-field="emis"><button type="button" data-k="emis" style="padding-left: calc(var(--cds-pad-sm) + 13px)">EMIS</button></th>
+          <th data-field="school"><button type="button" data-k="school">School</button></th>
+          <th data-field="region" class="sr-hide-narrow"><button type="button" data-k="region">Region</button></th>
+          <th data-field="teachers" class="num"><button type="button" data-k="teachers">Teachers</button></th>
+          <th class="num"><button type="button" data-k="steps_avg">Avg STEPS</button></th>
+          <th class="num"><button type="button" data-k="o_sess">Lessons observed (<span class="sr-src-name">DC</span>)</button></th>
+          <th class="num"><button type="button" data-k="o_tsk">Subject knowledge</button></th>
+          <th class="num"><button type="button" data-k="o_hlp">Teaching practices</button></th>
+          <th class="num"><button type="button" data-k="o_se">Student engagement</button></th>
+          <th class="num"><button type="button" data-k="t_att">Teacher attendance</button></th>
+          <th class="num"><button type="button" data-k="s_att">Student attendance</button></th>
+          <th class="num"><button type="button" data-k="coverage">Supervisor remarks</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <dialog class="sr-modal" id="sr-scorecard" aria-labelledby="sr-scorecard-title">
+    <div class="sr-modal-panel">
+      <div class="sr-modal-head">
+        <div class="sr-modal-titles">
+          <h3 id="sr-scorecard-title">Teacher</h3>
+          <p class="sr-modal-sub" id="sr-scorecard-sub"></p>
+        </div>
+<button type="button" class="sr-snap-btn" data-snap="scorecard" title="Save this teacher's scorecard as a picture (PNG)" aria-label="Save this teacher's scorecard as a picture (PNG)"><svg class="sr-snap-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download image</span></button>
+        <button type="button" class="sr-modal-x" id="sr-scorecard-close" aria-label="Close">×</button>
+      </div>
+      <div class="sr-modal-body" id="sr-scorecard-body"></div>
+    </div>
+  </dialog>
+
+  <dialog class="sr-modal" id="sr-modal" aria-labelledby="sr-modal-title">
+    <div class="sr-modal-panel">
+      <div class="sr-modal-head">
+        <div class="sr-modal-titles">
+          <h3 id="sr-modal-title">School</h3>
+          <p class="sr-modal-sub" id="sr-modal-sub"></p>
+          <p class="sr-modal-att" id="sr-modal-att"></p>
+        </div>
+<button type="button" class="sr-snap-btn" data-snap="school" title="Save this school's summary as a picture (PNG)" aria-label="Save this school's summary as a picture (PNG)"><svg class="sr-snap-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download image</span></button>
+        <button type="button" class="sr-modal-x" id="sr-modal-close" aria-label="Close">×</button>
+      </div>
+      <div class="sr-modal-body" id="sr-modal-body"></div>
+    </div>
+  </dialog>
+
+  <section class="sr-card" id="teachers" data-panel="teachers">
+    <div class="sr-snap-row"><h2>Teachers</h2><button type="button" class="sr-snap-btn" data-snap="teachers" title="Save this teachers table as a picture (PNG)" aria-label="Save this teachers table as a picture (PNG)"><svg class="sr-snap-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Download image</span></button></div>
+    <p class="sr-note">Every teacher in these schools with their STEPS score (x/5 = how many of the five parts it covers) and Digital Coach lessons (since 8 Sep, which count for STEPS, and all time) — click a teacher for their scorecard. Remark scores are the head's quarterly ratings on the 5 STEPS supervisor-remark indicators (Growth = Professional Growth &amp; Feedback Uptake, Collab. = Collaboration &amp; Peer Support, Leadership = Initiative &amp; School Leadership, Student support = Student-Centered Support, Parents = Parents &amp; Community Engagement), on 4 Exemplary · 3 Proficient · 2 Developing · 1 Needs Improvement. Hover a score for its meaning. Present / Absent / Leave are the days the head marked this teacher in the last 30 days. Register days and Student attendance are the class registers this teacher marked for students in the same 30 days. Lessons observed, Subject knowledge, Teaching practices and Student engagement are the teacher's FICO observation scores since 8 Sep 2026 for the source picked under Classroom observations.</p>
+    <div class="sr-tools">
+      <div class="sr-seg" role="group" aria-label="Teacher region">
+        <button type="button" id="tf-all" data-tf="All" aria-pressed="true">All</button>
+        <button type="button" id="tf-u1" data-tf="Urban-I" aria-pressed="false">Urban-I</button>
+        <button type="button" id="tf-bk" data-tf="Barakahu" aria-pressed="false">Barakahu</button>
+      </div>
+      <div class="sr-seg" role="group" aria-label="Remark status">
+        <button type="button" id="ts-all" data-ts="All" aria-pressed="true">All teachers</button>
+        <button type="button" id="ts-yes" data-ts="Yes" aria-pressed="false">Has remark</button>
+        <button type="button" id="ts-no" data-ts="No" aria-pressed="false">No remark</button>
+      </div>
+      <select class="sr-sel" id="tschool" aria-label="School"><option value="">All schools</option></select>
+      <select class="sr-sel" id="tf-steps" aria-label="STEPS status">
+        <option value="">Any STEPS status</option>
+        <option value="complete">Complete (5/5)</option>
+        <option value="provisional">Provisional (some parts missing)</option>
+        <option value="incomplete">Incomplete (no classroom score)</option>
+        <option value="none">No data</option>
+      </select>
+      <select class="sr-sel" id="tf-band" aria-label="STEPS score">
+        <option value="">Any STEPS score</option>
+        <option value="80-101">Exemplary (80+)</option>
+        <option value="70-80">Proficient (70–79.9)</option>
+        <option value="60-70">Developing (60–69.9)</option>
+        <option value="0-60">Needs support (below 60)</option>
+      </select>
+      <select class="sr-sel" id="tf-missing" aria-label="Missing part">
+        <option value="">Any parts</option>
+        <option value="sk">Missing classroom score (Digital Coach)</option>
+        <option value="sr">Missing supervisor remark</option>
+        <option value="ta">Missing teacher attendance</option>
+        <option value="sa">Missing student attendance (no registers)</option>
+      </select>
+      <select class="sr-sel" id="tf-flag" aria-label="Other">
+        <option value="">No other filter</option>
+        <option value="absent">Absent at least 1 day</option>
+        <option value="lowpractice">Teaching practices below 50%</option>
+        <option value="noreg">Marked no class register</option>
+      </select>
+      <input class="sr-search" id="tq" type="search" placeholder="Search teacher or school" aria-label="Search teachers">
+      <button type="button" class="sr-clear" id="tf-clear">Clear filters</button>
+    </div>
+    <div id="tlegend"></div>
+    <p class="sr-note" id="tcount"></p>
+    <div class="sr-scroll">
+      <table class="sr-table sr-cards" id="ttbl" data-source="teachers" data-row-key="teacher_key">
+        <thead><tr>
+          <th data-field="teacher"><button type="button" data-tk="teacher">Teacher</button></th>
+          <th class="num"><button type="button" data-tk="steps">STEPS</button></th>
+          <th class="num" title="Digital Coach lessons since 8 Sep — these count for STEPS"><button type="button" data-tk="dc_n">DC lessons since 8 Sep</button></th>
+          <th class="num" title="All Digital Coach lessons ever recorded"><button type="button" data-tk="dc_all">DC lessons all time</button></th>
+          <th data-field="school"><button type="button" data-tk="school">School</button></th>
+          <th data-field="region" class="sr-hide-narrow"><button type="button" data-tk="region">Region</button></th>
+          <th data-field="has_remark"><button type="button" data-tk="has_remark">Remark</button></th>
+          <th data-field="remark_date" class="sr-hide-narrow"><button type="button" data-tk="remark_date">Date</button></th>
+          <th data-field="s1" class="num" title="Professional Growth & Feedback Uptake"><button type="button" data-tk="s1">Growth</button></th>
+          <th data-field="s2" class="num" title="Collaboration & Peer Support"><button type="button" data-tk="s2">Collab.</button></th>
+          <th data-field="s3" class="num" title="Initiative & School Leadership"><button type="button" data-tk="s3">Leadership</button></th>
+          <th data-field="s4" class="num" title="Student-Centered Support"><button type="button" data-tk="s4">Student support</button></th>
+          <th data-field="s5" class="num" title="Parents & Community Engagement"><button type="button" data-tk="s5">Parents</button></th>
+          <th data-field="avg_score" class="num"><button type="button" data-tk="avg_score">Avg</button></th>
+          <th data-field="t_present" class="num"><button type="button" data-tk="t_present">Present</button></th>
+          <th data-field="t_absent" class="num"><button type="button" data-tk="t_absent">Absent</button></th>
+          <th data-field="t_leave" class="num"><button type="button" data-tk="t_leave">Leave</button></th>
+          <th class="num"><button type="button" data-tk="t_rate">Teacher attendance</button></th>
+          <th data-field="reg_days" class="num"><button type="button" data-tk="reg_days">Register days</button></th>
+          <th class="num"><button type="button" data-tk="reg_rate">Student attendance</button></th>
+          <th class="num"><button type="button" data-tk="o_sess">Lessons observed (<span class="sr-src-name">DC</span>)</button></th>
+          <th class="num"><button type="button" data-tk="o_tsk">Subject knowledge</button></th>
+          <th class="num"><button type="button" data-tk="o_hlp">Teaching practices</button></th>
+          <th class="num"><button type="button" data-tk="o_se">Student engagement</button></th>
+          <th data-field="comment" class="sr-hide-narrow"><button type="button" data-tk="comment">Written comment</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+const num = (rows) => rows.map(r => ({
+  region: r.region, emis: String(r.emis), school: r.school,
+  teachers: Number(r.teachers), with_remarks: Number(r.with_remarks),
+  written_comment: Number(r.written_comment), score_only: Number(r.score_only), remark_dates: r.remark_dates || ''
+}));
+window.srNum = num;
+
+dash.calc('schools', {
+  title: 'Schools rolled up from teachers',
+  description: 'One row per school: teachers counted, teachers with a remark, how many of those have a written comment, and the first and last remark date.',
+  inputs: ['teachers'],
+  fn: (teachers) => d3.groups(teachers, t => t.emis).map(([emis, ts]) => {
+    const rem = ts.filter(t => t.has_remark === 'Yes');
+    const days = rem.map(t => t.remark_date).filter(Boolean).sort();
+    const f = (d) => d3.utcFormat('%-d %b')(new Date(d));
+    return {
+      region: ts[0].region, emis: String(emis), school: ts[0].school,
+      teachers: ts.length, with_remarks: rem.length,
+      written_comment: rem.filter(t => t.comment).length,
+      score_only: rem.filter(t => !t.comment).length,
+      remark_dates: days.length ? (days[0] === days[days.length - 1] ? f(days[0]) : `${f(days[0])} – ${f(days[days.length - 1])}`) : ''
+    };
+  })
+});
+
+dash.calc('region_summary', {
+  title: 'Totals per region',
+  description: 'Schools, teachers and remarks summed per region; coverage is teachers with remarks over teachers.',
+  inputs: ['schools'],
+  fn: (schools) => ['Urban-I', 'Barakahu'].map(region => {
+    const rs = schools.filter(r => r.region === region);
+    const teachers = d3.sum(rs, r => Number(r.teachers));
+    const teachers_with = d3.sum(rs, r => Number(r.with_remarks));
+    return {
+      region, schools: rs.length,
+      schools_with: rs.filter(r => Number(r.with_remarks) > 0).length,
+      teachers, teachers_with,
+      written: d3.sum(rs, r => Number(r.written_comment)),
+      coverage: teachers ? teachers_with / teachers : 0
+    };
+  })
+});
+
+dash.calc('overall', {
+  title: 'Totals, both regions',
+  description: 'Schools and teachers summed across Urban-I and Barakahu.',
+  inputs: ['schools'],
+  fn: (schools) => [{
+    schools: schools.length,
+    schools_with: schools.filter(r => Number(r.with_remarks) > 0).length,
+    teachers: d3.sum(schools, r => Number(r.teachers)),
+    teachers_with: d3.sum(schools, r => Number(r.with_remarks))
+  }]
+});
+
+dash.calc('school_coverage', {
+  title: 'Coverage per school',
+  description: 'Teachers with remarks divided by teachers, per school.',
+  inputs: ['schools'],
+  fn: (schools) => schools.map(r => ({
+    emis: String(r.emis),
+    coverage: Number(r.teachers) ? Number(r.with_remarks) / Number(r.teachers) : 0
+  }))
+});
+</script>
+
+<script>
+const pct = d3.format('.0%');
+const fmt = d3.format(',');
+const state = { region: 'All', status: 'All', q: '', key: 'steps_avg', dir: -1, open: new Set(), follow: '', band: '' };
+function schoolPasses(r) {
+  if (!state.follow && !state.band) return true;
+  const a = attFor(r.emis), st = schoolSteps(r.emis);
+  if (state.follow === 'noremarks' && r.with_remarks > 0) return false;
+  if (state.follow === 'unmarked' && !(a && unmarkedCount(a) > 0)) return false;
+  if (state.follow === 'noteacheratt' && !(a && a.t_days_marked === 0)) return false;
+  if (state.follow === 'incomplete') {
+    const tch = dash.data('teachers');
+    const rows = tch.status === 'ok' ? tch.data.filter(t => String(t.emis) === String(r.emis)) : [];
+    if (!rows.length || rows.filter(t => stepsFor(t).score != null).length >= rows.length / 2) return false;
+  }
+  if (state.band === 'none') { if (st.n) return false; }
+  else if (state.band) {
+    const [lo, hi] = state.band.split('-').map(Number);
+    if (!st.n || st.avg * 100 < lo || st.avg * 100 >= hi) return false;
+  }
+  return true;
+}
+const covColor = (c) => c >= 0.999 ? 'var(--nt-green)' : c > 0 ? 'var(--color-warn)' : 'var(--color-bad)';
+
+const srMotion = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const srCounted = new WeakSet();
+function countTo(el, value, format) {
+  el.classList.remove('dash-skeleton');
+  const final = format(value);
+  if (!srMotion || srCounted.has(el) || !isFinite(value)) { el.textContent = final; return; }
+  srCounted.add(el);
+  const t0 = performance.now(), dur = 1300;
+  const step = (now) => {
+    const p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 4);
+    el.textContent = p < 1 ? format(value * e) : final;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const fmtInt = (v) => fmt(Math.round(v));
+function animRow(tr, i, on) {
+  if (!on || !srMotion || i > 30) return;
+  tr.classList.add('sr-in');
+  tr.style.setProperty('--d', `${i * 0.03}s`);
+}
+function labelCells(table, titleIdx, scoreFrom, scoreTo) {
+  const heads = [...table.querySelectorAll('thead th')].map(th => th.textContent.trim());
+  table.querySelectorAll('tbody tr').forEach(tr => {
+    [...tr.children].forEach((td, i) => {
+      td.dataset.label = heads[i] || '';
+      if (i === titleIdx) td.classList.add('sr-tt');
+      if (scoreFrom != null && i >= scoreFrom && i <= scoreTo) td.classList.add('sr-sc-cell');
+    });
+  });
+}
+let srSchoolAnim = true, srTeacherAnim = true, srChartAnim = true;
+function setText(sel, v) { document.querySelectorAll(sel).forEach(el => countTo(el, v, fmtInt)); }
+
+const pct1 = d3.format('.1%');
+// STEPS Teacher Evaluation Framework, Principal Evaluation (Supervisor Remark): 5 indicators, 1-4.
+const REMARK_INDICATORS = ["Professional Growth & Feedback Uptake", "Collaboration & Peer Support", "Initiative & School Leadership", "Student-Centered Support", "Parents & Community Engagement"];
+const REMARK_LEVELS = { 4: 'Exemplary', 3: 'Proficient', 2: 'Developing', 1: 'Needs Improvement' };
+function scoreChip(field, value) {
+  const b = document.createElement('span');
+  b.className = `sr-sc v${value}`;
+  b.textContent = value;
+  b.title = `${REMARK_INDICATORS[Number(field.slice(1)) - 1]}: ${value} – ${REMARK_LEVELS[value] || ''}`;
+  return b;
+}
+// Classes with no register in 30 days: the named list when the refresh has it, else the count difference.
+const unmarkedCount = (a) => Array.isArray(a.unmarked_classes) ? a.unmarked_classes.length : Math.max(a.active_classes - a.s_classes_marked, 0);
+// A teacher's own attendance cells: blank string means the head at this school marks nobody.
+function teacherAttCells(t, add) {
+  if (t.t_present === '' || t.t_present == null) {
+    add('', 'num'); add('', 'num'); add('', 'num'); add('Not marked', 'num sr-ta na');
+    return;
+  }
+  const P = Number(t.t_present), A = Number(t.t_absent), L = Number(t.t_leave);
+  add(String(P), 'num sr-ta'); add(String(A), 'num sr-ta' + (A > 0 ? ' abs' : '')); add(String(L), 'num sr-ta');
+  add(P + A > 0 ? pct1(P / (P + A)) : 'No days', 'num sr-ta' + (P + A > 0 ? '' : ' na'));
+}
+// A teacher's own class registers over the 30 days (counts only): days marked and their classes' attendance.
+function teacherFicoCells(t, add) {
+  const n = Number(t[`${obsSrc}_sessions`] || 0);
+  add(String(n), 'num sr-fico' + (n ? '' : ' na'));
+  ['tsk', 'hlp', 'se'].forEach(d => ficoCell(n ? t[`${obsSrc}_${d}`] : null, add));
+}
+const ficoSortVal = (t, k) => {
+  if (k === 'o_sess') return Number(t[`${obsSrc}_sessions`] || 0);
+  const v = t[`${obsSrc}_${k.slice(2)}`];
+  return v === '' || v == null ? -1 : Number(v);
+};
+function teacherRegisterCells(t, add) {
+  const days = Number(t.reg_days || 0), kids = Number(t.reg_child_days || 0);
+  add(days ? String(days) : '0', 'num sr-ta' + (days ? '' : ' na'));
+  add(kids ? pct1(Number(t.reg_present) / kids) : (days ? '—' : 'Not marking'), 'num sr-ta' + (kids ? '' : ' na'));
+}
+const teacherRate = (t) => (t.t_present === '' || t.t_present == null) ? -2
+  : (Number(t.t_present) + Number(t.t_absent) > 0 ? Number(t.t_present) / (Number(t.t_present) + Number(t.t_absent)) : -1);
+function attFor(emis) {
+  const d = dash.data('attendance');
+  if (d.status !== 'ok') return null;
+  const r = d.data.find(x => String(x.emis) === String(emis));
+  if (!r) return null;
+  return { ...r,
+    t_rate: r.t_present + r.t_absent > 0 ? r.t_present / (r.t_present + r.t_absent) : null,
+    s_rate: r.s_child_days > 0 ? r.s_present / r.s_child_days : null };
+}
+
+let obsSrc = 'dc';
+const SRC_LABEL = { dc: 'Digital coach', hitl: 'Coach visits' };
+const pctPts = (v) => (v === '' || v == null ? null : Number(v) / 100);
+function ficoFor(emis) {
+  const d = dash.data('fico');
+  if (d.status !== 'ok') return null;
+  return d.data.find(x => String(x.emis) === String(emis)) || null;
+}
+function ficoCell(v, add, extra = '') { const x = pctPts(v); add(x == null ? '—' : pct1(x), 'num sr-fico' + (x == null ? ' na' : '') + extra); }
+
+function drawObservations() {
+  const fico = dash.data('fico'), tch = dash.data('teachers');
+  document.getElementById('obs-explain').textContent = obsSrc === 'dc'
+    ? 'Digital coach: the teacher recorded her own lesson and Rumi\'s AI scored it on the FICO rubric, with no human observer. Each score is points earned ÷ points possible in that section, pooled across lessons. Lesson-plan fidelity counts only lessons with a plan attached.'
+    : 'Coach visits: a coach observed the lesson in class and reviewed and edited the AI-filled FICO form. Each score is points earned ÷ points possible in that section, pooled across visits. Coach visits on the newer 17-indicator form use a different rubric and are left out.';
+  document.querySelectorAll('[data-obs-region]').forEach(card => {
+    const region = card.dataset.obsRegion;
+    const set = (k, v) => { card.querySelector(`[data-obs="${k}"]`).textContent = v; };
+    if (fico.status !== 'ok' || tch.status !== 'ok') {
+      ['tsk', 'hlp', 'se'].forEach(k => set(k, '—'));
+      set('cover', fico.status === 'error' ? 'Observation scores did not load' : ''); set('lpf', '');
+      return;
+    }
+    const emisRegion = new Map(tch.data.map(t => [String(t.emis), t.region]));
+    const teachers = tch.data.filter(t => t.region === region).length;
+    const rows = fico.data.filter(r => emisRegion.get(String(r.emis)) === region);
+    const sum = (f) => d3.sum(rows, r => Number(r[f]) || 0);
+    const sess = sum(`${obsSrc}_sessions`), obsT = sum(`${obsSrc}_teachers`);
+    set('cover', `${fmt(sess)} ${obsSrc === 'dc' ? 'lessons' : 'visits'} scored · ${fmt(obsT)} of ${fmt(teachers)} teachers observed`);
+    ['tsk', 'hlp', 'se'].forEach(d => {
+      const mx = sum(`${obsSrc}_${d}_max`), v = mx ? sum(`${obsSrc}_${d}_score`) / mx : null;
+      const el = card.querySelector(`[data-obs="${d}"]`);
+      if (v == null) el.textContent = '—'; else countTo(el, v, pct1);
+      card.querySelector(`[data-obs-bar="${d}"]`).style.width = v == null ? '0' : `${v * 100}%`;
+    });
+    const lmx = sum(`${obsSrc}_lpf_max`);
+    set('lpf', lmx ? `Lesson-plan fidelity ${pct1(sum(`${obsSrc}_lpf_score`) / lmx)} (lessons with a plan attached)` : '');
+  });
+}
+
+function drawAttendance() {
+  const att = dash.data('attendance'), tch = dash.data('teachers');
+  const win = window.srMeta && window.srMeta.attendance_window;
+  const fd = (x) => d3.utcFormat('%-d %b')(new Date(x + 'T00:00:00Z'));
+  document.getElementById('att-window').textContent = win ? `Last 30 days (${fd(win.start)} – ${fd(win.end)}), as marked in Rumi` : 'Last 30 days, as marked in Rumi';
+  document.querySelectorAll('[data-att-region]').forEach(card => {
+    const region = card.dataset.attRegion;
+    const set = (k, v) => { card.querySelector(`[data-att="${k}"]`).textContent = v; };
+    if (att.status !== 'ok' || tch.status !== 'ok') {
+      ['t_rate', 's_rate'].forEach(k => set(k, '—'));
+      ['t_detail', 's_detail', 't_cover', 's_cover'].forEach(k => set(k, att.status === 'error' ? 'Attendance did not load' : ''));
+      card.querySelectorAll('.sr-att-split').forEach(b => { b.innerHTML = ''; });
+      return;
+    }
+    const emisRegion = new Map(tch.data.map(t => [String(t.emis), t.region]));
+    const rows = att.data.filter(r => emisRegion.get(String(r.emis)) === region);
+    const sum = (f) => d3.sum(rows, r => r[f]);
+    const tP = sum('t_present'), tA = sum('t_absent'), tL = sum('t_leave');
+    const sP = sum('s_present'), sA = sum('s_absent'), sL = sum('s_leave'), sDays = sum('s_child_days');
+    const schools = rows.length, tSchools = rows.filter(r => r.t_days_marked > 0).length, sSchools = rows.filter(r => r.s_class_days > 0).length;
+    const tRate = tP + tA ? tP / (tP + tA) : null, sRate = sDays ? sP / sDays : null;
+    const big = (k, v) => { const el = card.querySelector(`[data-att="${k}"]`); if (v == null) el.textContent = '—'; else countTo(el, v, pct1); };
+    big('t_rate', tRate); big('s_rate', sRate);
+    set('t_detail', `${fmt(tP)} present · ${fmt(tA)} absent · ${fmt(tL)} on leave (teacher-days)`);
+    set('s_detail', `${fmt(sP)} present · ${fmt(sA)} absent · ${fmt(sL)} on leave (child-days)`);
+    set('t_cover', `Heads marking in ${tSchools} of ${schools} schools`);
+    set('s_cover', `${fmt(sum('s_classes_marked'))} of ${fmt(sum('active_classes'))} classes marking, in ${sSchools} of ${schools} schools`);
+    const bar = (which, parts) => {
+      const el = card.querySelector(`[data-att-bar="${which}"]`);
+      const total = d3.sum(parts, p => p[0]);
+      el.innerHTML = '';
+      parts.forEach(([v, color]) => {
+        const sp = document.createElement('span');
+        sp.style.background = color;
+        const w = total ? `${(100 * v) / total}%` : '0';
+        if (srMotion && !el.dataset.grown) { sp.style.width = '0'; requestAnimationFrame(() => requestAnimationFrame(() => { sp.style.width = w; })); }
+        else sp.style.width = w;
+        el.appendChild(sp);
+      });
+      el.dataset.grown = '1';
+    };
+    bar('t', [[tP, 'var(--nt-green)'], [tA, 'var(--color-bad)'], [tL, 'var(--cds-border)']]);
+    bar('s', [[sP, 'var(--nt-green)'], [sA, 'var(--color-bad)'], [sL, 'var(--cds-border)']]);
+  });
+}
+
+function drawIndicators() {
+  const tch = dash.data('teachers');
+  document.querySelectorAll('#regions .sr-card').forEach(card => {
+    const box = card.querySelector('[data-ind]');
+    box.innerHTML = '';
+    if (tch.status !== 'ok') return;
+    const rem = tch.data.filter(t => t.region === card.dataset.region && t.has_remark === 'Yes' && t.s1 !== '');
+    if (!rem.length) return;
+    const head = document.createElement('div');
+    head.className = 'sr-note';
+    head.textContent = `Average score by indicator (1–4), across ${rem.length} teachers with a remark`;
+    box.appendChild(head);
+    REMARK_INDICATORS.forEach((name, i) => {
+      const avg = d3.mean(rem, t => Number(t[`s${i + 1}`]));
+      const row = document.createElement('div'); row.className = 'sr-ind-row';
+      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = name; nm.title = name;
+      const bar = document.createElement('span'); bar.className = 'bar';
+      const fill = document.createElement('span'); fill.style.width = `${(avg / 4) * 100}%`; bar.appendChild(fill);
+      const v = document.createElement('span'); v.className = 'v'; v.textContent = avg.toFixed(1);
+      row.append(nm, bar, v); box.appendChild(row);
+    });
+  });
+}
+
+const STEPS_PARTS = [
+  { key: 'sk', label: 'Subject knowledge', w: 30 },
+  { key: 'tp', label: 'Teaching practices', w: 25 },
+  { key: 'se', label: 'Student engagement', w: 25 },
+  { key: 'ta', label: 'Presence: teacher attendance', w: 7 },
+  { key: 'sa', label: 'Presence: student attendance', w: 3 },
+  { key: 'sr', label: 'Supervisor remark', w: 10 },
+];
+const STEPS_GROUPS = 5;   // the five STEPS dimensions; presence counts once
+function stepsFor(t) {
+  const n = (x) => (x === '' || x == null ? null : Number(x));
+  const dcN = Number(t.dc_sessions || 0);
+  const tP = n(t.t_present), tA = n(t.t_absent);
+  const kids = Number(t.reg_child_days || 0);
+  const rem = t.has_remark === 'Yes' && t.s1 !== '' ? d3.mean([1, 2, 3, 4, 5], i => Number(t[`s${i}`])) : null;
+  const v = {
+    sk: dcN && n(t.dc_tsk) != null ? n(t.dc_tsk) / 100 : null,
+    tp: dcN && n(t.dc_hlp) != null ? n(t.dc_hlp) / 100 : null,
+    se: dcN && n(t.dc_se) != null ? n(t.dc_se) / 100 : null,
+    ta: tP != null && tP + tA > 0 ? tP / (tP + tA) : null,
+    sa: kids ? Number(t.reg_present) / kids : null,
+    sr: rem != null ? rem / 4 : null,
+  };
+  let wsum = 0, acc = 0;
+  STEPS_PARTS.forEach(p => { if (v[p.key] != null) { wsum += p.w; acc += p.w * v[p.key]; } });
+  const groups = [v.sk != null, v.tp != null, v.se != null, v.ta != null || v.sa != null, v.sr != null].filter(Boolean).length;
+  // A STEPS number needs the classroom parts (80% of the weight); without them a score from attendance and
+  // remarks alone would look complete and mislead.
+  const hasClassroom = v.sk != null && v.tp != null && v.se != null;
+  return { v, score: hasClassroom && wsum ? acc / wsum : null, partial: wsum ? acc / wsum : null, weight: wsum, groups,
+           complete: wsum === 100, hasClassroom, remAvg: rem };
+}
+const stepsTxt = (x) => (x == null ? '—' : (x * 100).toFixed(1));
+
+function drawSteps() {
+  const tch = dash.data('teachers');
+  const all = tch.status === 'ok' ? tch.data.map(t => ({ t, s: stepsFor(t) })) : [];
+  const complete = all.filter(x => x.s.complete);
+  document.getElementById('steps-complete').textContent = all.length ? fmt(complete.length) : '—';
+  document.getElementById('steps-teachers').textContent = all.length ? fmt(all.length) : '—';
+  document.getElementById('steps-avg').textContent = complete.length ? stepsTxt(d3.mean(complete, x => x.s.score)) : '—';
+  document.querySelectorAll('[data-steps-region]').forEach(card => {
+    const region = card.dataset.stepsRegion;
+    const rows = all.filter(x => x.t.region === region), comp = rows.filter(x => x.s.complete);
+    const avgEl = card.querySelector('[data-steps="avg"]');
+    if (!rows.length) { avgEl.textContent = '—'; return; }
+    if (comp.length) countTo(avgEl, d3.mean(comp, x => x.s.score) * 100, (z) => z.toFixed(1)); else avgEl.textContent = '—';
+    card.querySelector('[data-steps="cover"]').textContent = `average STEPS score · ${fmt(comp.length)} of ${fmt(rows.length)} teachers with all five parts`;
+    { let dist = card.querySelector('.sr-dist-wrap');
+      if (!dist) { dist = document.createElement('div'); dist.className = 'sr-dist-wrap sr-parts';
+        card.querySelector('[data-steps="parts"]').before(dist); }
+      dist.innerHTML = '';
+      const counts = [...STEPS_BANDS, BAND_NONE].map(b => ({ b, n: rows.filter(x => bandFor(x.s.score).key === b.key).length }));
+      const bar = document.createElement('div'); bar.className = 'sr-dist';
+      counts.forEach(({ b, n }) => { const sp = document.createElement('span'); sp.style.background = bandColor(b.key);
+        sp.style.width = `${(100 * n) / rows.length}%`; sp.title = `${b.label}: ${n} teachers`; bar.appendChild(sp); });
+      const key = document.createElement('div'); key.className = 'sr-dist-key';
+      counts.forEach(({ b, n }) => { const k = document.createElement('span'); const i = document.createElement('i'); i.style.background = bandColor(b.key);
+        k.append(i, `${b.label} ${fmt(n)}`); key.appendChild(k); });
+      dist.append(bar, key); }
+    const box = card.querySelector('[data-steps="parts"]');
+    box.innerHTML = '';
+    STEPS_PARTS.forEach(p => {
+      const have = rows.filter(x => x.s.v[p.key] != null);
+      const avg = have.length ? d3.mean(have, x => x.s.v[p.key]) : null;
+      const row = document.createElement('div'); row.className = 'sr-part' + (avg == null ? ' missing' : '');
+      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = p.label;
+      const sm = document.createElement('small'); sm.textContent = `${p.w}% · ${fmt(have.length)} teachers`; nm.appendChild(sm);
+      const bar = document.createElement('span'); bar.className = 'bar';
+      const fill = document.createElement('span'); fill.style.width = avg == null ? '0' : `${avg * 100}%`; bar.appendChild(fill);
+      const val = document.createElement('span'); val.className = 'v'; val.textContent = avg == null ? '—' : pct1(avg);
+      row.append(nm, bar, val); box.appendChild(row);
+    });
+    const missRem = rows.filter(x => x.s.v.sr == null).length, missDc = rows.filter(x => x.s.v.sk == null).length;
+    card.querySelector('[data-steps="partial"]').textContent = `Missing most often: supervisor remark (${fmt(missRem)} teachers) and Digital Coach lessons (${fmt(missDc)} teachers).`;
+  });
+}
+
+// A school's STEPS average: teachers with all five parts only.
+function schoolSteps(emis) {
+  const tch = dash.data('teachers');
+  const rows = tch.status === 'ok' ? tch.data.filter(t => String(t.emis) === String(emis)) : [];
+  const comp = rows.map(stepsFor).filter(s => s.complete);
+  return { n: comp.length, total: rows.length, avg: comp.length ? d3.mean(comp, s => s.score) : null };
+}
+// STEPS performance levels, approved by Hasnat Tariq 2026-10-27; names follow the STEPS rubric's scale.
+const STEPS_BANDS = [
+  { key: 'strong', label: 'Exemplary', range: '80+', min: 0.80 },
+  { key: 'ontrack', label: 'Proficient', range: '70–79.9', min: 0.70 },
+  { key: 'developing', label: 'Developing', range: '60–69.9', min: 0.60 },
+  { key: 'support', label: 'Needs support', range: 'below 60', min: -1 },
+];
+const BAND_NONE = { key: 'none', label: 'Incomplete / no data', range: '' };
+const bandFor = (score) => (score == null ? BAND_NONE : STEPS_BANDS.find(b => score >= b.min));
+const bandColor = (key) => `var(--band-${key})`;
+function bandLegend() {
+  const box = document.createElement('div'); box.className = 'sr-legend';
+  [...STEPS_BANDS, BAND_NONE].forEach(b => { const x = document.createElement('span'); x.className = `sr-band b-${b.key}`;
+    x.textContent = b.range ? `${b.label} · ${b.range}` : b.label; box.appendChild(x); });
+  return box;
+}
+// Digital Coach lessons: since 8 Sep (what STEPS uses) with the all-time total and last lesson day.
+function dcCell(t, add) {
+  const n = Number(t.dc_sessions || 0), all = Number(t.dc_all || 0);
+  const tipTxt = all ? `${n} Digital Coach lessons since 8 Sep, ${all} in total; last on ${t.dc_last}` : 'No Digital Coach lessons recorded';
+  const c1 = add(String(n), 'num sr-fico' + (n ? '' : ' na')); c1.title = tipTxt;
+  const c2 = add(String(all), 'num sr-fico' + (all ? '' : ' na')); c2.title = tipTxt;
+}
+const dcLine = (t) => {
+  const n = Number(t.dc_sessions || 0), all = Number(t.dc_all || 0);
+  if (!all) return 'No Digital Coach lessons recorded yet';
+  const last = t.dc_last ? d3.utcFormat('%-d %b')(new Date(t.dc_last + 'T00:00:00Z')) : '';
+  return `${n} Digital Coach lesson${n === 1 ? '' : 's'} since 8 Sep · ${all} in total · last on ${last}`;
+};
+function stepsCell(t, add) {
+  const s = stepsFor(t);
+  const c = add('', 'num sr-steps-cell' + (s.score == null ? ' na' : ''));
+  const band = bandFor(s.score);
+  if (c.parentElement) c.parentElement.dataset.band = band.key;
+  const pill = document.createElement('span'); pill.className = `sr-band b-${band.key}`;
+  if (s.score == null) {
+    pill.textContent = s.weight ? 'Incomplete' : 'No data';
+    c.title = s.weight ? 'No Digital Coach classroom score since 8 Sep, so no STEPS score' : '';
+    c.appendChild(pill); return;
+  }
+  pill.textContent = stepsTxt(s.score); pill.title = `${band.label} (${band.range})`;
+  c.appendChild(pill);
+  const sm = document.createElement('small'); sm.textContent = s.complete ? '5/5' : `${s.groups}/5`;
+  sm.title = s.complete ? 'All five STEPS parts' : `Provisional: ${s.groups} of 5 parts (${s.weight}% of the weight)`;
+  c.appendChild(sm);
+}
+
+function ringSvg(score) {
+  const r = 52, c = 2 * Math.PI * r, frac = score == null ? 0 : score;
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 128 128'); svg.setAttribute('class', 'sr-ring'); svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', score == null ? 'No STEPS score' : `STEPS score ${stepsTxt(score)}`);
+  const mk = (tag, attrs) => { const e = document.createElementNS(ns, tag); Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v)); svg.appendChild(e); return e; };
+  mk('circle', { cx: 64, cy: 64, r, fill: 'none', 'stroke-width': 12 }).style.stroke = 'var(--cds-chart-grid)';
+  const arc = mk('circle', { cx: 64, cy: 64, r, fill: 'none', 'stroke-width': 12, 'stroke-linecap': 'round',
+    transform: 'rotate(-90 64 64)', 'stroke-dasharray': `${c}`, 'stroke-dashoffset': `${c}` });
+  arc.style.stroke = bandColor(bandFor(score).key); arc.style.transition = 'stroke-dashoffset 1.2s var(--nt-ease)';
+  requestAnimationFrame(() => requestAnimationFrame(() => arc.setAttribute('stroke-dashoffset', `${c * (1 - frac)}`)));
+  const tx = mk('text', { x: 64, y: 70, 'text-anchor': 'middle', 'font-size': 26 }); tx.textContent = stepsTxt(score);
+  const sub = mk('text', { x: 64, y: 90, 'text-anchor': 'middle', 'font-size': 11 }); sub.textContent = 'STEPS'; sub.style.fill = 'var(--color-fg-muted)';
+  return svg;
+}
+
+function openScorecard(t) {
+  const s = stepsFor(t), dlg = document.getElementById('sr-scorecard');
+  document.getElementById('sr-scorecard-title').textContent = t.teacher;
+  document.getElementById('sr-scorecard-sub').textContent = `${t.emis} · ${t.school} · ${t.region}
+${dcLine(t)}`;
+  const body = document.getElementById('sr-scorecard-body');
+  body.innerHTML = '';
+  const head = document.createElement('div'); head.className = 'sr-sc-head';
+  { const wrap = document.createElement('div'); wrap.appendChild(ringSvg(s.score));
+    const bl = document.createElement('div'); bl.className = 'sr-ring-band'; const band = bandFor(s.score);
+    bl.textContent = band.label; bl.style.color = s.score == null ? 'var(--color-fg-muted)' : bandColor(band.key);
+    wrap.appendChild(bl); head.appendChild(wrap); }
+  const parts = document.createElement('div'); parts.className = 'sr-parts';
+  STEPS_PARTS.forEach(p => {
+    const val = s.v[p.key];
+    const row = document.createElement('div'); row.className = 'sr-part' + (val == null ? ' missing' : '');
+    const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = p.label;
+    const sm = document.createElement('small'); sm.textContent = `${p.w}%`; nm.appendChild(sm);
+    const bar = document.createElement('span'); bar.className = 'bar';
+    const fill = document.createElement('span'); fill.style.width = '0'; bar.appendChild(fill);
+    requestAnimationFrame(() => requestAnimationFrame(() => { fill.style.width = val == null ? '0' : `${val * 100}%`; }));
+    const v = document.createElement('span'); v.className = 'v'; v.textContent = val == null ? 'Missing' : pct1(val);
+    row.append(nm, bar, v); parts.appendChild(row);
+  });
+  head.appendChild(parts); body.appendChild(head);
+  const flag = document.createElement('p'); flag.className = s.complete ? 'sr-note' : 'sr-sc-flag';
+  flag.textContent = s.complete ? 'All five STEPS parts are available.'
+    : !s.weight ? 'No STEPS parts are available yet for this teacher.'
+    : !s.hasClassroom ? `Incomplete: no STEPS score, because the classroom parts (subject knowledge, teaching practices, student engagement — 80% of the weight) need at least one Digital Coach lesson since 8 Sep. Only ${s.weight}% of the weight is available.`
+    : `Provisional: based on ${s.groups} of 5 parts (${s.weight}% of the weight). Missing parts are left out, not counted as zero.`;
+  body.appendChild(flag);
+  const grid = document.createElement('div'); grid.className = 'sr-sc-grid';
+  const box = (title, lines) => {
+    const b = document.createElement('div'); b.className = 'sr-sc-box';
+    const h = document.createElement('div'); h.className = 't'; h.textContent = title; b.appendChild(h);
+    lines.forEach(l => { const d = document.createElement('div'); d.className = 'l'; d.textContent = l; b.appendChild(d); });
+    grid.appendChild(b);
+  };
+  const pc = (x) => (x === '' || x == null ? '—' : pct1(Number(x) / 100));
+  box('Classroom (Digital Coach)', Number(t.dc_sessions || 0)
+    ? [dcLine(t), `Subject knowledge ${pc(t.dc_tsk)} · Practices ${pc(t.dc_hlp)} · Engagement ${pc(t.dc_se)}`, `Lesson-plan fidelity ${pc(t.dc_lpf)}`]
+    : [dcLine(t), 'None since 8 Sep, so no classroom score in STEPS']);
+  box('Coach visits (not in STEPS)', Number(t.hitl_sessions || 0)
+    ? [`${t.hitl_sessions} visit${t.hitl_sessions == 1 ? '' : 's'}`, `Subject knowledge ${pc(t.hitl_tsk)} · Practices ${pc(t.hitl_hlp)} · Engagement ${pc(t.hitl_se)}`]
+    : ['No coach visits since 8 Sep']);
+  box('Presence (last 30 days)', [
+    t.t_present === '' || t.t_present == null ? 'Teacher attendance: not marked by the head'
+      : `Teacher: ${t.t_present} present · ${t.t_absent} absent · ${t.t_leave} on leave`,
+    Number(t.reg_days || 0) ? `Students: ${pc(Number(t.reg_present) / Number(t.reg_child_days) * 100)} present over ${t.reg_days} register day${t.reg_days == 1 ? '' : 's'}` : 'Students: no class registers marked',
+  ]);
+  box('Supervisor remark', t.has_remark === 'Yes'
+    ? [...REMARK_INDICATORS.map((nm, i) => `${nm}: ${t[`s${i + 1}`] || '—'}${t[`s${i + 1}`] ? ' – ' + REMARK_LEVELS[t[`s${i + 1}`]] : ''}`),
+       t.comment ? `“${t.comment}”` : 'No written comment', `Submitted ${t.remark_date}`]
+    : ['No supervisor remark yet']);
+  body.appendChild(grid);
+  if (typeof dlg.showModal === 'function') { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute('open', '');
+  body.scrollTop = 0;
+}
+document.getElementById('sr-scorecard-close').addEventListener('click', () => { const d = document.getElementById('sr-scorecard'); if (d.close) d.close(); else d.removeAttribute('open'); });
+document.getElementById('sr-scorecard').addEventListener('click', (e) => { if (e.target.id === 'sr-scorecard') { const d = e.target; if (d.close) d.close(); else d.removeAttribute('open'); } });
+
+function drawSummary() {
+  const tdat = dash.data('teachers');
+  document.getElementById('asof').textContent = tdat.status === 'ok' && tdat.data.length ? tdat.data[0].as_of : '—';
+  const s = dash.data('region_summary');
+  const o = dash.data('overall');
+  if (o.status === 'ok' && o.data.length) {
+    const r = o.data[0];
+    setText('#takeaway [data-field="schools_with"]', r.schools_with);
+    setText('#takeaway [data-field="schools"]', r.schools);
+    setText('#takeaway [data-field="teachers_with"]', r.teachers_with);
+    setText('#takeaway [data-field="teachers"]', r.teachers);
+  } else {
+    document.querySelectorAll('#takeaway [data-source]').forEach(el => { el.textContent = '—'; });
+  }
+  document.querySelectorAll('#regions .sr-card').forEach(card => {
+    const region = card.dataset.region;
+    const row = s.status === 'ok' ? s.data.find(d => d.region === region) : null;
+    card.querySelectorAll('[data-source="region_summary"]').forEach(el => {
+      const f = el.dataset.field;
+      if (row) countTo(el, row[f], f === 'coverage' ? pct : fmtInt);
+      else { el.classList.remove('dash-skeleton'); el.textContent = '—'; }
+    });
+    const m = card.querySelector('.m');
+    const target = row ? `${Math.max(row.coverage * 100, 0.5)}%` : '0';
+    if (row && srMotion && !m.dataset.grown) { m.dataset.grown = '1'; m.style.width = '0'; requestAnimationFrame(() => requestAnimationFrame(() => { m.style.width = target; })); }
+    else m.style.width = target;
+    m.style.background = 'var(--nt-green)';
+  });
+}
+
+function drawChart(rows) {
+  const box = document.getElementById('chart');
+  box.innerHTML = '';
+  const d = dash.data('schools');
+  if (d.status !== 'ok') {
+    if (d.status === 'error') {
+      box.classList.remove('dash-skeleton');
+      box.style.display = 'flex'; box.style.alignItems = 'center'; box.style.justifyContent = 'center'; box.style.gap = '6px';
+      box.innerHTML = '<span style="width:.375rem;height:.375rem;border-radius:50%;background:var(--color-bad)"></span><span class="sr-note">Failed to load</span>';
+    }
+    return;
+  }
+  box.classList.remove('dash-skeleton');
+  box.style.display = '';
+  const animChart = srMotion && srChartAnim;
+  srChartAnim = false;
+  const data = rows.filter(r => r.with_remarks > 0)
+    .map(r => ({ ...r, cov: r.with_remarks / r.teachers }))
+    .sort((a, b) => d3.descending(a.cov, b.cov) || d3.descending(a.with_remarks, b.with_remarks));
+  const W = Math.max(box.clientWidth, 280);
+  const narrow = W < 560;
+  const rowH = 30, top = 22;
+  const label = (r) => narrow ? `${r.emis} · ${r.school}` : `${r.emis} · ${r.school} (${r.region})`;
+  const svg = d3.select(box).append('svg').attr('width', '100%');
+  const meas = svg.append('g');
+  let lw = 0;
+  data.forEach(r => { const t = meas.append('text').text(label(r)); lw = Math.max(lw, t.node().getComputedTextLength()); });
+  meas.remove();
+  const valW = 64;
+  lw = Math.min(lw, narrow ? W * 0.5 : W * 0.42);
+  const left = lw + 12, right = valW;
+  const H = top + data.length * rowH + 6;
+  svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+  const x = d3.scaleLinear([0, 1], [left, W - right]);
+  const g = svg.append('g');
+  [0, 0.5, 1].forEach(t => {
+    g.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top - 6).attr('y2', H - 4).style('stroke', 'var(--cds-chart-grid)');
+    g.append('text').attr('x', x(t)).attr('y', top - 10).attr('text-anchor', t === 0 ? 'start' : t === 1 ? 'end' : 'middle').text(pct(t));
+  });
+  const tip = d3.select(box).append('div').attr('class', 'sr-tip').style('display', 'none');
+  data.forEach((r, i) => {
+    const y = top + i * rowH;
+    const row = svg.append('g');
+    const t = row.append('text').attr('x', left - 12).attr('y', y + rowH / 2 + 4).attr('text-anchor', 'end').text(label(r));
+    let s = label(r);
+    while (t.node().getComputedTextLength() > lw && s.length > 4) { s = s.slice(0, -2); t.text(s + '…'); }
+    const bh = 14, by = y + (rowH - bh) / 2;
+    row.append('rect').attr('x', x(0)).attr('y', by).attr('width', x(1) - x(0)).attr('height', bh).attr('rx', 4).style('fill', 'var(--cds-chart-grid)');
+    const grow = (sel, w) => (animChart ? sel.attr('width', 0).transition().delay(250 + i * 70).duration(900).ease(d3.easeCubicOut).attr('width', w) : sel.attr('width', w));
+    grow(row.append('rect').attr('x', x(0)).attr('y', by).attr('height', bh).attr('rx', 4).style('fill', 'var(--nt-green-soft)'), Math.max(x(r.cov) - x(0), 3));
+    if (r.written_comment > 0) grow(row.append('rect').attr('x', x(0)).attr('y', by).attr('height', bh).attr('rx', 4).style('fill', 'var(--nt-green)'), Math.max(x(r.written_comment / r.teachers) - x(0), 3));
+    const vt = row.append('text').attr('class', 'val').attr('x', W - right + 8).attr('y', y + rowH / 2 + 4).text(`${r.with_remarks}/${r.teachers}`);
+    if (animChart) vt.attr('opacity', 0).transition().delay(650 + i * 70).duration(500).attr('opacity', 1);
+    row.append('rect').attr('x', 0).attr('y', y).attr('width', W).attr('height', rowH).attr('fill', 'transparent')
+      .on('pointermove pointerdown', (ev) => {
+        const [mx, my] = d3.pointer(ev, box);
+        tip.style('display', null).html('');
+        tip.append('div').attr('class', 't').text(`${r.school} · ${r.region}`);
+        tip.append('div').text(`${r.with_remarks} of ${r.teachers} teachers (${pct(r.cov)})`);
+        tip.append('div').text(`${r.written_comment} written · ${r.score_only} score only`);
+        if (r.remark_dates) tip.append('div').attr('class', 't').text(r.remark_dates);
+        const tw = tip.node().offsetWidth;
+        tip.style('left', `${Math.min(Math.max(mx - tw / 2, 0), box.clientWidth - tw)}px`).style('top', `${my + 14}px`);
+      })
+      .on('pointerleave', () => tip.style('display', 'none'));
+  });
+  box.style.minHeight = `${H}px`;
+}
+
+function buildTeacherBox(r, rows) {
+  const byEmis = new Map([[r.emis, rows]]);
+  const ts = (byEmis.get(r.emis) || []).slice()
+    .sort((a, b) => d3.descending(stepsFor(a).score ?? -1, stepsFor(b).score ?? -1) || a.teacher.localeCompare(b.teacher));
+  const inner = document.createElement('table');
+  inner.className = 'sr-table sr-inner sr-cards';
+  inner.dataset.source = 'teachers';
+  inner.dataset.rowKey = 'teacher_key';
+  const head = document.createElement('tr');
+  [['teacher', 'Teacher', ''], ['', 'STEPS', 'num'], ['', 'DC lessons since 8 Sep', 'num'], ['', 'DC lessons all time', 'num'], ['has_remark', 'Remark', ''], ['remark_date', 'Date', 'sr-hide-narrow'],
+   ['s1', 'Growth', 'num'], ['s2', 'Collab.', 'num'], ['s3', 'Leadership', 'num'], ['s4', 'Student support', 'num'], ['s5', 'Parents', 'num'],
+   ['avg_score', 'Avg', 'num'], ['t_present', 'Present', 'num'], ['t_absent', 'Absent', 'num'], ['t_leave', 'Leave', 'num'],
+   ['', 'Teacher attendance', 'num'], ['reg_days', 'Register days', 'num'], ['', 'Student attendance', 'num'],
+   ['', 'Lessons observed', 'num'], ['', 'Subject knowledge', 'num'], ['', 'Teaching practices', 'num'], ['', 'Student engagement', 'num'],
+   ['comment', 'Written comment', 'sr-hide-narrow']].forEach(([f, l, cls]) => {
+    const th = document.createElement('th'); th.dataset.field = f; th.textContent = l; if (cls) th.className = cls; head.appendChild(th);
+  });
+  const thead = document.createElement('thead'); thead.appendChild(head); inner.appendChild(thead);
+  const ib = document.createElement('tbody');
+  ts.forEach((t, ii) => {
+    const it = document.createElement('tr');
+    it.dataset.key = t.teacher_key;
+    animRow(it, ii + 4, true);
+    const c2 = (txt, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = txt; it.appendChild(c); return c; };
+    c2(t.teacher);
+    stepsCell(t, c2);
+    dcCell(t, c2);
+    it.classList.add('sr-click'); it.tabIndex = 0;
+    it.addEventListener('click', () => openScorecard(t));
+    it.addEventListener('keydown', (e) => { if (e.key === 'Enter') openScorecard(t); });
+    c2(t.has_remark, t.has_remark === 'Yes' ? 'sr-yes' : 'sr-no');
+    c2(t.remark_date, 'sr-hide-narrow');
+    ['s1', 's2', 's3', 's4', 's5'].forEach(f => {
+      const c = c2('', 'num');
+      if (t[f] !== '') c.appendChild(scoreChip(f, t[f]));
+    });
+    c2(t.avg_score, 'num');
+    teacherAttCells(t, c2);
+    teacherRegisterCells(t, c2);
+    teacherFicoCells(t, c2);
+    c2(t.comment, 'sr-comment sr-hide-narrow');
+    ib.appendChild(it);
+  });
+  inner.appendChild(ib);
+  labelCells(inner, 0, 6, 10);
+  const box = document.createElement('div');
+  box.className = 'sr-inner-box';
+  const cap = document.createElement('p');
+  cap.className = 'sr-note';
+  cap.textContent = ts.length ? `${r.school}: ${ts.filter(t => t.has_remark === 'Yes').length} of ${ts.length} teachers have a remark.` : 'Teacher list not loaded.';
+  box.appendChild(cap);
+  if (ts.length) box.appendChild(inner);
+  return box;
+}
+
+function openSchoolModal(r, rows) {
+  const dlg = document.getElementById('sr-modal');
+  document.getElementById('sr-modal-title').textContent = `${r.emis} · ${r.school}`;
+  document.getElementById('sr-modal-sub').textContent = `${r.region} · ${r.with_remarks} of ${r.teachers} teachers have a supervisor remark${r.remark_dates ? ' · ' + r.remark_dates : ''}`;
+  const a = attFor(r.emis), attEl = document.getElementById('sr-modal-att');
+  attEl.textContent = !a ? '' : `Last 30 days · Teacher attendance: ${a.t_rate != null ? `${pct1(a.t_rate)} (${fmt(a.t_present)} present, ${fmt(a.t_absent)} absent, ${fmt(a.t_leave)} on leave)` : 'not marked by the head'}`
+    + ` · Student attendance: ${a.s_rate != null ? `${pct1(a.s_rate)} across ${fmt(a.s_classes_marked)} of ${fmt(a.active_classes)} classes` : 'no class registers marked'}`
+    + (a.active_classes > 0 ? ` · ${fmt(unmarkedCount(a))} class${unmarkedCount(a) === 1 ? '' : 'es'} not marked in 30 days` : '');
+  const f = ficoFor(r.emis), obsLine = (src) => {
+    if (!f || !f[`${src}_sessions`]) return `${SRC_LABEL[src]}: none since 8 Sep`;
+    const v = (d) => (f[`${src}_${d}`] == null ? '—' : pct1(f[`${src}_${d}`] / 100));
+    return `${SRC_LABEL[src]} (${fmt(f[`${src}_sessions`])}): subject knowledge ${v('tsk')} · practice ${v('hlp')} · engagement ${v('se')}`;
+  };
+  attEl.textContent += (attEl.textContent ? '\n' : '') + `Observations since 8 Sep · ${obsLine('dc')} · ${obsLine('hitl')}${f && f.mixed_scale ? ' · ⚠ scores here mix two rubric scales' : ''}`;
+  const body = document.getElementById('sr-modal-body');
+  body.innerHTML = '';
+  if (a && a.active_classes > 0 && Array.isArray(a.unmarked_classes)) {
+    const box = document.createElement('div');
+    const n = a.unmarked_classes.length;
+    box.className = 'sr-unmarked' + (n ? '' : ' ok');
+    const ttl = document.createElement('div');
+    ttl.className = 'ttl';
+    ttl.textContent = n ? `${n} of ${a.active_classes} classes have no student attendance marked in the last 30 days` : `All ${a.active_classes} classes marked student attendance in the last 30 days`;
+    box.appendChild(ttl);
+    if (n) {
+      const chips = document.createElement('div');
+      chips.className = 'sr-chips';
+      a.unmarked_classes.forEach((label, i) => {
+        const c = document.createElement('span');
+        c.className = 'sr-chip';
+        c.style.animationDelay = `${0.15 + i * 0.04}s`;
+        c.textContent = label;
+        chips.appendChild(c);
+      });
+      box.appendChild(chips);
+    }
+    body.appendChild(box);
+  }
+  body.appendChild(buildTeacherBox(r, rows));
+  if (typeof dlg.showModal === 'function') { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute('open', '');
+  body.scrollTop = 0;
+}
+function closeSchoolModal() {
+  const dlg = document.getElementById('sr-modal');
+  if (typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open');
+}
+document.getElementById('sr-modal-close').addEventListener('click', closeSchoolModal);
+document.getElementById('sr-modal').addEventListener('click', (e) => { if (e.target.id === 'sr-modal') closeSchoolModal(); });
+
+function drawTable(rows) {
+  const tb = document.querySelector('#tbl tbody');
+  tb.innerHTML = '';
+  const d = dash.data('schools');
+  if (d.status !== 'ok') return;
+  const q = state.q.trim().toLowerCase();
+  let list = rows.map(r => { const a = attFor(r.emis); return { ...r, coverage: r.teachers ? r.with_remarks / r.teachers : 0,
+      t_att: a && a.t_rate != null ? a.t_rate : -1, s_att: a && a.s_rate != null ? a.s_rate : -1,
+      cls_unmarked: a && a.active_classes > 0 ? unmarkedCount(a) : -1,
+      steps_avg: (() => { const st = schoolSteps(r.emis); return st.n ? st.avg : -1; })(),
+      ...(() => { const f = ficoFor(r.emis), g = (k) => (f && f[k] != null && f[k] !== '' ? Number(f[k]) : -1);
+        return { o_sess: g(`${obsSrc}_sessions`), o_tsk: g(`${obsSrc}_tsk`), o_hlp: g(`${obsSrc}_hlp`), o_se: g(`${obsSrc}_se`) }; })() }; })
+    .filter(r => state.region === 'All' || r.region === state.region)
+    .filter(r => !q || `${r.emis} ${r.school}`.toLowerCase().includes(q))
+    .filter(schoolPasses);
+  const k = state.key;
+  list.sort((a, b) => {
+    const av = a[k], bv = b[k];
+    const c = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv), 'en', { numeric: true });
+    return c * state.dir || a.emis.localeCompare(b.emis, 'en', { numeric: true });
+  });
+  const td_ = dash.data('teachers');
+  const byEmis = td_.status === 'ok' ? d3.group(td_.data, t => t.emis) : new Map();
+  const animS = srSchoolAnim; srSchoolAnim = false;
+  list.forEach((r, ri) => {
+    const tr = document.createElement('tr');
+    tr.className = 'sr-click';
+    animRow(tr, ri, animS);
+    tr.dataset.key = r.emis;
+    tr.tabIndex = 0;
+    tr.setAttribute('aria-haspopup', 'dialog');
+    const toggle = () => openSchoolModal(r, byEmis.get(r.emis) || []);
+    tr.addEventListener('click', toggle);
+    tr.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    const td = (txt, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = txt; tr.appendChild(c); return c; };
+    td(r.emis, 'sr-exp');
+    td(r.school);
+    td(r.region, 'sr-hide-narrow');
+    td(fmt(r.teachers), 'num');
+    { const st = schoolSteps(r.emis);
+      const c = td('', 'num sr-steps-cell' + (st.n ? '' : ' na'));
+      { const pill = document.createElement('span'); const band = st.n ? bandFor(st.avg) : BAND_NONE;
+        pill.className = `sr-band b-${band.key}`; pill.textContent = st.n ? stepsTxt(st.avg) : '—'; c.appendChild(pill); }
+      if (st.n) { const sm = document.createElement('small'); sm.textContent = `${st.n} of ${st.total}`; sm.title = `Average over the ${st.n} teachers with all five parts`; c.appendChild(sm); } }
+    const f = ficoFor(r.emis);
+    td(f ? fmt(f[`${obsSrc}_sessions`]) : '—', 'num sr-fico' + (f && f[`${obsSrc}_sessions`] ? '' : ' na'));
+    ['tsk', 'hlp', 'se'].forEach(dm => ficoCell(f ? f[`${obsSrc}_${dm}`] : null, td));
+    const a = attFor(r.emis);
+    td(a && a.t_rate != null ? pct1(a.t_rate) : 'Not marked', 'num sr-att-cell' + (a && a.t_rate != null ? '' : ' none'));
+    td(a && a.s_rate != null ? pct1(a.s_rate) : 'Not marked', 'num sr-att-cell' + (a && a.s_rate != null ? '' : ' none'));
+    td(`${fmt(r.with_remarks)} of ${fmt(r.teachers)}`, 'num' + (r.with_remarks ? '' : ' sr-ta na'));
+    tb.appendChild(tr);
+  });
+  labelCells(document.getElementById('tbl'), 1);
+  const sc = document.getElementById('scount');
+  if (sc) sc.textContent = `Showing ${list.length} of ${rows.length} schools.`;
+  document.querySelectorAll('#tbl th').forEach(th => {
+    const b = th.querySelector('button');
+    th.setAttribute('aria-sort', b.dataset.k === state.key ? (state.dir > 0 ? 'ascending' : 'descending') : 'none');
+  });
+}
+
+let lastRows = [];
+function redraw() {
+  const d = dash.data('schools');
+  lastRows = d.status === 'ok' ? window.srNum(d.data) : [];
+  drawSummary();
+  drawChart(lastRows);
+  drawTable(lastRows);
+  drawTeachers();
+}
+
+const tstate = { region: 'All', status: 'All', school: '', q: '', key: 'has_remark', dir: -1, steps: '', band: '', missing: '', flag: '' };
+function teacherPasses(t) {
+  if (!tstate.steps && !tstate.band && !tstate.missing && !tstate.flag) return true;
+  const st = stepsFor(t);
+  if (tstate.steps) {
+    const status = st.complete ? 'complete' : st.score != null ? 'provisional' : st.weight ? 'incomplete' : 'none';
+    if (status !== tstate.steps) return false;
+  }
+  if (tstate.band) {
+    const [lo, hi] = tstate.band.split('-').map(Number);
+    if (st.score == null || st.score * 100 < lo || st.score * 100 >= hi) return false;
+  }
+  if (tstate.missing && st.v[tstate.missing] != null) return false;
+  if (tstate.flag === 'absent' && !(Number(t.t_absent) > 0)) return false;
+  if (tstate.flag === 'lowpractice' && !(st.v.tp != null && st.v.tp < 0.5)) return false;
+  if (tstate.flag === 'noreg' && Number(t.reg_days || 0) > 0) return false;
+  return true;
+}
+let schoolOpts = '';
+function drawTeachers() {
+  const tb = document.querySelector('#ttbl tbody');
+  const cnt = document.getElementById('tcount');
+  tb.innerHTML = '';
+  const d = dash.data('teachers');
+  if (d.status !== 'ok') { cnt.textContent = ''; return; }
+  const all = d.data;
+  const sel = document.getElementById('tschool');
+  const schools = d3.groups(all, t => t.emis).map(([emis, ts]) => ({ emis, school: ts[0].school, region: ts[0].region }))
+    .filter(x => tstate.region === 'All' || x.region === tstate.region)
+    .sort((a, b) => a.emis.localeCompare(b.emis, 'en', { numeric: true }));
+  const key = tstate.region + schools.length;
+  if (schoolOpts !== key) {
+    schoolOpts = key;
+    sel.innerHTML = '';
+    const o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'All schools'; sel.appendChild(o0);
+    schools.forEach(x => { const o = document.createElement('option'); o.value = x.emis; o.textContent = `${x.emis} · ${x.school}`; sel.appendChild(o); });
+    if (!schools.some(x => x.emis === tstate.school)) tstate.school = '';
+  }
+  sel.value = tstate.school;
+  const q = tstate.q.trim().toLowerCase();
+  const list = all
+    .filter(t => tstate.region === 'All' || t.region === tstate.region)
+    .filter(t => tstate.status === 'All' || t.has_remark === tstate.status)
+    .filter(t => !tstate.school || t.emis === tstate.school)
+    .filter(t => !q || `${t.teacher} ${t.school} ${t.emis}`.toLowerCase().includes(q))
+    .filter(teacherPasses);
+  const k = tstate.key;
+  const numK = ['s1', 's2', 's3', 's4', 's5', 'avg_score', 't_present', 't_absent', 't_leave', 'reg_days'].includes(k);
+  const regRate = (t) => Number(t.reg_child_days || 0) ? Number(t.reg_present) / Number(t.reg_child_days) : -1;
+  list.sort((a, b) => {
+    let c;
+    if (k === 'steps') c = (stepsFor(a).score ?? -1) - (stepsFor(b).score ?? -1);
+    else if (k === 'dc_n') c = (Number(a.dc_sessions || 0) - Number(b.dc_sessions || 0)) || (Number(a.dc_all || 0) - Number(b.dc_all || 0));
+    else if (k === 'dc_all') c = Number(a.dc_all || 0) - Number(b.dc_all || 0);
+    else if (k === 't_rate') c = teacherRate(a) - teacherRate(b);
+    else if (k === 'reg_rate') c = regRate(a) - regRate(b);
+    else if (k.startsWith('o_')) c = ficoSortVal(a, k) - ficoSortVal(b, k);
+    else if (numK) c = (a[k] === '' || a[k] == null ? -1 : Number(a[k])) - (b[k] === '' || b[k] == null ? -1 : Number(b[k]));
+    else c = String(a[k]).localeCompare(String(b[k]), 'en', { numeric: true });
+    return c * tstate.dir || a.emis.localeCompare(b.emis, 'en', { numeric: true }) || a.teacher.localeCompare(b.teacher);
+  });
+  const withR = list.filter(t => t.has_remark === 'Yes').length;
+  cnt.textContent = `Showing ${fmt(list.length)} teachers, ${fmt(withR)} with a remark.`;
+  const frag = document.createDocumentFragment();
+  const animT = srTeacherAnim; srTeacherAnim = false;
+  list.forEach((t, ti) => {
+    const tr = document.createElement('tr');
+    tr.dataset.key = t.teacher_key;
+    animRow(tr, ti, animT);
+    const td = (txt, cls) => { const c = document.createElement('td'); if (cls) c.className = cls; c.textContent = txt; tr.appendChild(c); return c; };
+    td(t.teacher);
+    stepsCell(t, td);
+    dcCell(t, td);
+    tr.classList.add('sr-click'); tr.tabIndex = 0;
+    tr.addEventListener('click', () => openScorecard(t));
+    tr.addEventListener('keydown', (e) => { if (e.key === 'Enter') openScorecard(t); });
+    td(t.school);
+    td(t.region, 'sr-hide-narrow');
+    td(t.has_remark, t.has_remark === 'Yes' ? 'sr-yes' : 'sr-no');
+    td(t.remark_date, 'sr-hide-narrow');
+    ['s1', 's2', 's3', 's4', 's5'].forEach(f => {
+      const c = td('', 'num');
+      if (t[f] !== '') c.appendChild(scoreChip(f, t[f]));
+    });
+    td(t.avg_score, 'num');
+    teacherAttCells(t, td);
+    teacherRegisterCells(t, td);
+    teacherFicoCells(t, td);
+    td(t.comment, 'sr-comment sr-hide-narrow');
+    frag.appendChild(tr);
+  });
+  tb.appendChild(frag);
+  labelCells(document.getElementById('ttbl'), 0, 8, 12);
+  document.querySelectorAll('#ttbl th').forEach(th => {
+    const b = th.querySelector('button');
+    th.setAttribute('aria-sort', b.dataset.tk === tstate.key ? (tstate.dir > 0 ? 'ascending' : 'descending') : 'none');
+  });
+}
+
+window.srShowSchool = (emis) => {
+  tstate.region = 'All'; tstate.status = 'All'; tstate.school = emis; tstate.q = '';
+  document.getElementById('tq').value = '';
+  document.querySelectorAll('[data-tf]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.tf === 'All')));
+  document.querySelectorAll('[data-ts]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.ts === 'All')));
+  drawTeachers();
+  const sec = document.getElementById('teachers');
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  dash.setLink('teachers');
+};
+document.querySelectorAll('[data-tf]').forEach(b => b.addEventListener('click', () => {
+  tstate.region = b.dataset.tf; srTeacherAnim = true;
+  document.querySelectorAll('[data-tf]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  drawTeachers();
+}));
+document.querySelectorAll('[data-ts]').forEach(b => b.addEventListener('click', () => {
+  tstate.status = b.dataset.ts; srTeacherAnim = true;
+  document.querySelectorAll('[data-ts]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  drawTeachers();
+}));
+document.getElementById('tschool').addEventListener('change', (e) => { tstate.school = e.target.value; srTeacherAnim = true; drawTeachers(); });
+document.getElementById('tq').addEventListener('input', (e) => { tstate.q = e.target.value; drawTeachers(); });
+[['tf-steps', 'steps'], ['tf-band', 'band'], ['tf-missing', 'missing'], ['tf-flag', 'flag']].forEach(([id, key]) => {
+  const el = document.getElementById(id);
+  el.addEventListener('change', () => { tstate[key] = el.value; el.classList.toggle('on', !!el.value); srTeacherAnim = true; drawTeachers(); });
+});
+document.getElementById('tf-clear').addEventListener('click', () => {
+  Object.assign(tstate, { region: 'All', status: 'All', school: '', q: '', steps: '', band: '', missing: '', flag: '' });
+  ['tf-steps', 'tf-band', 'tf-missing', 'tf-flag', 'tschool'].forEach(id => { const el = document.getElementById(id); el.value = ''; el.classList.remove('on'); });
+  document.getElementById('tq').value = '';
+  document.querySelectorAll('[data-tf]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.tf === 'All')));
+  document.querySelectorAll('[data-ts]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.ts === 'All')));
+  srTeacherAnim = true; drawTeachers();
+});
+document.querySelectorAll('#ttbl th button').forEach(b => b.addEventListener('click', () => {
+  const k = b.dataset.tk;
+  if (tstate.key === k) tstate.dir = -tstate.dir; else { tstate.key = k; tstate.dir = ['teacher', 'school', 'region', 'comment'].includes(k) ? 1 : -1; }
+  drawTeachers();
+}));
+dash.onData(redraw);
+dash.onData(drawAttendance);
+dash.onData(drawSteps);
+{ const tl = document.getElementById('tlegend'); if (tl && !tl.firstChild) tl.appendChild(bandLegend()); }
+
+// ---- tabs
+function showTab(key, push) {
+  if (!document.getElementById(`tab-${key}`)) key = 'overview';
+  document.querySelectorAll('.sr-tab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === key)));
+  document.querySelectorAll('[data-panel]').forEach(el => { el.hidden = el.dataset.panel !== key; });
+  if (push) dash.setLink(key);
+  srSchoolAnim = true; srTeacherAnim = true;
+  if (dash.redraw) dash.redraw();
+}
+document.querySelectorAll('.sr-tab').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab, true)));
+showTab((location.hash || '').slice(1), false);
+window.addEventListener('hashchange', () => showTab((location.hash || '').slice(1), false));
+
+// ---- one sortable school table per STEPS section
+const pctOrNull = (x) => (x == null ? null : x);
+const SECTION_TABLES = {
+  remarks: {
+    key: 'coverage', dir: -1,
+    extra: '<select class="sr-sel" data-sec-filter aria-label="Remark status"><option value="">Any remark status</option><option value="none">No remarks yet</option><option value="some">Some teachers rated</option><option value="all">All teachers rated</option></select>',
+    filter: (r, v) => !v || (v === 'none' ? r.with_remarks === 0 : v === 'all' ? r.with_remarks >= r.teachers : r.with_remarks > 0 && r.with_remarks < r.teachers),
+    cols: [
+      { label: 'Teachers', num: true, val: r => r.teachers, txt: r => fmt(r.teachers) },
+      { label: 'Teachers with remarks', num: true, val: r => r.with_remarks, txt: r => fmt(r.with_remarks) },
+      { label: 'Remark coverage', num: true, val: r => r.teachers ? r.with_remarks / r.teachers : 0, pill: true },
+      { label: 'Average remark (1–4)', num: true, val: r => r.rem_avg ?? -1, txt: r => r.rem_avg == null ? '—' : r.rem_avg.toFixed(1) },
+      { label: 'Written comments', num: true, val: r => r.written_comment, txt: r => r.with_remarks ? fmt(r.written_comment) : '' },
+      { label: 'Scores only', num: true, val: r => r.score_only, txt: r => r.with_remarks ? fmt(r.score_only) : '' },
+      { label: 'Remark dates', val: r => r.remark_dates || '', txt: r => r.remark_dates || '' },
+    ],
+  },
+  observations: {
+    key: 'o_tsk', dir: -1,
+    cols: [
+      { label: 'Teachers', num: true, val: r => r.teachers, txt: r => fmt(r.teachers) },
+      { label: () => `Teachers observed (${obsSrc === 'dc' ? 'DC' : 'coach visits'})`, num: true, val: r => (ficoFor(r.emis) || {})[`${obsSrc}_teachers`] || 0, txt: r => fmt((ficoFor(r.emis) || {})[`${obsSrc}_teachers`] || 0) },
+      { label: () => `Lessons observed (${obsSrc === 'dc' ? 'DC' : 'coach visits'})`, num: true, val: r => (ficoFor(r.emis) || {})[`${obsSrc}_sessions`] || 0, txt: r => fmt((ficoFor(r.emis) || {})[`${obsSrc}_sessions`] || 0) },
+      ...[['tsk', 'Subject knowledge'], ['hlp', 'Teaching practices'], ['se', 'Student engagement'], ['lpf', 'Lesson-plan fidelity']].map(([d, l]) => ({
+        label: l, num: true, val: r => { const f = ficoFor(r.emis); return f && f[`${obsSrc}_${d}`] != null ? f[`${obsSrc}_${d}`] : -1; },
+        txt: r => { const f = ficoFor(r.emis); return f && f[`${obsSrc}_${d}`] != null ? pct1(f[`${obsSrc}_${d}`] / 100) : '—'; } })),
+    ],
+  },
+  presence: {
+    key: 't_rate', dir: 1,
+    extra: '<select class="sr-sel" data-sec-filter aria-label="Presence follow-up"><option value="">All schools</option><option value="noteacher">Head not marking teacher attendance</option><option value="unmarked">Has unmarked classes</option><option value="absent">Teachers absent in last 30 days</option></select>',
+    filter: (r, v) => { const a = attFor(r.emis); if (!v) return true; if (!a) return false;
+      return v === 'noteacher' ? a.t_days_marked === 0 : v === 'unmarked' ? unmarkedCount(a) > 0 : a.t_absent > 0; },
+    cols: [
+      { label: 'Teachers', num: true, val: r => r.teachers, txt: r => fmt(r.teachers) },
+      { label: 'Teacher attendance', num: true, val: r => { const a = attFor(r.emis); return a && a.t_rate != null ? a.t_rate : -1; }, txt: r => { const a = attFor(r.emis); return a && a.t_rate != null ? pct1(a.t_rate) : 'Not marked'; } },
+      { label: 'Absent days', num: true, val: r => (attFor(r.emis) || {}).t_absent || 0, txt: r => { const a = attFor(r.emis); return a && a.t_days_marked ? fmt(a.t_absent) : ''; }, warn: r => ((attFor(r.emis) || {}).t_absent || 0) > 0 },
+      { label: 'Leave days', num: true, val: r => (attFor(r.emis) || {}).t_leave || 0, txt: r => { const a = attFor(r.emis); return a && a.t_days_marked ? fmt(a.t_leave) : ''; } },
+      { label: 'Student attendance', num: true, val: r => { const a = attFor(r.emis); return a && a.s_rate != null ? a.s_rate : -1; }, txt: r => { const a = attFor(r.emis); return a && a.s_rate != null ? pct1(a.s_rate) : 'Not marked'; } },
+      { label: 'Classes marking', num: true, val: r => (attFor(r.emis) || {}).s_classes_marked || 0, txt: r => { const a = attFor(r.emis); return a && a.active_classes ? `${a.active_classes - unmarkedCount(a)} of ${a.active_classes}` : '—'; } },
+      { label: 'Classes not marked', num: true, val: r => { const a = attFor(r.emis); return a && a.active_classes ? unmarkedCount(a) : -1; }, txt: r => { const a = attFor(r.emis); return a && a.active_classes ? fmt(unmarkedCount(a)) : '—'; }, warn: r => { const a = attFor(r.emis); return !!(a && a.active_classes && unmarkedCount(a) > 0); } },
+      { label: 'Teachers marking registers', num: true, val: r => (attFor(r.emis) || {}).s_teachers_marking || 0, txt: r => fmt((attFor(r.emis) || {}).s_teachers_marking || 0) },
+    ],
+  },
+};
+const secState = {};
+function drawSectionTables() {
+  const tch = dash.data('teachers');
+  const remAvg = new Map();
+  if (tch.status === 'ok') d3.groups(tch.data.filter(t => t.has_remark === 'Yes' && t.s1 !== ''), t => String(t.emis))
+    .forEach(([e, ts]) => remAvg.set(e, d3.mean(ts, t => d3.mean([1, 2, 3, 4, 5], i => Number(t[`s${i}`])))));
+  const byEmis = tch.status === 'ok' ? d3.group(tch.data, t => t.emis) : new Map();
+  Object.entries(SECTION_TABLES).forEach(([key, cfg]) => {
+    const sec = document.getElementById(`${key}-schools`);
+    if (!sec || sec.hidden) return;
+    const st = secState[key] || (secState[key] = { key: cfg.key, dir: cfg.dir, region: '', q: '', filter: '', wired: false });
+    if (!st.wired) {
+      st.wired = true;
+      const extra = sec.querySelector('[data-sec-extra]');
+      if (cfg.extra) extra.innerHTML = cfg.extra;
+      sec.querySelector('[data-sec-region]').addEventListener('change', e => { st.region = e.target.value; e.target.classList.toggle('on', !!e.target.value); drawSectionTables(); });
+      sec.querySelector('[data-sec-q]').addEventListener('input', e => { st.q = e.target.value; drawSectionTables(); });
+      const f = sec.querySelector('[data-sec-filter]');
+      if (f) f.addEventListener('change', e => { st.filter = e.target.value; e.target.classList.toggle('on', !!e.target.value); drawSectionTables(); });
+    }
+    const cols = [{ label: 'EMIS', val: r => r.emis, txt: r => r.emis, cls: 'sr-exp' }, { label: 'School', val: r => r.school, txt: r => r.school },
+      { label: 'Region', val: r => r.region, txt: r => r.region, cls: 'sr-hide-narrow' }, ...cfg.cols];
+    if (typeof st.key !== 'number') st.key = Math.max(cols.findIndex(c => (typeof c.label === 'function' ? c.label() : c.label).toLowerCase().includes(
+      { coverage: 'coverage', o_tsk: 'subject', t_rate: 'teacher attendance' }[cfg.key] || '###')), 0);
+    const head = sec.querySelector('thead tr');
+    head.innerHTML = '';
+    cols.forEach((c, i) => {
+      const th = document.createElement('th'); if (c.num) th.className = 'num';
+      const b = document.createElement('button'); b.type = 'button';
+      b.textContent = typeof c.label === 'function' ? c.label() : c.label;
+      b.addEventListener('click', () => { if (st.key === i) st.dir = -st.dir; else { st.key = i; st.dir = c.num ? -1 : 1; } drawSectionTables(); });
+      th.setAttribute('aria-sort', st.key === i ? (st.dir > 0 ? 'ascending' : 'descending') : 'none');
+      th.appendChild(b); head.appendChild(th);
+    });
+    const q = st.q.trim().toLowerCase();
+    const rows = lastRows.map(r => ({ ...r, rem_avg: remAvg.has(r.emis) ? remAvg.get(r.emis) : null }))
+      .filter(r => !st.region || r.region === st.region)
+      .filter(r => !q || `${r.emis} ${r.school}`.toLowerCase().includes(q))
+      .filter(r => !cfg.filter || cfg.filter(r, st.filter));
+    const col = cols[st.key];
+    rows.sort((a, b) => { const x = col.val(a), y = col.val(b);
+      const c = typeof x === 'number' ? x - y : String(x).localeCompare(String(y), 'en', { numeric: true });
+      return c * st.dir || a.emis.localeCompare(b.emis, 'en', { numeric: true }); });
+    const tb = sec.querySelector('tbody');
+    tb.innerHTML = '';
+    rows.forEach((r, ri) => {
+      const tr = document.createElement('tr'); tr.className = 'sr-click'; tr.tabIndex = 0;
+      animRow(tr, ri, srSchoolAnim);
+      const open = () => openSchoolModal(r, byEmis.get(r.emis) || []);
+      tr.addEventListener('click', open);
+      tr.addEventListener('keydown', e => { if (e.key === 'Enter') open(); });
+      cols.forEach(c => {
+        const td = document.createElement('td');
+        td.className = [c.num ? 'num' : '', c.cls || '', c.warn && c.warn(r) ? 'sr-ta abs' : ''].join(' ').trim();
+        if (c.pill) {
+          const cov = c.val(r), wrap = document.createElement('div'); wrap.className = 'sr-cov';
+          const pill = document.createElement('span'); pill.className = 'sr-pill ' + (cov >= 0.999 ? 'full' : cov > 0 ? 'part' : 'none');
+          pill.textContent = cov > 0 ? pct(cov) : 'None';
+          const bar = document.createElement('span'); bar.className = 'bar';
+          const fill = document.createElement('span'); fill.style.width = `${cov * 100}%`; fill.style.background = covColor(cov);
+          bar.appendChild(fill); wrap.append(bar, pill); td.appendChild(wrap);
+        } else td.textContent = c.txt(r);
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    labelCells(sec.querySelector('table'), 1);
+    sec.querySelector('[data-sec-count]').textContent = `Showing ${rows.length} of ${lastRows.length} schools.`;
+  });
+}
+dash.onData(drawSectionTables);
+
+// ======================= Analytics =======================
+const REG_COLOR = { 'Urban-I': 'var(--reg-u1)', 'Barakahu': 'var(--reg-bk)' };
+const LEVEL_COLOR = { 1: 'var(--band-support)', 2: 'var(--band-developing)', 3: 'var(--band-ontrack)', 4: 'var(--band-strong)' };
+function anBody(id) {
+  const card = document.getElementById(id), body = card && card.querySelector('[data-an-body]');
+  if (!body || card.offsetParent === null) return null;   // hidden tab: draw when shown
+  body.innerHTML = '';
+  return body;
+}
+function anSvg(body, h) {
+  const W = Math.max(body.clientWidth, 280);
+  const svg = d3.select(body).append('svg').attr('viewBox', `0 0 ${W} ${h}`).attr('height', h);
+  return { svg, W };
+}
+function anKey(body, items) {
+  const k = document.createElement('div'); k.className = 'sr-an-key';
+  items.forEach(([label, color]) => { const sp = document.createElement('span'); const i = document.createElement('i'); i.style.background = color; sp.append(i, label); k.appendChild(sp); });
+  body.appendChild(k);
+}
+function tip(sel, text) { sel.append('title').text(text); }
+
+// 1. coverage funnel
+function anFunnel(all) {
+  const body = anBody('an-funnel'); if (!body) return;
+  const steps = [
+    ['On the rosters', x => true],
+    ['Recorded a Digital Coach lesson (since 8 Sep)', x => x.s.v.sk != null],
+    ['Teacher attendance marked by the head', x => x.s.v.ta != null],
+    ['Marked a class register (students)', x => x.s.v.sa != null],
+    ['Has a supervisor remark', x => x.s.v.sr != null],
+    ['All five STEPS parts', x => x.s.complete],
+  ];
+  const regions = ['Urban-I', 'Barakahu'], total = all.length;
+  const rowH = 34, left = Math.min(330, body.clientWidth * 0.45), h = steps.length * rowH + 8;
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scaleLinear([0, total], [left, W - 70]);
+  steps.forEach(([label, f], i) => {
+    const y = i * rowH + 4;
+    svg.append('text').attr('class', 'lbl').attr('x', left - 10).attr('y', y + 18).attr('text-anchor', 'end').text(label);
+    let x0 = x(0), n = 0;
+    regions.forEach(rg => {
+      const c = all.filter(z => z.t.region === rg && f(z)).length; n += c;
+      const r = svg.append('rect').attr('x', x0).attr('y', y + 6).attr('height', 18).attr('width', Math.max(x(c) - x(0), 0)).attr('rx', 3).style('fill', REG_COLOR[rg]);
+      tip(r, `${rg}: ${fmt(c)} teachers`); x0 += x(c) - x(0);
+    });
+    svg.append('text').attr('class', 'val').attr('x', x0 + 8).attr('y', y + 19).text(`${fmt(n)} · ${pct(n / total)}`);
+  });
+  anKey(body, regions.map(r => [r, REG_COLOR[r]]));
+}
+
+// 2. histogram
+function anHist(all) {
+  const body = anBody('an-hist'); if (!body) return;
+  const scored = all.filter(z => z.s.score != null);
+  const lo = 50, hi = 84, step = 2, bins = d3.range(lo, hi, step);
+  const h = 230, m = { l: 34, r: 10, t: 14, b: 30 };
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scaleLinear([lo, hi], [m.l, W - m.r]);
+  const counts = bins.map(b => ({ b, u: 0, k: 0 }));
+  scored.forEach(z => { const v = Math.min(Math.max(z.s.score * 100, lo), hi - 0.001); const c = counts[Math.floor((v - lo) / step)]; if (z.t.region === 'Urban-I') c.u++; else c.k++; });
+  const y = d3.scaleLinear([0, d3.max(counts, c => c.u + c.k) || 1], [h - m.b, m.t]).nice();
+  svg.append('g').attr('class', 'grid').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', d => y(d)).attr('y2', d => y(d));
+  svg.append('g').selectAll('text').data(y.ticks(4)).join('text').attr('x', m.l - 6).attr('y', d => y(d) + 4).attr('text-anchor', 'end').text(d => d);
+  counts.forEach(c => {
+    const bx = x(c.b) + 1, bw = Math.max(x(c.b + step) - x(c.b) - 2, 1);
+    const r1 = svg.append('rect').attr('x', bx).attr('width', bw).attr('y', y(c.u)).attr('height', y(0) - y(c.u)).style('fill', REG_COLOR['Urban-I']);
+    tip(r1, `${c.b}–${c.b + step}: Urban-I ${c.u}`);
+    const r2 = svg.append('rect').attr('x', bx).attr('width', bw).attr('y', y(c.u + c.k)).attr('height', y(c.u) - y(c.u + c.k)).style('fill', REG_COLOR['Barakahu']);
+    tip(r2, `${c.b}–${c.b + step}: Barakahu ${c.k}`);
+  });
+  [[60, 'Developing'], [70, 'Proficient'], [80, 'Exemplary']].forEach(([v, l]) => {
+    svg.append('line').attr('x1', x(v)).attr('x2', x(v)).attr('y1', m.t - 4).attr('y2', h - m.b).style('stroke', 'var(--color-fg-muted)').attr('stroke-dasharray', '4 3');
+    svg.append('text').attr('x', x(v) + 4).attr('y', m.t + 6).text(l);
+  });
+  svg.append('g').selectAll('text').data(d3.range(lo, hi + 1, 6)).join('text').attr('x', d => x(d)).attr('y', h - m.b + 16).attr('text-anchor', 'middle').text(d => d);
+  const med = d3.median(scored, z => z.s.score * 100);
+  const st = document.createElement('div'); st.className = 'sr-an-stat';
+  st.innerHTML = `<b>${fmt(scored.length)}</b> teachers scored · median <b>${med ? med.toFixed(1) : '—'}</b>`;
+  body.appendChild(st);
+}
+
+// 3. points lost per part
+function anLost(all) {
+  const body = anBody('an-lost'); if (!body) return;
+  const items = STEPS_PARTS.map(p => { const have = all.filter(z => z.s.v[p.key] != null);
+    return { label: p.label, w: p.w, n: have.length, lost: have.length ? d3.mean(have, z => p.w * (1 - z.s.v[p.key])) : 0 }; })
+    .sort((a, b) => b.lost - a.lost);
+  const rowH = 30, left = Math.min(240, body.clientWidth * 0.48), h = items.length * rowH + 6;
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scaleLinear([0, d3.max(items, d => d.lost) || 1], [left, W - 60]);
+  items.forEach((d, i) => {
+    const y = i * rowH;
+    svg.append('text').attr('class', 'lbl').attr('x', left - 10).attr('y', y + 18).attr('text-anchor', 'end').text(d.label);
+    const r = svg.append('rect').attr('x', left).attr('y', y + 6).attr('height', 16).attr('rx', 3).attr('width', x(d.lost) - left).style('fill', i === 0 ? 'var(--band-support)' : 'var(--band-developing)');
+    tip(r, `${d.label} (${d.w}%): ${d.lost.toFixed(1)} points lost on average, over ${d.n} teachers`);
+    svg.append('text').attr('class', 'val').attr('x', x(d.lost) + 6).attr('y', y + 19).text(`${d.lost.toFixed(1)} pts`);
+  });
+}
+
+// 4. league table
+function anLeague(all) {
+  const body = anBody('an-league'); if (!body) return;
+  const bySchool = d3.groups(all.filter(z => z.s.score != null), z => z.t.emis)
+    .map(([emis, zs]) => ({ emis, school: zs[0].t.school, region: zs[0].t.region, n: zs.length, avg: d3.mean(zs, z => z.s.score) }))
+    .filter(d => d.n >= 3).sort((a, b) => b.avg - a.avg);
+  const wrap = document.createElement('div'); wrap.className = 'sr-league';
+  const list = (title, rows) => {
+    const col = document.createElement('div'); const h = document.createElement('h3'); h.textContent = title; col.appendChild(h);
+    const ol = document.createElement('ol');
+    rows.forEach(d => {
+      const li = document.createElement('li'); const band = bandFor(d.avg);
+      const pill = document.createElement('span'); pill.className = `sr-band b-${band.key}`; pill.textContent = stepsTxt(d.avg);
+      const n = document.createElement('span'); n.className = 'n'; n.textContent = ` ${d.emis} · ${d.school} · ${d.region} · ${d.n} teachers`;
+      li.append(pill, n);
+      li.addEventListener('click', () => { const r = lastRows.find(x => x.emis === d.emis); const tch = dash.data('teachers').data.filter(t => t.emis === d.emis); if (r) openSchoolModal(r, tch); });
+      ol.appendChild(li);
+    });
+    col.appendChild(ol); wrap.appendChild(col);
+  };
+  list('Top 10 schools', bySchool.slice(0, 10));
+  list('Bottom 10 schools', bySchool.slice(-10).reverse());
+  body.appendChild(wrap);
+  const st = document.createElement('div'); st.className = 'sr-an-stat';
+  st.textContent = `${bySchool.length} of 86 schools have at least 3 scored teachers. Click a school for its teachers.`;
+  body.appendChild(st);
+}
+
+// 5. heads vs Digital Coach
+function anScatter(all) {
+  const body = anBody('an-scatter'); if (!body) return;
+  const pts = all.filter(z => z.s.v.sk != null && z.s.v.tp != null && z.s.v.se != null && z.s.remAvg != null)
+    .map(z => ({ z, x: (30 * z.s.v.sk + 25 * z.s.v.tp + 25 * z.s.v.se) / 80, y: z.s.remAvg }));
+  if (!pts.length) { body.textContent = 'No teachers have both a remark and a classroom score yet.'; return; }
+  const h = 250, m = { l: 40, r: 12, t: 10, b: 36 };
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scaleLinear([d3.min(pts, p => p.x) - 0.03, d3.max(pts, p => p.x) + 0.03], [m.l, W - m.r]);
+  const y = d3.scaleLinear([0.8, 4.2], [h - m.b, m.t]);
+  svg.append('g').attr('class', 'grid').selectAll('line').data([1, 2, 3, 4]).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', d => y(d)).attr('y2', d => y(d));
+  svg.append('g').selectAll('text').data([1, 2, 3, 4]).join('text').attr('x', m.l - 8).attr('y', d => y(d) + 4).attr('text-anchor', 'end').text(d => d);
+  svg.append('g').selectAll('text').data(x.ticks(5)).join('text').attr('x', d => x(d)).attr('y', h - m.b + 16).attr('text-anchor', 'middle').text(d => pct(d));
+  svg.append('text').attr('x', (m.l + W - m.r) / 2).attr('y', h - 4).attr('text-anchor', 'middle').text('Digital Coach classroom score (subject knowledge, practices, engagement)');
+  svg.append('text').attr('transform', `translate(11 ${(m.t + h - m.b) / 2}) rotate(-90)`).attr('text-anchor', 'middle').text('Remark average (1–4)');
+  pts.forEach((p, i) => {
+    const jit = ((i * 37) % 11 - 5) * 0.012;
+    const c = svg.append('circle').attr('cx', x(p.x)).attr('cy', y(p.y + jit)).attr('r', 5).style('fill', REG_COLOR[p.z.t.region]).style('fill-opacity', 0.8).style('cursor', 'pointer');
+    tip(c, `${p.z.t.teacher} (${p.z.t.school}): classroom ${pct1(p.x)}, remark ${p.y.toFixed(1)}`);
+    c.on('click', () => openScorecard(p.z.t));
+  });
+  const r = (() => { const mx = d3.mean(pts, p => p.x), my = d3.mean(pts, p => p.y);
+    const num = d3.sum(pts, p => (p.x - mx) * (p.y - my)), den = Math.sqrt(d3.sum(pts, p => (p.x - mx) ** 2) * d3.sum(pts, p => (p.y - my) ** 2));
+    return den ? num / den : 0; })();
+  const st = document.createElement('div'); st.className = 'sr-an-stat';
+  const verdict = Math.abs(r) < 0.2 ? 'hardly agree' : Math.abs(r) < 0.4 ? 'agree a little' : r > 0 ? 'mostly agree' : 'disagree';
+  st.innerHTML = `<b>${pts.length}</b> teachers · correlation <b>${r.toFixed(2)}</b>: heads and the Digital Coach ${verdict}. Click a dot for the scorecard.`;
+  body.appendChild(st);
+}
+
+// 6. DC vs coach visits
+function anDcVh() {
+  const body = anBody('an-dcvh'); if (!body) return;
+  const f = dash.data('fico'); if (f.status !== 'ok') return;
+  const secs = [['tsk', 'Subject knowledge'], ['hlp', 'Teaching practices'], ['se', 'Student engagement'], ['lpf', 'Lesson-plan fidelity']];
+  const val = (src, d) => { const mx = d3.sum(f.data, r => r[`${src}_${d}_max`] || 0); return mx ? d3.sum(f.data, r => r[`${src}_${d}_score`] || 0) / mx : null; };
+  const rowH = 44, left = Math.min(180, body.clientWidth * 0.4), h = secs.length * rowH + 6;
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scaleLinear([0, 1], [left, W - 50]);
+  secs.forEach(([d, label], i) => {
+    const y = i * rowH;
+    svg.append('text').attr('class', 'lbl').attr('x', left - 10).attr('y', y + 24).attr('text-anchor', 'end').text(label);
+    [['dc', 'Digital Coach', 'var(--nt-green)', 4], ['hitl', 'Coach visits', 'var(--c-visit)', 22]].forEach(([src, nm, col, off]) => {
+      const v = val(src, d); if (v == null) return;
+      const r = svg.append('rect').attr('x', left).attr('y', y + off).attr('height', 15).attr('rx', 3).attr('width', x(v) - left).style('fill', col);
+      tip(r, `${label}, ${nm}: ${pct1(v)}`);
+      svg.append('text').attr('class', 'val').attr('x', x(v) + 6).attr('y', y + off + 12).text(pct1(v));
+    });
+  });
+  anKey(body, [['Digital Coach (AI, recordings)', 'var(--nt-green)'], ['Coach visits (in class)', 'var(--c-visit)']]);
+}
+
+// 7. remark indicators
+function anInd(all) {
+  const body = anBody('an-ind'); if (!body) return;
+  const rem = all.filter(z => z.s.remAvg != null);
+  const rowH = 32, left = Math.min(280, body.clientWidth * 0.42), h = REMARK_INDICATORS.length * rowH + 6;
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scaleLinear([0, rem.length || 1], [left, W - 60]);
+  REMARK_INDICATORS.forEach((nm, i) => {
+    const y = i * rowH;
+    svg.append('text').attr('class', 'lbl').attr('x', left - 10).attr('y', y + 19).attr('text-anchor', 'end').text(nm);
+    let x0 = left;
+    [1, 2, 3, 4].forEach(lv => {
+      const n = rem.filter(z => Number(z.t[`s${i + 1}`]) === lv).length;
+      const r = svg.append('rect').attr('x', x0).attr('y', y + 6).attr('height', 18).attr('width', x(n) - x(0)).style('fill', LEVEL_COLOR[lv]);
+      tip(r, `${nm}: ${n} teachers rated ${lv} – ${REMARK_LEVELS[lv]}`);
+      if (x(n) - x(0) > 22) svg.append('text').attr('x', x0 + (x(n) - x(0)) / 2).attr('y', y + 19).attr('text-anchor', 'middle').style('fill', '#fff').style('font-weight', 600).text(n);
+      x0 += x(n) - x(0);
+    });
+    svg.append('text').attr('class', 'val').attr('x', x0 + 8).attr('y', y + 19).text(d3.mean(rem, z => Number(z.t[`s${i + 1}`])).toFixed(1));
+  });
+  anKey(body, [1, 2, 3, 4].map(l => [`${l} ${REMARK_LEVELS[l]}`, LEVEL_COLOR[l]]));
+}
+
+// ---- trends helpers
+const weekLabel = (w) => d3.utcFormat('%-d %b')(new Date(w + 'T00:00:00Z'));
+function anBars(id, weeks, series, yFmt) {
+  const body = anBody(id); if (!body) return;
+  const h = 230, m = { l: 40, r: 10, t: 12, b: 30 };
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scaleBand(weeks, [m.l, W - m.r]).padding(0.25);
+  const y = d3.scaleLinear([0, d3.max(weeks, (w, i) => d3.sum(series, s => s.values[i] || 0)) || 1], [h - m.b, m.t]).nice();
+  svg.append('g').attr('class', 'grid').selectAll('line').data(y.ticks(4)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', d => y(d)).attr('y2', d => y(d));
+  svg.append('g').selectAll('text').data(y.ticks(4)).join('text').attr('x', m.l - 6).attr('y', d => y(d) + 4).attr('text-anchor', 'end').text(d => yFmt(d));
+  weeks.forEach((w, i) => {
+    let acc = 0;
+    series.forEach(s => { const v = s.values[i] || 0;
+      const r = svg.append('rect').attr('x', x(w)).attr('width', x.bandwidth()).attr('y', y(acc + v)).attr('height', y(acc) - y(acc + v)).style('fill', s.color)
+        .style('opacity', i === weeks.length - 1 ? 0.45 : 1);
+      tip(r, `Week of ${weekLabel(w)}: ${s.name} ${yFmt(v)}${i === weeks.length - 1 ? ' (week in progress)' : ''}`); acc += v; });
+  });
+  const every = Math.ceil(weeks.length / Math.max(Math.floor((W - m.l) / 60), 1));
+  svg.append('g').selectAll('text').data(weeks.filter((w, i) => i % every === 0)).join('text').attr('x', w => x(w) + x.bandwidth() / 2).attr('y', h - m.b + 16).attr('text-anchor', 'middle').text(weekLabel);
+  anKey(body, series.map(s => [s.name, s.color]));
+}
+function anLines(id, weeks, series, yDomain) {
+  const body = anBody(id); if (!body) return;
+  const h = 230, m = { l: 42, r: 12, t: 12, b: 30 };
+  const { svg, W } = anSvg(body, h);
+  const x = d3.scalePoint(weeks, [m.l + 8, W - m.r - 8]);
+  const vals = series.flatMap(s => s.values).filter(v => v != null);
+  const lo = Math.min(yDomain[0], Math.floor((d3.min(vals) ?? yDomain[0]) * 20) / 20);
+  const hi = Math.max(yDomain[1], Math.ceil((d3.max(vals) ?? yDomain[1]) * 20) / 20);
+  const y = d3.scaleLinear([lo, hi], [h - m.b, m.t]);
+  svg.append('g').attr('class', 'grid').selectAll('line').data(y.ticks(5)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', d => y(d)).attr('y2', d => y(d));
+  svg.append('g').selectAll('text').data(y.ticks(5)).join('text').attr('x', m.l - 6).attr('y', d => y(d) + 4).attr('text-anchor', 'end').text(d => pct(d));
+  series.forEach(s => {
+    const pts = weeks.map((w, i) => [w, s.values[i]]).filter(p => p[1] != null);
+    svg.append('path').datum(pts).attr('d', d3.line(p => x(p[0]), p => y(p[1]))).style('fill', 'none').style('stroke', s.color)
+      .attr('stroke-width', 2.2).attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('stroke-dasharray', s.dash || null);
+    pts.forEach(p => { const c = svg.append('circle').attr('cx', x(p[0])).attr('cy', y(p[1])).attr('r', 3.5).style('fill', s.color);
+      tip(c, `Week of ${weekLabel(p[0])}: ${s.name} ${pct1(p[1])}`); });
+  });
+  const every = Math.ceil(weeks.length / Math.max(Math.floor((W - m.l) / 60), 1));
+  svg.append('g').selectAll('text').data(weeks.filter((w, i) => i % every === 0)).join('text').attr('x', w => x(w)).attr('y', h - m.b + 16).attr('text-anchor', 'middle').text(weekLabel);
+  anKey(body, series.map(s => [s.name, s.color]));
+}
+
+function anTrends() {
+  const t = dash.data('trends'); if (t.status !== 'ok') return;
+  const weeks = [...new Set(t.data.map(r => r.week))].sort();
+  const get = (rg, f) => weeks.map(w => { const r = t.data.find(x => x.week === w && x.region === rg); return r ? f(r) : null; });
+  const both = (f) => weeks.map(w => { const rs = t.data.filter(x => x.week === w); return f(rs); });
+  anBars('an-t-lessons', weeks, [
+    { name: 'DC lessons · Urban-I', color: 'var(--reg-u1)', values: get('Urban-I', r => r.dc_lessons) },
+    { name: 'DC lessons · Barakahu', color: 'var(--reg-bk)', values: get('Barakahu', r => r.dc_lessons) },
+    { name: 'Coach visits (both)', color: 'var(--c-visit)', values: both(rs => d3.sum(rs, r => r.hitl_visits)) },
+  ], d3.format(','));
+  const sw = weeks.filter(w => w >= '2026-09-07');
+  const pool = (k) => sw.map(w => { const rs = t.data.filter(x => x.week === w); const mx = d3.sum(rs, r => r[`dc_${k}_max`] || 0); return mx ? d3.sum(rs, r => r[`dc_${k}_score`] || 0) / mx : null; });
+  anLines('an-t-scores', sw, [
+    { name: 'Subject knowledge', color: 'var(--band-strong)', values: pool('tsk') },
+    { name: 'Teaching practices', color: 'var(--band-developing)', values: pool('hlp') },
+    { name: 'Student engagement', color: 'var(--reg-u1)', values: pool('se') },
+  ], [0.4, 0.9]);
+  // A week's rate needs enough behind it: 20+ teacher-days or 20+ class registers, else the point is left out.
+  const tRate = (rg) => get(rg, r => (r.t_present + r.t_absent >= 20 ? r.t_present / (r.t_present + r.t_absent) : null));
+  const sRate = (rg) => get(rg, r => (r.s_registers >= 20 && r.s_child_days ? r.s_present / r.s_child_days : null));
+  anLines('an-t-att', weeks, [
+    { name: 'Teachers · Urban-I (solid)', color: 'var(--reg-u1)', values: tRate('Urban-I') },
+    { name: 'Teachers · Barakahu (solid)', color: 'var(--reg-bk)', values: tRate('Barakahu') },
+    { name: 'Students · Urban-I (dashed)', color: 'var(--reg-u1)', values: sRate('Urban-I'), dash: '5 4' },
+    { name: 'Students · Barakahu (dashed)', color: 'var(--reg-bk)', values: sRate('Barakahu'), dash: '5 4' },
+  ], [0.6, 1]);
+  anBars('an-t-remarks', weeks, [
+    { name: 'Urban-I', color: 'var(--reg-u1)', values: get('Urban-I', r => r.remarks_submitted) },
+    { name: 'Barakahu', color: 'var(--reg-bk)', values: get('Barakahu', r => r.remarks_submitted) },
+  ], d3.format(','));
+}
+
+function drawAnalytics() {
+  const sec = document.getElementById('analytics');
+  if (!sec || sec.hidden) return;
+  const lg = document.getElementById('an-legend');
+  if (!lg.firstChild) { anKey(lg, [['Urban-I', 'var(--reg-u1)'], ['Barakahu', 'var(--reg-bk)']]); }
+  const tch = dash.data('teachers');
+  if (tch.status !== 'ok') return;
+  const all = tch.data.map(t => ({ t, s: stepsFor(t) }));
+  anFunnel(all); anHist(all); anLost(all); anLeague(all); anScatter(all); anDcVh(); anInd(all); anTrends();
+}
+dash.onData(drawAnalytics);
+
+// ======================= PNG snapshots =======================
+const SNAP_TARGETS = {
+  regional: () => ({ el: document.getElementById('steps'), name: 'regional', title: 'STEPS scores by region' }),
+  schools: () => ({ el: document.getElementById('all-schools'), name: 'schools', title: 'All schools: complete STEPS picture' }),
+  teachers: () => ({ el: document.getElementById('teachers'), name: 'teachers', title: 'Teachers: STEPS and all parts' }),
+  scorecard: () => ({ el: document.querySelector('#sr-scorecard .sr-modal-panel'), name: 'scorecard-' + (document.getElementById('sr-scorecard-title').textContent || 'teacher'), title: null }),
+  school: () => ({ el: document.querySelector('#sr-modal .sr-modal-panel'), name: 'school-' + (document.getElementById('sr-modal-title').textContent || 'school'), title: null }),
+};
+// Analytics: one button per chart card plus one for the whole tab, added here so every card gets one.
+(() => {
+  const icon = document.querySelector('.sr-snap-btn svg');
+  const mk = (key, hint) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'sr-snap-btn';
+    b.dataset.snap = key; b.title = hint; b.setAttribute('aria-label', hint);
+    if (icon) b.appendChild(icon.cloneNode(true)); const sp = document.createElement('span'); sp.textContent = 'Download image'; b.appendChild(sp); return b; };
+  document.querySelectorAll('#analytics .sr-an').forEach(card => {
+    const h = card.querySelector('h2'); const row = document.createElement('div'); row.className = 'sr-snap-row';
+    h.replaceWith(row); row.append(h, mk(`an:${card.id}`, `Save the "${h.textContent}" chart as a picture (PNG)`));
+  });
+  const head = document.querySelector('#analytics > .sr-att-head');
+  if (head) head.appendChild(mk('an:analytics', 'Save the whole Analytics tab as a picture (PNG)'));
+})();
+const slug = (x) => x.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+async function snapshot(kind, btn) {
+  if (!window.htmlToImage) { alert('The picture tool did not load. Check your connection and reload the page.'); return; }
+  const { el, name, title } = kind.startsWith('an:')
+    ? (() => { const node = document.getElementById(kind.slice(3)); const t = kind === 'an:analytics' ? 'Analytics' : (node.querySelector('h2') || {}).textContent || 'Analytics';
+        return { el: node, name: 'analytics-' + t, title: kind === 'an:analytics' ? 'STEPS analytics' : 'STEPS analytics' }; })()
+    : SNAP_TARGETS[kind]();
+  if (!el) return;
+  if (kind === 'teachers') {
+    const n = el.querySelectorAll('tbody tr').length;
+    if (n > 300 && !confirm(`${n} teachers are showing, which makes a very tall picture. Filter by region or school first for a readable one. Download all ${n} anyway?`)) return;
+  }
+  const label = btn.innerHTML; btn.disabled = true; btn.querySelector('span').textContent = 'Preparing image…';
+  // Wrap a copy-free capture: temporarily add a branded header inside the element, expand scroll boxes, stop animations.
+  let head = null;
+  if (title) {
+    head = document.createElement('div'); head.className = 'sr-snap-head';
+    const img = document.createElement('img'); img.src = '/assets/niete-logo.png'; img.alt = '';
+    const txt = document.createElement('div'); const b = document.createElement('b'); b.textContent = title;
+    const sp = document.createElement('span'); const m = window.srMeta || {};
+    sp.textContent = `STEPS teacher evaluation · Urban-I & Barakahu · data as of ${m.as_of || '—'}`;
+    txt.append(b, sp); head.append(img, txt); el.prepend(head);
+  }
+  document.documentElement.classList.add('sr-capturing');
+  try {
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const bg = getComputedStyle(document.body).backgroundColor;
+    const big = el.scrollWidth * el.scrollHeight > 18e6;
+    const url = await window.htmlToImage.toPng(el, {
+      backgroundColor: bg, pixelRatio: big ? 1 : 2, cacheBust: true,
+      width: el.scrollWidth, height: el.scrollHeight,
+      style: { margin: '0', maxHeight: 'none', transform: 'none' },
+      filter: (node) => !(node.classList && (node.classList.contains('sr-snap-btn') || node.classList.contains('sr-modal-x'))),
+    });
+    const a = document.createElement('a');
+    a.href = url; a.download = `STEPS-${slug(name)}-${((window.srMeta || {}).as_of || '').slice(0, 10) || 'snapshot'}.png`;
+    document.body.appendChild(a); a.click(); a.remove();
+  } catch (e) {
+    console.error(e); alert('Could not create the picture. Try again, or filter to fewer rows.');
+  } finally {
+    document.documentElement.classList.remove('sr-capturing');
+    if (head) head.remove();
+    btn.disabled = false; btn.innerHTML = label;
+  }
+}
+document.querySelectorAll('.sr-snap-btn').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); snapshot(b.dataset.snap, b); }));
+dash.onData(drawIndicators);
+dash.onData(drawObservations);
+document.querySelectorAll('[data-src]').forEach(b => b.addEventListener('click', () => {
+  obsSrc = b.dataset.src;
+  document.querySelectorAll('[data-src]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  document.querySelectorAll('.sr-src-name').forEach(x => { x.textContent = obsSrc === 'dc' ? 'DC' : 'coach visits'; });
+  drawSectionTables();
+  srSchoolAnim = true; srTeacherAnim = true;
+  drawObservations(); drawTable(lastRows); drawTeachers();
+}));
+
+document.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => {
+  state.region = b.dataset.f; srSchoolAnim = true;
+  document.querySelectorAll('[data-f]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  drawTable(lastRows);
+}));
+document.querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => {
+  state.status = b.dataset.s; srSchoolAnim = true;
+  document.querySelectorAll('[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  drawTable(lastRows);
+}));
+document.getElementById('q').addEventListener('input', (e) => { state.q = e.target.value; drawTable(lastRows); });
+[['sf-follow', 'follow'], ['sf-band', 'band']].forEach(([id, key]) => {
+  const el = document.getElementById(id);
+  el.addEventListener('change', () => { state[key] = el.value; el.classList.toggle('on', !!el.value); srSchoolAnim = true; drawTable(lastRows); });
+});
+document.getElementById('sf-clear').addEventListener('click', () => {
+  Object.assign(state, { region: 'All', status: 'All', q: '', follow: '', band: '' });
+  ['sf-follow', 'sf-band'].forEach(id => { const el = document.getElementById(id); el.value = ''; el.classList.remove('on'); });
+  document.getElementById('q').value = '';
+  document.querySelectorAll('[data-f]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.f === 'All')));
+  document.querySelectorAll('[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.s === 'All')));
+  srSchoolAnim = true; drawTable(lastRows);
+});
+document.querySelectorAll('#tbl th button').forEach(b => b.addEventListener('click', () => {
+  const k = b.dataset.k;
+  if (state.key === k) state.dir = -state.dir; else { state.key = k; state.dir = ['school', 'region', 'emis', 'remark_dates'].includes(k) ? 1 : -1; }
+  drawTable(lastRows);
+}));
+</script>
+
+<footer class="sr-foot" id="sr-foot">
+  <span>Data: Taleemabad data service (BigQuery). Teacher counts use the official headcount rule; supervisor-remark figures are provisional.</span>
+  <span id="sr-foot-status"></span>
+</footer>
+<script>
+dash.onData(() => {
+  const m = window.srMeta, el = document.getElementById('sr-foot-status');
+  if (!m) { el.textContent = ''; return; }
+  el.className = m.last_error ? 'warn' : '';
+  el.textContent = m.last_error
+    ? `Last refresh attempt failed; showing data from ${m.as_of || 'earlier'}.`
+    : `Refreshes automatically every day at ${(m.schedule_pkt || []).join(' and ') || 'set times'} PKT.`;
+});
+</script>
+</div>
+</body>
+</html>

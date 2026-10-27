@@ -1,0 +1,9 @@
+{
+  "name": "steps-remarks-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "STEPS supervisor remarks dashboard (Urban-I + Barakahu), refreshed daily from the Taleemabad data service",
+  "main": "server.js",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js" }
+}

@@ -1,0 +1,78 @@
+# STEPS Teacher Evaluation Dashboard
+
+A live dashboard for NIETE's **STEPS** teacher evaluation in two ICT sectors, **Urban-I** and **Barakahu** (86 schools, ~940 teachers). It shows each teacher's STEPS score and the five parts behind it, per region, per school and per teacher, and refreshes itself from the Taleemabad data service twice a day.
+
+## What STEPS measures
+
+| Part | Weight | Source |
+|---|---|---|
+| Subject knowledge | 30% | Digital Coach FICO score, section F (from 8 Sep 2026, FICO v3) |
+| Teaching practices | 25% | Digital Coach FICO score, section C |
+| Student engagement | 25% | Digital Coach FICO score, section D |
+| Presence | 10% | Teacher attendance marked by the head (7%) and student attendance from class registers (3%), last 30 days |
+| Supervisor remark | 10% | The head's quarterly rating on 5 indicators (1–4), averaged ÷ 4 |
+
+Performance levels: **Exemplary** 80+, **Proficient** 70–79.9, **Developing** 60–69.9, **Needs support** below 60. A teacher with no Digital Coach classroom score since 8 Sep is shown as **Incomplete** (no STEPS number).
+
+## Tabs
+
+Overview · Analytics (charts and weekly trends) · Supervisor remarks · Classroom observations · Presence · All schools · Teachers (with a scorecard per teacher). Every section can be saved as a PNG with **Download image**.
+
+## How it works
+
+```
+Browser ──► server.js (Railway) ──► Taleemabad data service (MCP over HTTP) ──► BigQuery (Niete_Rumi_db)
+```
+
+- `server.js` is a small Node server with no dependencies. At startup and at the times in `REFRESH_TIMES_PKT` it runs the queries in `sql/` through the data service's `execute_query` tool, joins the results per teacher, and keeps them in memory (plus a cache file in `DATA_DIR`).
+- The page asks `/api/teachers` for the data; visitors never query BigQuery themselves.
+- If a refresh fails, the last good data stays up and the refresh is retried after 30 minutes.
+
+### Queries (`sql/`)
+
+| File | What it returns |
+|---|---|
+| `refresh.sql` | Teachers per school (governed ICT headcount) with their supervisor remark, scores and comment |
+| `attendance.sql` | Teacher and student attendance per school, last 30 days |
+| `teacher_attendance.sql` | Each teacher's own attendance, last 30 days |
+| `class_registers.sql` | Classes with no register marked, and each teacher's register totals, last 30 days |
+| `fico_scores.sql` | FICO section scores per school and teacher, Digital Coach and coach visits kept apart |
+| `dc_lessons.sql` | Each teacher's Digital Coach lessons, all time, and the last one |
+| `trends.sql` | Weekly series per region for the Analytics tab |
+
+Results are packed one row per school because the data service returns at most 100 rows. Children's data is only ever used as counts.
+
+## Settings (environment variables)
+
+| Variable | Required | Meaning |
+|---|---|---|
+| `MCP_URL` | yes | URL of the Taleemabad data service's MCP endpoint |
+| `TALEEMABAD_USER` | yes | Email the data service logs each query under |
+| `REFRESH_TOKEN` | no | Secret for `POST /api/refresh` (header `x-refresh-token`) |
+| `REFRESH_TIMES_PKT` | no | Refresh times, e.g. `07:13,14:13` (default) |
+| `TALEEMABAD_API_TOKEN` | no | Bearer token, only if the data service turns on strict auth |
+| `DATA_DIR` | no | Where the cache file is written (default `./data`) |
+| `PORT` | no | Set by the host |
+
+## Run locally
+
+```bash
+MCP_URL=... TALEEMABAD_USER=you@example.org node server.js
+# open http://localhost:3000
+```
+
+## Change the page
+
+Edit `page/page-fragment.html`, then rebuild `public/index.html`:
+
+```bash
+python build_page.py page/page-fragment.html
+```
+
+## Deploy (Railway)
+
+```bash
+railway up --detach
+```
+
+Health check: `GET /healthz`.
