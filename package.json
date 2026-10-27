@@ -1,9 +1,16 @@
 {
-  "name": "steps-remarks-dashboard",
+  "name": "steps-dashboard",
   "version": "1.0.0",
   "private": true,
-  "description": "STEPS supervisor remarks dashboard (Urban-I + Barakahu), refreshed daily from the Taleemabad data service",
+  "description": "STEPS teacher evaluation dashboard (Urban-I + Barakahu), refreshed from the Taleemabad data service, with Postgres history",
   "main": "server.js",
-  "engines": { "node": ">=20" },
-  "scripts": { "start": "node server.js" }
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
 }

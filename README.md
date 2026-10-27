@@ -20,7 +20,7 @@ Performance levels: **Exemplary** 80+, **Proficient** 70–79.9, **Developing** 
 
 ## Tabs
 
-Overview · Analytics (charts and weekly trends) · Supervisor remarks · Classroom observations · Presence · All schools · Teachers (with a scorecard per teacher). Every section can be saved as a PNG with **Download image**.
+Overview · Analytics (charts and weekly trends) · Progress (STEPS over time, biggest changes, locked quarter results) · Supervisor remarks · Classroom observations · Presence · All schools · Teachers (with a scorecard per teacher). Every section can be saved as a PNG with **Download image**.
 
 ## How it works
 
@@ -31,6 +31,17 @@ Browser ──► server.js (Railway) ──► Taleemabad data service (MCP ove
 - `server.js` is a small Node server with no dependencies. At startup and at the times in `REFRESH_TIMES_PKT` it runs the queries in `sql/` through the data service's `execute_query` tool, joins the results per teacher, and keeps them in memory (plus a cache file in `DATA_DIR`).
 - The page asks `/api/teachers` for the data; visitors never query BigQuery themselves.
 - If a refresh fails, the last good data stays up and the refresh is retried after 30 minutes.
+- With `DATABASE_URL` set (Railway Postgres), `db.js` also saves one STEPS snapshot per teacher per day (`daily_snapshot`), keeps the latest payload for instant startup (`app_cache`), and stores **locked quarter results** that never change (`quarter_lock`, `quarter_result`). Without it the dashboard still works, minus the Progress tab.
+
+### History API
+
+| Endpoint | |
+|---|---|
+| `GET /api/history/summary` | Per day and region: averages, level counts, part averages |
+| `GET /api/history/teacher?key=` | One teacher's daily STEPS and locked quarter results |
+| `GET /api/history/movers?days=7` | Biggest STEPS changes vs N days earlier |
+| `GET /api/quarters` · `GET /api/quarters/<label>.csv` | Locked quarters and their full results as CSV |
+| `POST /api/quarters/lock` `{label, note}` · `DELETE /api/quarters/<label>` | Admin only: header `x-refresh-token` |
 
 ### Queries (`sql/`)
 
@@ -52,8 +63,9 @@ Results are packed one row per school because the data service returns at most 1
 |---|---|---|
 | `MCP_URL` | yes | URL of the Taleemabad data service's MCP endpoint |
 | `TALEEMABAD_USER` | yes | Email the data service logs each query under |
-| `REFRESH_TOKEN` | no | Secret for `POST /api/refresh` (header `x-refresh-token`) |
+| `REFRESH_TOKEN` | no | Admin key: `POST /api/refresh` and locking/deleting quarters (header `x-refresh-token`) |
 | `REFRESH_TIMES_PKT` | no | Refresh times, e.g. `07:13,14:13` (default) |
+| `DATABASE_URL` | no | Postgres connection string; on Railway `${{Postgres.DATABASE_URL}}` (private network) |
 | `TALEEMABAD_API_TOKEN` | no | Bearer token, only if the data service turns on strict auth |
 | `DATA_DIR` | no | Where the cache file is written (default `./data`) |
 | `PORT` | no | Set by the host |

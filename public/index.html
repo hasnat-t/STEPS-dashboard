@@ -362,6 +362,7 @@ img { max-width: 100%; }
   <nav class="sr-tabs" role="tablist" aria-label="Dashboard sections">
     <button type="button" role="tab" class="sr-tab" id="tab-overview" data-tab="overview" aria-selected="true">Overview</button>
     <button type="button" role="tab" class="sr-tab" id="tab-analytics" data-tab="analytics" aria-selected="false">Analytics</button>
+    <button type="button" role="tab" class="sr-tab" id="tab-progress" data-tab="progress" aria-selected="false">Progress</button>
     <button type="button" role="tab" class="sr-tab" id="tab-remarks" data-tab="remarks" aria-selected="false">Supervisor remarks</button>
     <button type="button" role="tab" class="sr-tab" id="tab-observations" data-tab="observations" aria-selected="false">Classroom observations</button>
     <button type="button" role="tab" class="sr-tab" id="tab-presence" data-tab="presence" aria-selected="false">Presence</button>
@@ -460,6 +461,50 @@ img { max-width: 100%; }
         <p class="sr-note">Remarks heads submitted each week, by region.</p>
         <div class="sr-an-body" data-an-body></div>
       </div>
+    </div>
+  </section>
+
+  <section class="sr-att" id="progress" aria-label="Progress over time" data-panel="progress">
+    <div class="sr-att-head">
+      <h2 class="sr-att-title">Progress over time</h2>
+      <p class="sr-note" id="pg-since">One STEPS snapshot is saved for every teacher each day.</p>
+    </div>
+    <div class="sr-an-grid">
+      <div class="sr-card sr-an" id="pg-avg">
+        <h2>Average STEPS by region</h2>
+        <p class="sr-note">Average of teachers with a STEPS score, one point per day.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an" id="pg-levels">
+        <h2>Teachers by level, by day</h2>
+        <p class="sr-note">Both regions together. Grey = no STEPS score yet.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an sr-an-wide" id="pg-parts">
+        <div class="sr-snap-row"><h2>STEPS parts by day</h2>
+          <div class="sr-seg" role="group" aria-label="Region for parts chart">
+            <button type="button" data-pg-region="Urban-I" aria-pressed="true">Urban-I</button>
+            <button type="button" data-pg-region="Barakahu" aria-pressed="false">Barakahu</button>
+          </div></div>
+        <p class="sr-note">Average of each part over the teachers who have it.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+      <div class="sr-card sr-an sr-an-wide" id="pg-movers">
+        <div class="sr-snap-row"><h2>Biggest changes</h2>
+          <select class="sr-sel" id="pg-days" aria-label="Compare with">
+            <option value="7">vs 7 days ago</option><option value="14">vs 14 days ago</option><option value="30">vs 30 days ago</option><option value="90">vs 90 days ago</option>
+          </select></div>
+        <p class="sr-note">Teachers whose STEPS score moved the most. Click a teacher for the scorecard.</p>
+        <div class="sr-an-body" data-an-body></div>
+      </div>
+    </div>
+
+    <div class="sr-att-head"><h2 class="sr-att-title">Quarter results</h2>
+      <p class="sr-note">Locked results never change, so they can be used as the official STEPS record for a quarter.</p></div>
+    <div class="sr-card" id="pg-quarters">
+      <div class="sr-snap-row"><span class="sr-note">Locking copies every teacher's current STEPS score and parts under a label you choose, e.g. "2026-27 Q2". It needs the admin key.</span>
+        <button type="button" class="sr-clear" id="pg-lock">Lock current results as a quarter</button></div>
+      <div id="pg-q-body"></div>
     </div>
   </section>
 
@@ -1268,6 +1313,7 @@ ${dcLine(t)}`;
        t.comment ? `“${t.comment}”` : 'No written comment', `Submitted ${t.remark_date}`]
     : ['No supervisor remark yet']);
   body.appendChild(grid);
+  scorecardHistory(t, body);
   if (typeof dlg.showModal === 'function') { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute('open', '');
   body.scrollTop = 0;
 }
@@ -2111,6 +2157,187 @@ function drawAnalytics() {
   anFunnel(all); anHist(all); anLost(all); anLeague(all); anScatter(all); anDcVh(); anInd(all); anTrends();
 }
 dash.onData(drawAnalytics);
+
+// ======================= Progress over time (Postgres history) =======================
+const PG = { summary: null, movers: {}, quarters: null, region: 'Urban-I', days: 7, loading: false, off: false };
+const pgJson = async (url, opts) => { const r = await fetch(url, { cache: 'no-store', ...opts }); const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(j.error || `HTTP ${r.status}`), { status: r.status }); return j; };
+
+async function pgLoad(force) {
+  if (PG.loading || PG.off) return;
+  if (PG.summary && !force) return drawProgress();
+  PG.loading = true;
+  try {
+    const [s, q] = await Promise.all([pgJson('/api/history/summary'), pgJson('/api/quarters')]);
+    PG.summary = s.rows; PG.quarters = q.rows; PG.movers = {};
+  } catch (e) {
+    if (e.status === 503) PG.off = true;
+    PG.summary = PG.summary || [];
+    PG.error = e.message;
+  } finally { PG.loading = false; }
+  drawProgress();
+}
+
+function pgEmpty(id, text) { const b = anBody(id); if (b) { const p = document.createElement('p'); p.className = 'sr-note'; p.textContent = text; b.appendChild(p); } }
+
+function drawProgress() {
+  const sec = document.getElementById('progress');
+  if (!sec || sec.hidden) return;
+  if (PG.summary === null) { pgLoad(); return; }
+  if (PG.off) { ['pg-avg', 'pg-levels', 'pg-parts', 'pg-movers'].forEach(id => pgEmpty(id, 'History storage is not switched on for this dashboard.')); return; }
+  const rows = PG.summary, days = [...new Set(rows.map(r => r.day))].sort();
+  document.getElementById('pg-since').textContent = days.length
+    ? `One STEPS snapshot is saved for every teacher each day. History starts ${weekLabel(days[0])}; ${days.length} day${days.length === 1 ? '' : 's'} so far. Charts fill in as days pass.`
+    : 'One STEPS snapshot is saved for every teacher each day. The first one is saved at the next refresh.';
+  if (!days.length) { ['pg-avg', 'pg-levels', 'pg-parts', 'pg-movers'].forEach(id => pgEmpty(id, 'No history yet.')); drawQuarters(); return; }
+  const get = (rg, f) => days.map(d => { const r = rows.find(x => x.day === d && x.region === rg); return r ? f(r) : null; });
+  anLines('pg-avg', days, [
+    { name: 'Urban-I', color: 'var(--reg-u1)', values: get('Urban-I', r => r.avg_steps) },
+    { name: 'Barakahu', color: 'var(--reg-bk)', values: get('Barakahu', r => r.avg_steps) },
+  ], [0.6, 0.8]);
+  const both = (k) => days.map(d => d3.sum(rows.filter(x => x.day === d), r => r[k]));
+  anBars('pg-levels', days, [
+    { name: 'Exemplary', color: 'var(--band-strong)', values: both('exemplary') },
+    { name: 'Proficient', color: 'var(--band-ontrack)', values: both('proficient') },
+    { name: 'Developing', color: 'var(--band-developing)', values: both('developing') },
+    { name: 'Needs support', color: 'var(--band-support)', values: both('support') },
+    { name: 'Incomplete', color: 'var(--band-none)', values: both('incomplete') },
+  ], d3.format(','));
+  const rg = PG.region;
+  anLines('pg-parts', days, [
+    { name: 'Subject knowledge', color: 'var(--band-strong)', values: get(rg, r => r.sk) },
+    { name: 'Teaching practices', color: 'var(--band-developing)', values: get(rg, r => r.tp) },
+    { name: 'Student engagement', color: 'var(--reg-u1)', values: get(rg, r => r.se) },
+    { name: 'Teacher attendance', color: 'var(--c-visit)', values: get(rg, r => r.ta), dash: '5 4' },
+    { name: 'Student attendance', color: 'var(--reg-bk)', values: get(rg, r => r.sa), dash: '5 4' },
+    { name: 'Supervisor remark', color: 'var(--band-support)', values: get(rg, r => r.sr), dash: '2 3' },
+  ], [0.5, 1]);
+  drawMovers();
+  drawQuarters();
+}
+
+async function drawMovers() {
+  const body = anBody('pg-movers'); if (!body) return;
+  const n = PG.days;
+  if (!PG.movers[n]) {
+    try { PG.movers[n] = (await pgJson(`/api/history/movers?days=${n}`)).rows; }
+    catch (e) { PG.movers[n] = []; }
+  }
+  const rows = PG.movers[n];
+  body.innerHTML = '';
+  if (!rows.length) {
+    const p = document.createElement('p'); p.className = 'sr-note';
+    p.textContent = `Not enough history yet: this needs a snapshot from at least ${n} days ago. It starts working ${n} days after the first snapshot.`;
+    body.appendChild(p); return;
+  }
+  const wrap = document.createElement('div'); wrap.className = 'sr-league';
+  const list = (title, rs) => {
+    const col = document.createElement('div'); const h = document.createElement('h3'); h.textContent = title; col.appendChild(h);
+    const ol = document.createElement('ol');
+    rs.forEach(r => {
+      const li = document.createElement('li');
+      const pill = document.createElement('span'); const band = bandFor(r.after); pill.className = `sr-band b-${band.key}`; pill.textContent = stepsTxt(r.after);
+      const ch = document.createElement('b'); ch.textContent = ` ${r.change > 0 ? '+' : ''}${(r.change * 100).toFixed(1)} `; ch.style.color = r.change > 0 ? 'var(--band-strong)' : 'var(--band-support)';
+      const nm = document.createElement('span'); nm.className = 'n'; nm.textContent = `${r.teacher} · ${r.school} (was ${stepsTxt(r.before)})`;
+      li.append(pill, ch, nm);
+      li.addEventListener('click', () => { const t = dash.data('teachers').data.find(x => x.teacher_key === r.teacher_key); if (t) openScorecard(t); });
+      ol.appendChild(li);
+    });
+    col.appendChild(ol); wrap.appendChild(col);
+  };
+  const sorted = rows.slice().sort((a, b) => b.change - a.change);
+  list('Most improved', sorted.filter(r => r.change > 0).slice(0, 10));
+  list('Biggest drops', sorted.filter(r => r.change < 0).reverse().slice(0, 10));
+  body.appendChild(wrap);
+  const st = document.createElement('div'); st.className = 'sr-an-stat';
+  st.textContent = `Comparing ${weekLabel(rows[0].to_day)} with ${weekLabel(rows[0].from_day)} · ${rows.length} teachers scored on both days.`;
+  body.appendChild(st);
+}
+
+function drawQuarters() {
+  const box = document.getElementById('pg-q-body'); if (!box) return;
+  box.innerHTML = '';
+  const q = PG.quarters || [];
+  if (!q.length) { const p = document.createElement('p'); p.className = 'sr-note'; p.textContent = 'No quarter has been locked yet.'; box.appendChild(p); return; }
+  const table = document.createElement('table'); table.className = 'sr-table';
+  const head = document.createElement('tr');
+  ['Quarter', 'Snapshot of', 'Region', 'Teachers', 'With STEPS', 'All 5 parts', 'Average STEPS', 'Exemplary', 'Proficient', 'Developing', 'Needs support', ''].forEach((h, i) => {
+    const th = document.createElement('th'); th.textContent = h; if (i >= 3 && i <= 10) th.className = 'num'; head.appendChild(th); });
+  const thead = document.createElement('thead'); thead.appendChild(head); table.appendChild(thead);
+  const tb = document.createElement('tbody');
+  let lastLabel = null;
+  q.forEach(r => {
+    const tr = document.createElement('tr');
+    const td = (t, cls) => { const c = document.createElement('td'); c.textContent = t; if (cls) c.className = cls; tr.appendChild(c); return c; };
+    const first = r.label !== lastLabel; lastLabel = r.label;
+    td(first ? r.label : ''); td(first ? `${r.snapshot_day} (locked ${r.locked_at_pkt})` : ''); td(r.region);
+    td(fmt(r.region_teachers), 'num'); td(fmt(r.scored), 'num'); td(fmt(r.complete), 'num');
+    const c = td('', 'num'); if (r.avg_steps != null) { const p = document.createElement('span'); p.className = `sr-band b-${bandFor(r.avg_steps).key}`; p.textContent = stepsTxt(r.avg_steps); c.appendChild(p); }
+    ['exemplary', 'proficient', 'developing', 'support'].forEach(k => td(fmt(r[k]), 'num'));
+    const act = td('');
+    if (first) {
+      const a = document.createElement('a'); a.href = `/api/quarters/${encodeURIComponent(r.label)}.csv`; a.textContent = 'Download CSV'; a.className = 'sr-clear'; a.style.textDecoration = 'none';
+      const del = document.createElement('button'); del.type = 'button'; del.className = 'sr-clear'; del.textContent = 'Delete'; del.style.marginLeft = '6px';
+      del.addEventListener('click', () => pgDelete(r.label));
+      act.append(a, del);
+    }
+    tb.appendChild(tr);
+  });
+  table.appendChild(tb);
+  const sc = document.createElement('div'); sc.className = 'sr-scroll'; sc.appendChild(table); box.appendChild(sc);
+}
+
+async function pgLock() {
+  const label = prompt('Name for this quarter (e.g. "2026-27 Q2"):');
+  if (!label) return;
+  const note = prompt('Optional note (who/why), or leave empty:') || '';
+  const key = prompt('Admin key:');
+  if (!key) return;
+  try {
+    const r = await pgJson('/api/quarters/lock', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-refresh-token': key }, body: JSON.stringify({ label, note }) });
+    alert(`Locked "${r.label}": ${r.teachers} teachers from the snapshot of ${String(r.snapshot_day).slice(0, 10)}.`);
+    pgLoad(true);
+  } catch (e) { alert(`Could not lock: ${e.message}`); }
+}
+async function pgDelete(label) {
+  if (!confirm(`Delete the locked results "${label}"? This cannot be undone.`)) return;
+  const key = prompt('Admin key:'); if (!key) return;
+  try { await pgJson(`/api/quarters/${encodeURIComponent(label)}`, { method: 'DELETE', headers: { 'x-refresh-token': key } }); pgLoad(true); }
+  catch (e) { alert(`Could not delete: ${e.message}`); }
+}
+
+document.getElementById('pg-lock').addEventListener('click', pgLock);
+document.getElementById('pg-days').addEventListener('change', (e) => { PG.days = Number(e.target.value); drawMovers(); });
+document.querySelectorAll('[data-pg-region]').forEach(b => b.addEventListener('click', () => {
+  PG.region = b.dataset.pgRegion;
+  document.querySelectorAll('[data-pg-region]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  drawProgress();
+}));
+dash.onData(drawProgress);
+
+// Scorecard: the teacher's STEPS over time and locked quarter results.
+async function scorecardHistory(t, body) {
+  if (PG.off) return;
+  let h;
+  try { h = await pgJson(`/api/history/teacher?key=${encodeURIComponent(t.teacher_key)}`); } catch (e) { return; }
+  const box = document.createElement('div'); box.className = 'sr-sc-box'; box.style.marginTop = '12px';
+  const tt = document.createElement('div'); tt.className = 't'; tt.textContent = 'STEPS over time'; box.appendChild(tt);
+  const pts = h.days.filter(d => d.steps != null);
+  if (pts.length >= 2) {
+    const W = 520, H = 70, x = d3.scaleLinear([0, pts.length - 1], [6, W - 6]), y = d3.scaleLinear([d3.min(pts, d => d.steps) - 0.02, d3.max(pts, d => d.steps) + 0.02], [H - 6, 6]);
+    const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('width', '100%').attr('height', H);
+    svg.append('path').attr('d', d3.line((d, i) => x(i), d => y(d.steps))(pts)).style('fill', 'none').style('stroke', 'var(--nt-green)').attr('stroke-width', 2);
+    pts.forEach((d, i) => svg.append('circle').attr('cx', x(i)).attr('cy', y(d.steps)).attr('r', 3).style('fill', 'var(--nt-green)').append('title').text(`${d.day}: ${stepsTxt(d.steps)}`));
+  }
+  const l = document.createElement('div'); l.className = 'l';
+  l.textContent = pts.length ? `${pts.length} day${pts.length === 1 ? '' : 's'} recorded, first on ${pts[0].day}: ${pts.map(d => stepsTxt(d.steps)).slice(-6).join(' → ')}`
+    : 'No STEPS score recorded on any day yet.';
+  box.appendChild(l);
+  h.quarters.forEach(q => { const d = document.createElement('div'); d.className = 'l';
+    d.textContent = `${q.label}: ${q.steps == null ? 'no STEPS score' : stepsTxt(q.steps)} (locked results, ${q.parts}/5 parts)`; box.appendChild(d); });
+  body.appendChild(box);
+}
+
 
 // ======================= PNG snapshots =======================
 const SNAP_TARGETS = {

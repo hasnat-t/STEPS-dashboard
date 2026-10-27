@@ -1,6 +1,7 @@
 // STEPS Supervisor Remarks dashboard: serves the page and refreshes its data
 // from the Taleemabad data service (MCP over HTTP) once a day.
 const http = require('http');
+const db = require('./db');
 const fs = require('fs');
 const path = require('path');
 
@@ -326,8 +327,17 @@ async function refresh(reason) {
     }
     state = { ...state, ...next, rows, as_of };
     fs.mkdirSync(DATA_DIR, { recursive: true });
-    fs.writeFileSync(CACHE_FILE, JSON.stringify({ rows: state.rows, as_of: state.as_of,
-      attendance: state.attendance, attendance_window: state.attendance_window, fico: state.fico, trends: state.trends }));
+    const payload = { rows: state.rows, as_of: state.as_of, attendance: state.attendance,
+      attendance_window: state.attendance_window, fico: state.fico, trends: state.trends };
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(payload));
+    if (db.enabled()) {
+      try {
+        await db.saveRefresh(payload, pktStamp().slice(0, 10));
+        log('saved snapshot to Postgres');
+      } catch (e) {
+        log(`Postgres save failed (dashboard unaffected): ${e.message || e}`);
+      }
+    }
   } catch (e) {
     state.last_error = String(e.message || e);
     log(`refresh failed, keeping previous data: ${state.last_error}`);
@@ -363,6 +373,52 @@ function send(res, code, body, type, extra = {}) {
   res.end(body);
 }
 
+// Admin actions (locking quarters) use the same secret as a manual refresh.
+const isAdmin = (req) => !!REFRESH_TOKEN && req.headers['x-refresh-token'] === REFRESH_TOKEN;
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    let b = ''; req.on('data', (c) => { b += c; if (b.length > 1e4) reject(new Error('body too large')); });
+    req.on('end', () => { try { resolve(b ? JSON.parse(b) : {}); } catch (e) { reject(e); } });
+  });
+}
+const csvCell = (v) => { const s = v === null || v === undefined ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+
+async function handleHistory(req, res, url) {
+  const json = (code, obj) => send(res, code, JSON.stringify(obj), 'application/json', { 'Cache-Control': 'no-store' });
+  if (!db.enabled()) return json(503, { error: 'history storage is not configured' });
+  const p = url.pathname;
+  if (req.method === 'GET' && p === '/api/history/summary') return json(200, { rows: await db.historySummary() });
+  if (req.method === 'GET' && p === '/api/history/teacher') return json(200, await db.teacherHistory(url.searchParams.get('key') || ''));
+  if (req.method === 'GET' && p === '/api/history/movers') {
+    const back = Math.min(Math.max(Number(url.searchParams.get('days')) || 7, 1), 365);
+    return json(200, { rows: await db.movers(back) });
+  }
+  if (req.method === 'GET' && p === '/api/quarters') return json(200, { rows: await db.listQuarters() });
+  const m = p.match(/^\/api\/quarters\/([^/]+)\.csv$/);
+  if (req.method === 'GET' && m) {
+    const label = decodeURIComponent(m[1]);
+    const rows = await db.quarterRows(label);
+    if (!rows.length) return send(res, 404, 'not found', 'text/plain');
+    const cols = Object.keys(rows[0]);
+    const body = '﻿' + [cols.join(','), ...rows.map((r) => cols.map((c) => csvCell(r[c])).join(','))].join('\r\n');
+    return send(res, 200, body, 'text/csv; charset=utf-8', { 'Content-Disposition': `attachment; filename="STEPS-${label.replace(/[^A-Za-z0-9_-]+/g, '-')}.csv"` });
+  }
+  if (req.method === 'POST' && p === '/api/quarters/lock') {
+    if (!isAdmin(req)) return json(403, { error: 'Wrong admin key' });
+    const body = await readBody(req);
+    const label = String(body.label || '').trim().slice(0, 40);
+    if (!/^[A-Za-z0-9][A-Za-z0-9 ._-]*$/.test(label)) return json(400, { error: 'Use a label like "2026-27 Q2" (letters, numbers, spaces, - . _)' });
+    try { return json(200, await db.lockQuarter(label, String(body.note || '').slice(0, 200))); }
+    catch (e) { return json(409, { error: /duplicate key/.test(String(e.message)) ? `"${label}" is already locked` : String(e.message) }); }
+  }
+  const d = p.match(/^\/api\/quarters\/([^/]+)$/);
+  if (req.method === 'DELETE' && d) {
+    if (!isAdmin(req)) return json(403, { error: 'Wrong admin key' });
+    return json(200, { deleted: await db.deleteQuarter(decodeURIComponent(d[1])) });
+  }
+  return json(404, { error: 'not found' });
+}
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   if (req.method === 'GET' && url.pathname === '/api/teachers') {
@@ -371,6 +427,9 @@ const server = http.createServer(async (req, res) => {
       last_error: state.last_error, refreshing: state.refreshing,
       schedule_pkt: REFRESH_TIMES_PKT.map((t) => `${String(t.h).padStart(2, '0')}:${String(t.m).padStart(2, '0')}`) }),
       'application/json', { 'Cache-Control': 'no-store' });
+  }
+  if (url.pathname.startsWith('/api/history') || url.pathname.startsWith('/api/quarters')) {
+    return handleHistory(req, res, url).catch((e) => { log(`history API error: ${e.message || e}`); send(res, 500, JSON.stringify({ error: 'server error' }), 'application/json'); });
   }
   if (req.method === 'GET' && url.pathname === '/healthz') {
     return send(res, 200, JSON.stringify({ ok: true, teachers: state.rows.length, as_of: state.as_of, last_error: state.last_error }), 'application/json');
@@ -400,8 +459,25 @@ try {
   log(`loaded cached data from ${cached.as_of}`);
 } catch { /* first boot: no cache yet */ }
 
-server.listen(PORT, () => {
-  log(`listening on ${PORT}`);
-  refresh('startup');
-  scheduleDaily();
-});
+(async () => {
+  try {
+    if (await db.init()) {
+      log('Postgres connected');
+      if (!state.rows.length) {
+        const c = await db.loadCache();
+        if (c && c.rows) {
+          state = { ...state, rows: c.rows, as_of: c.as_of, attendance: c.attendance || [], attendance_window: c.attendance_window || null,
+            fico: c.fico || [], trends: c.trends || [] };
+          log(`loaded cached data from Postgres (${c.as_of})`);
+        }
+      }
+    } else log('DATABASE_URL not set: history features off');
+  } catch (e) {
+    log(`Postgres unavailable, continuing without history: ${e.message || e}`);
+  }
+  server.listen(PORT, () => {
+    log(`listening on ${PORT}`);
+    refresh('startup');
+    scheduleDaily();
+  });
+})();
