@@ -1,6 +1,10 @@
 # STEPS Teacher Evaluation Dashboard
 
-A live dashboard for NIETE's **STEPS** teacher evaluation in two ICT sectors, **Urban-I** and **Barakahu** (86 schools, ~940 teachers). It shows each teacher's STEPS score and the five parts behind it, per region, per school and per teacher, and refreshes itself from the Taleemabad data service twice a day.
+A live dashboard for NIETE's **STEPS** teacher evaluation in two ICT sectors, **Urban-I** and **Barakahu** (86 schools).
+
+**Scope: primary teachers only** (about 840): teachers whose Rumi `teacher_level` includes PRIMARY, so primary-only teachers and those who teach both primary and middle/high. Teachers who teach only middle or high classes, and teachers with no level recorded, are left out. Class counts and student attendance use primary classes only (early years to grade 5). The filter sits in the `ict_teachers` step of every query in `sql/`.
+
+It shows each teacher's STEPS score and the five parts behind it, per region, per school and per teacher, and refreshes itself from the Taleemabad data service twice a day.
 
 ## What STEPS measures
 

@@ -23,6 +23,7 @@ ict_teachers AS (                                               -- teacher-headc
   FROM `Niete_Rumi_db.users` u
   JOIN sch ON sch.school_id = u.school_id
   WHERE u.role = 'teacher' AND u.deleted_at IS NULL AND u.is_test_user IS NOT TRUE
+    AND 'PRIMARY' IN UNNEST(ARRAY(SELECT DISTINCT TRIM(UPPER(x)) FROM UNNEST(JSON_VALUE_ARRAY(u.teacher_level)) x))  -- STEPS scope: primary teachers (teacher-levels.md 1b)
 ),
 ict_account_merges AS (
   SELECT a.retired_id, s.id AS survivor_id
@@ -116,7 +117,10 @@ regs AS (
   FROM `Niete_Rumi_db.attendance_sessions` a
   LEFT JOIN ict_account_merges m ON m.retired_id = a.user_id
   JOIN ict_teachers t ON t.teacher_id = COALESCE(m.survivor_id, a.user_id)
+  LEFT JOIN `Niete_Rumi_db.student_lists` sl ON sl.id = a.list_id
+  LEFT JOIN `Niete_Rumi_db.classes` rc ON rc.id = sl.class_id
   WHERE SAFE_CAST(a.session_date AS DATE) >= DATE '2026-08-24'
+    AND (rc.id IS NULL OR LOWER(TRIM(rc.grade_code)) IN ('early_years', 'grade_1', 'grade_2', 'grade_3', 'grade_4', 'grade_5'))   -- primary classes
 ),
 s_w AS (
   SELECT region, week_start, COUNT(DISTINCT id) AS s_registers,

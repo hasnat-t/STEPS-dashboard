@@ -22,6 +22,7 @@ ict_teachers AS (                                               -- teacher-headc
   FROM `Niete_Rumi_db.users` u
   JOIN sch ON sch.school_id = u.school_id
   WHERE u.role = 'teacher' AND u.deleted_at IS NULL AND u.is_test_user IS NOT TRUE
+    AND 'PRIMARY' IN UNNEST(ARRAY(SELECT DISTINCT TRIM(UPPER(x)) FROM UNNEST(JSON_VALUE_ARRAY(u.teacher_level)) x))  -- STEPS scope: primary teachers (teacher-levels.md 1b)
 ),
 ict_account_merges AS (
   SELECT a.retired_id, s.id AS survivor_id

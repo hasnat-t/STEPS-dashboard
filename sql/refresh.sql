@@ -16,6 +16,7 @@ ict_teachers AS (
   FROM `Niete_Rumi_db.users` u
   JOIN sch ON sch.school_id = u.school_id
   WHERE u.role = 'teacher' AND u.deleted_at IS NULL AND u.is_test_user IS NOT TRUE
+    AND 'PRIMARY' IN UNNEST(ARRAY(SELECT DISTINCT TRIM(UPPER(x)) FROM UNNEST(JSON_VALUE_ARRAY(u.teacher_level)) x))  -- STEPS scope: primary teachers (teacher-levels.md 1b)
 ),
 sc AS (
   SELECT remark_id, STRING_AGG(CAST(score AS STRING), '' ORDER BY indicator_ordinal) AS scores
@@ -34,7 +35,7 @@ j AS (
          COALESCE(rm.d, '') AS d, COALESCE(rm.scores, '') AS scs,
          REPLACE(REPLACE(REPLACE(COALESCE(rm.comment_text, ''), '|', ' '), '~', ' '), '\n', ' ') AS cm
   FROM ict_teachers t
-  FULL OUTER JOIN rm ON rm.teacher_id = t.teacher_id
+  LEFT JOIN rm ON rm.teacher_id = t.teacher_id                                 -- in-scope teachers only
   LEFT JOIN `Niete_Rumi_db.users` u2 ON u2.id = rm.teacher_id
   JOIN sch ON sch.school_id = COALESCE(t.school_id, rm.school_id)
 )

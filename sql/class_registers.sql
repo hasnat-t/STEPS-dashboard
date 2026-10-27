@@ -30,6 +30,7 @@ ict_teachers AS (                                               -- teacher-headc
   JOIN sch ON sch.school_id = u.school_id
   WHERE u.role = 'teacher' AND u.deleted_at IS NULL
     AND u.is_test_user IS NOT TRUE
+    AND 'PRIMARY' IN UNNEST(ARRAY(SELECT DISTINCT TRIM(UPPER(x)) FROM UNNEST(JSON_VALUE_ARRAY(u.teacher_level)) x))  -- STEPS scope: primary teachers (teacher-levels.md 1b)
 ),
 ict_account_merges AS (                                         -- a merged-away account's rows go to the survivor
   SELECT a.retired_id, s.id AS survivor_id
@@ -53,7 +54,9 @@ registers AS (                                                  -- student_atten
   LEFT JOIN ict_account_merges m ON m.retired_id = a.user_id
   JOIN ict_teachers t ON t.teacher_id = COALESCE(m.survivor_id, a.user_id)
   LEFT JOIN `Niete_Rumi_db.student_lists` sl ON sl.id = a.list_id
+  LEFT JOIN `Niete_Rumi_db.classes` rc ON rc.id = sl.class_id
   WHERE SAFE_CAST(a.session_date AS DATE) BETWEEN win.d0 AND win.d1
+    AND (rc.id IS NULL OR LOWER(TRIM(rc.grade_code)) IN ('early_years', 'grade_1', 'grade_2', 'grade_3', 'grade_4', 'grade_5'))   -- primary classes
 ),
 per_teacher AS (                                                -- 30-day totals per marking teacher
   SELECT school_id, teacher_id,
@@ -73,7 +76,7 @@ cls AS (
   FROM `Niete_Rumi_db.classes` c
   JOIN sch ON sch.school_id = c.school_id
   LEFT JOIN marked_classes mc ON mc.class_id = c.id
-  WHERE c.is_active
+  WHERE c.is_active AND LOWER(TRIM(c.grade_code)) IN ('early_years', 'grade_1', 'grade_2', 'grade_3', 'grade_4', 'grade_5')
 ),
 cls_school AS (
   SELECT school_id, COUNT(*) AS active_class_count, COUNTIF(is_marked) AS marked_class_count,
