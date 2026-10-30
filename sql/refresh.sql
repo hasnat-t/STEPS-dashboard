@@ -26,6 +26,7 @@ rm AS (
   SELECT r.teacher_id, r.school_id, r.comment_text, SUBSTR(r.submitted_at, 1, 10) AS d, sc.scores
   FROM `Niete_Rumi_db.supervisor_remarks` r LEFT JOIN sc ON sc.remark_id = r.id
   WHERE r.school_id IN (SELECT school_id FROM sch)
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY r.teacher_id ORDER BY r.submitted_at DESC) = 1  -- latest remark per teacher
 ),
 j AS (
   SELECT sch.emis, SUBSTR(COALESCE(t.teacher_id, rm.teacher_id), 1, 8) AS tid,
